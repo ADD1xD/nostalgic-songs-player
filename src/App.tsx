@@ -13,60 +13,66 @@ interface Song {
 
 const songs: Song[] = [
   {
-    title: "Tum Hi Ho",
-    artist: "Arijit Singh",
-    src: "/audio/tum-hi-ho.mp3",
-    cover: "/covers/tum-hi-ho.jpg",
+    title: "Safar",
+    artist: "Bayaan & Sherazam",
+    src: "/audio/Bayaan & Sherazam - Safar.mp3",
+    cover: "/covers/Surf cat.jpg",
   },
   {
-    title: "Tera Ban Jaunga",
-    artist: "Akhil Sachdeva",
-    src: "/audio/tera-ban-jaunga.mp3",
-    cover: "/covers/tera-ban-jaunga.jpg",
+    title: "hot girl bummer (sped up)",
+    artist: "blackbear",
+    src: "/audio/Blackbear - hot girl bummer  sped up  lyrics.mp3",
+    cover: "/covers/Visit TikTok to discover profiles!.jpg",
   },
   {
-    title: "Channa Mereya",
-    artist: "Arijit Singh",
-    src: "/audio/channa-mereya.mp3",
-    cover: "/covers/channa-mereya.jpg",
+    title: "Heat Waves",
+    artist: "Glass Animals",
+    src: "/audio/Glass Animals - Heat Waves (Official Video).mp3",
+    cover: "/covers/ -6.jpg",
+  },
+  {
+    title: "Kabira Encore",
+    artist: "Yeh Jawaani Hai Deewani",
+    src: "/audio/Kabira Encore - Yeh Jawaani Hai Deewani  Ranbir Kapoor, Deepika Padukone.mp3",
+    cover: "/covers/1101763496397931579.jpg",
   },
   {
     title: "Kabira",
-    artist: "Arijit Singh & Tochi Raina",
-    src: "/audio/kabira.mp3",
-    cover: "/covers/kabira.jpg",
+    artist: "Pritam",
+    src: "/audio/Kabira Full Song Yeh Jawaani Hai Deewani  Pritam  Ranbir Kapoor, Deepika Padukone.mp3",
+    cover: "/covers/1037939045389576829.jpg",
   },
   {
-    title: "Raabta",
-    artist: "Arijit Singh",
-    src: "/audio/raabta.mp3",
-    cover: "/covers/raabta.jpg",
+    title: "Line Without a Hook",
+    artist: "Ricky Montgomery",
+    src: "/audio/Ricky Montgomery - Line Without a Hook (Official Lyric Video).mp3",
+    cover: "/covers/cat on sea.jpg",
   },
   {
-    title: "Phir Le Aya Dil",
-    artist: "Arijit Singh",
-    src: "/audio/phir-le-aya-dil.mp3",
-    cover: "/covers/phir-le-aya-dil.jpg",
+    title: "Rough Days",
+    artist: "Unknown",
+    src: "/audio/Rough Days.mp3",
+    cover: "/covers/642114859417697153.jpg",
   },
   {
-    title: "Ilahi",
-    artist: "Arijit Singh",
-    src: "/audio/ilahi.mp3",
-    cover: "/covers/ilahi.jpg",
+    title: "I Thought I Saw Your Face Today",
+    artist: "She & Him",
+    src: "/audio/She & Him - I Thought I Saw Your Face Today (Official Lyric Video).mp3",
+    cover: "/covers/cat on sea.jpg",
   },
   {
-    title: "Hawayein",
-    artist: "Arijit Singh",
-    src: "/audio/hawayein.mp3",
-    cover: "/covers/hawayein.jpg",
+    title: "SugarCrash!",
+    artist: "ElyOtto",
+    src: "/audio/SugarCrash!.mp3",
+    cover: "/covers/1075304848539893076.jpg",
   },
 ];
 
 // ─── Bilingual Text ────────────────────────────────────────────
 
 const text = {
-  en: { headline: "MY NAME", tagline: "songs that take me back" },
-  hi: { headline: "मेरा नाम", tagline: "वो गाने जो पुरानी यादें ताज़ा कर दें" },
+  en: { headline: "Krishbuilds", tagline: "songs that take me back" },
+  hi: { headline: "Krishbuilds", tagline: "वो गाने जो पुरानी यादें ताज़ा कर दें" },
 };
 
 // ─── Helpers ───────────────────────────────────────────────────
@@ -112,10 +118,60 @@ function NextIcon({ className = "w-5 h-5" }: { className?: string }) {
   );
 }
 
-function MusicNoteIcon({ className = "w-8 h-8" }: { className?: string }) {
+function CatMascot({ className = "w-40 h-40" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" opacity={0.3}>
-      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+    <svg className={className} viewBox="0 0 200 200" fill="none" aria-hidden="true">
+      <path d="M148 128c22 8 30-12 16-30" stroke="#e8a06a" strokeWidth="12" strokeLinecap="round" />
+      <ellipse cx="100" cy="142" rx="46" ry="34" fill="#f2b88a" />
+      <ellipse cx="100" cy="150" rx="26" ry="18" fill="#ffe8d6" />
+      <circle cx="100" cy="84" r="42" fill="#f2b88a" />
+      <path d="M64 68 58 36l32 22" fill="#f2b88a" />
+      <path d="M136 68 142 36l-32 22" fill="#f2b88a" />
+      <path d="M66 62 62 44l16 12" fill="#f7c4c8" />
+      <path d="M134 62 138 44l-16 12" fill="#f7c4c8" />
+      <path d="M58 80c0-28 84-28 84 0" stroke="#c9b6e8" strokeWidth="8" strokeLinecap="round" />
+      <circle cx="54" cy="88" r="15" fill="#c9b6e8" />
+      <circle cx="146" cy="88" r="15" fill="#c9b6e8" />
+      <circle cx="54" cy="88" r="8" fill="#fff8f1" />
+      <circle cx="146" cy="88" r="8" fill="#fff8f1" />
+      <path d="M82 84c4 7 12 7 16 0" stroke="#5c4a42" strokeWidth="3.2" strokeLinecap="round" />
+      <path d="M102 84c4 7 12 7 16 0" stroke="#5c4a42" strokeWidth="3.2" strokeLinecap="round" />
+      <ellipse cx="100" cy="97" rx="5" ry="3.4" fill="#f4a09a" />
+      <path d="M100 100c-4 6-10 5-13 2" stroke="#5c4a42" strokeWidth="2" strokeLinecap="round" />
+      <path d="M100 100c4 6 10 5 13 2" stroke="#5c4a42" strokeWidth="2" strokeLinecap="round" />
+      <path d="M72 98H54" stroke="#5c4a42" strokeWidth="1.6" strokeLinecap="round" opacity=".45" />
+      <path d="M72 104H56" stroke="#5c4a42" strokeWidth="1.6" strokeLinecap="round" opacity=".45" />
+      <path d="M128 98h18" stroke="#5c4a42" strokeWidth="1.6" strokeLinecap="round" opacity=".45" />
+      <path d="M128 104h16" stroke="#5c4a42" strokeWidth="1.6" strokeLinecap="round" opacity=".45" />
+      <ellipse cx="80" cy="170" rx="11" ry="8" fill="#ffe8d6" />
+      <ellipse cx="120" cy="170" rx="11" ry="8" fill="#ffe8d6" />
+    </svg>
+  );
+}
+
+function PawIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <circle cx="12" cy="16.2" r="4.4" />
+      <circle cx="5.8" cy="9.2" r="2.3" />
+      <circle cx="10" cy="6.2" r="2.3" />
+      <circle cx="14.2" cy="6.2" r="2.3" />
+      <circle cx="18.2" cy="9.2" r="2.3" />
+    </svg>
+  );
+}
+
+function CatFaceIcon({ className = "w-7 h-7" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <circle cx="16" cy="18" r="10" fill="#f2b88a" />
+      <path d="M8 16 7 7l8 6" fill="#f2b88a" />
+      <path d="M24 16 25 7l-8 6" fill="#f2b88a" />
+      <path d="M9 14.5 8.2 9.5 13 13" fill="#f7c4c8" />
+      <path d="M23 14.5 23.8 9.5 19 13" fill="#f7c4c8" />
+      <path d="M12.2 18c1.4 2 3.2 2 3.8 0" stroke="#5c4a42" strokeWidth="1.4" strokeLinecap="round" />
+      <path d="M16 18c1.4 2 3.2 2 3.8 0" stroke="#5c4a42" strokeWidth="1.4" strokeLinecap="round" />
+      <ellipse cx="16" cy="21" rx="1.5" ry="1.1" fill="#f4a09a" />
     </svg>
   );
 }
@@ -166,7 +222,7 @@ export default function App() {
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || currentIndex < 0) return;
-    audio.src = songs[currentIndex].src;
+    audio.src = encodeURI(songs[currentIndex].src);
     audio.play().catch(() => {});
   }, [currentIndex]);
 
@@ -206,47 +262,64 @@ export default function App() {
   const t = text[lang];
 
   return (
-    <div className="min-h-screen bg-warm-950 pb-40">
-      {/* Hidden audio element */}
+    <div className="min-h-screen bg-cream pb-40 font-sans text-ink">
       <audio ref={audioRef} preload="metadata" />
 
-      {/* ─── Hero Section ─────────────────────────────────── */}
       <section className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
-        {/* Background image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/hero.jpg')" }}
-        />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-warm-950/40 via-warm-950/60 to-warm-950" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,#fff8f1_0%,#ffe8d8_42%,#f3e4f7_100%)]" />
+        <div className="absolute -top-24 -left-16 w-80 h-80 rounded-full bg-peach/70 blur-3xl pointer-events-none" />
+        <div className="absolute top-24 -right-20 w-96 h-96 rounded-full bg-lavender/60 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-10 left-1/4 w-72 h-72 rounded-full bg-pink/50 blur-3xl pointer-events-none" />
 
-        {/* Content */}
-        <div className="relative z-10 text-center px-6 max-w-3xl">
-          <h1 className="text-5xl sm:text-7xl md:text-8xl font-extrabold tracking-tight text-warm-50 drop-shadow-lg mb-4">
-            {t.headline}
+        <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-3xl">
+          <div className="hero-enter-cat mb-6">
+            <div className="cat-bob">
+              <CatMascot className="w-44 h-44 sm:w-56 sm:h-56 md:w-64 md:h-64" />
+            </div>
+          </div>
+
+          <h1 className="font-display text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight mb-2 leading-[1.05]">
+            <span className="text-coral">
+              {t.headline.slice(0, 5).split("").map((letter, i) => (
+                <span
+                  key={`krish-${i}`}
+                  className="headline-letter"
+                  style={{ animationDelay: `${0.35 + i * 0.05}s` }}
+                >
+                  {letter}
+                </span>
+              ))}
+            </span>
+            <span className="text-[#e59aaa]">
+              {t.headline.slice(5).split("").map((letter, i) => (
+                <span
+                  key={`builds-${i}`}
+                  className="headline-letter"
+                  style={{ animationDelay: `${0.6 + i * 0.05}s` }}
+                >
+                  {letter}
+                </span>
+              ))}
+            </span>
           </h1>
-          <p className="text-lg sm:text-2xl text-warm-200/80 font-light tracking-wide">
+
+          <p className="hero-enter mt-6 sm:mt-8 text-lg sm:text-xl text-muted font-normal tracking-wide">
             {t.tagline}
           </p>
 
-          {/* Language toggle */}
-          <div className="mt-8 inline-flex rounded-full border border-warm-700/50 overflow-hidden">
+          <div className="hero-enter-late mt-7 inline-flex rounded-full bg-white/70 border border-peach overflow-hidden shadow-sm">
             <button
               onClick={() => setLang("en")}
-              className={`px-5 py-2 text-sm font-medium transition-all cursor-pointer ${
-                lang === "en"
-                  ? "bg-accent text-warm-950"
-                  : "bg-warm-900/50 text-warm-300 hover:bg-warm-800/50"
+              className={`px-5 py-2 text-sm font-semibold cursor-pointer transition-colors ${
+                lang === "en" ? "bg-coral text-white" : "text-muted hover:bg-peach/50"
               }`}
             >
               English
             </button>
             <button
               onClick={() => setLang("hi")}
-              className={`px-5 py-2 text-sm font-medium transition-all cursor-pointer ${
-                lang === "hi"
-                  ? "bg-accent text-warm-950"
-                  : "bg-warm-900/50 text-warm-300 hover:bg-warm-800/50"
+              className={`px-5 py-2 text-sm font-semibold cursor-pointer transition-colors ${
+                lang === "hi" ? "bg-coral text-white" : "text-muted hover:bg-peach/50"
               }`}
             >
               हिंदी
@@ -254,44 +327,58 @@ export default function App() {
           </div>
         </div>
 
-        {/* Scroll hint */}
-        <div className="absolute bottom-8 z-10 animate-bounce">
-          <svg className="w-6 h-6 text-warm-400/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-        </div>
+        <button
+          type="button"
+          onClick={() =>
+            document.getElementById("songs")?.scrollIntoView({ behavior: "smooth" })
+          }
+          className="hero-enter-last absolute bottom-8 z-10 cursor-pointer bg-transparent border-0 p-0"
+          aria-label="Scroll to songs"
+        >
+          <span className="scroll-hint-motion inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-display text-base font-semibold text-coral shadow-[0_10px_24px_rgba(244,168,154,0.35)] border border-peach/70">
+            <PawIcon className="w-4 h-4 text-coral" />
+            songs
+          </span>
+        </button>
       </section>
 
-      {/* ─── Song Picker Section ──────────────────────────── */}
-      <section className="px-4 sm:px-8 py-12">
-        <h2 className="text-2xl sm:text-3xl font-bold text-warm-100 mb-8 tracking-tight">
-          Pick a Song
-        </h2>
+      <section id="songs" className="px-4 sm:px-8 py-12 scroll-mt-6">
+        <div className="mb-8 flex items-center gap-2">
+          <PawIcon className="w-5 h-5 text-coral" />
+          <h2 className="font-display text-2xl sm:text-3xl font-semibold text-ink">
+            Pick a Song
+          </h2>
+        </div>
 
-        {/* Horizontal scroll on mobile, grid on larger */}
         <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:overflow-x-visible">
           {songs.map((song, index) => {
             const isActive = index === currentIndex;
             const hasError = coverErrors[index];
+            const tints = ["bg-white", "bg-peach/35", "bg-lavender/40", "bg-pink/30"];
             return (
               <button
                 key={index}
                 onClick={() => playSong(index)}
-                className={`group flex-shrink-0 w-44 sm:w-auto rounded-2xl p-3 transition-all duration-300 text-left cursor-pointer ${
+                className={`song-card group relative flex-shrink-0 w-44 sm:w-auto rounded-3xl p-3 text-left cursor-pointer border transition-shadow duration-300 ${
+                  tints[index % tints.length]
+                } ${
                   isActive
-                    ? "bg-accent/15 ring-2 ring-accent-glow shadow-lg shadow-accent/20"
-                    : "bg-warm-900/40 hover:bg-warm-900/70 hover:shadow-md"
+                    ? "border-coral shadow-lg shadow-coral/20"
+                    : "border-peach/80 shadow-sm hover:shadow-md"
                 }`}
               >
-                {/* Cover art */}
-                <div className="relative aspect-square rounded-xl overflow-hidden mb-3 bg-warm-800">
+                <span className="absolute top-2 right-2 text-coral/50">
+                  <PawIcon className="w-3.5 h-3.5" />
+                </span>
+
+                <div className="relative aspect-square rounded-2xl overflow-hidden mb-3 bg-peach">
                   {hasError ? (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-warm-800 to-warm-900">
-                      <MusicNoteIcon className="w-12 h-12 text-warm-500" />
+                    <div className="w-full h-full flex items-center justify-center bg-peach">
+                      <CatFaceIcon className="w-14 h-14" />
                     </div>
                   ) : (
                     <img
-                      src={song.cover}
+                      src={encodeURI(song.cover)}
                       alt={song.title}
                       className={`w-full h-full object-cover transition-transform duration-500 ${
                         isActive ? "scale-105" : "group-hover:scale-105"
@@ -302,26 +389,21 @@ export default function App() {
                     />
                   )}
                   {isActive && isPlaying && (
-                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-ink/20 flex items-center justify-center">
                       <div className="flex items-end gap-[3px] h-5">
-                        <span className="w-[3px] bg-accent-glow rounded-full animate-[bounce_0.6s_ease-in-out_infinite]" style={{ height: "60%" }} />
-                        <span className="w-[3px] bg-accent-glow rounded-full animate-[bounce_0.6s_ease-in-out_0.15s_infinite]" style={{ height: "100%" }} />
-                        <span className="w-[3px] bg-accent-glow rounded-full animate-[bounce_0.6s_ease-in-out_0.3s_infinite]" style={{ height: "40%" }} />
-                        <span className="w-[3px] bg-accent-glow rounded-full animate-[bounce_0.6s_ease-in-out_0.45s_infinite]" style={{ height: "80%" }} />
+                        <span className="w-[3px] bg-white rounded-full animate-[bounce_0.6s_ease-in-out_infinite]" style={{ height: "60%" }} />
+                        <span className="w-[3px] bg-white rounded-full animate-[bounce_0.6s_ease-in-out_0.15s_infinite]" style={{ height: "100%" }} />
+                        <span className="w-[3px] bg-white rounded-full animate-[bounce_0.6s_ease-in-out_0.3s_infinite]" style={{ height: "40%" }} />
+                        <span className="w-[3px] bg-white rounded-full animate-[bounce_0.6s_ease-in-out_0.45s_infinite]" style={{ height: "80%" }} />
                       </div>
                     </div>
                   )}
                 </div>
 
-                {/* Song info */}
-                <h3
-                  className={`font-semibold text-sm truncate ${
-                    isActive ? "text-accent-glow" : "text-warm-100"
-                  }`}
-                >
+                <h3 className="font-display font-semibold text-sm truncate text-ink">
                   {song.title}
                 </h3>
-                <p className="text-xs text-warm-400 truncate mt-0.5">
+                <p className="text-xs text-muted truncate mt-0.5">
                   {song.artist}
                 </p>
               </button>
@@ -330,24 +412,18 @@ export default function App() {
         </div>
       </section>
 
-      {/* ─── Sticky Bottom Player Bar ─────────────────────── */}
       {currentSong && (
         <div className="fixed bottom-5 left-1/2 -translate-x-1/2 w-[calc(100%-1.5rem)] sm:w-[calc(100%-3rem)] max-w-5xl z-50">
-          <div className="rounded-[2.5rem] bg-gradient-to-r from-warm-800/85 via-warm-700/75 to-warm-800/85 backdrop-blur-2xl border border-warm-500/20 shadow-[0_12px_40px_rgba(0,0,0,0.45)] px-4 py-3 sm:px-5 sm:py-3.5">
+          <div className="rounded-[2.5rem] bg-white/85 backdrop-blur-xl border border-peach shadow-[0_10px_30px_rgba(244,168,154,0.25)] px-4 py-3 sm:px-5 sm:py-3.5">
             <div className="flex items-center gap-3 sm:gap-5">
-              {/* Album art thumbnail */}
-              <div
-                className={`w-[60px] h-[60px] rounded-full overflow-hidden flex-shrink-0 shadow-md shadow-black/30 ring-2 ring-warm-200/20 ${
-                  isPlaying ? "animate-spin-slow" : ""
-                }`}
-              >
+              <div className="w-[60px] h-[60px] rounded-full overflow-hidden flex-shrink-0 ring-2 ring-peach shadow-sm">
                 {coverErrors[currentIndex] ? (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-warm-800 to-warm-900">
-                    <MusicNoteIcon className="w-7 h-7 text-warm-500" />
+                  <div className="w-full h-full flex items-center justify-center bg-peach">
+                    <CatFaceIcon className="w-8 h-8" />
                   </div>
                 ) : (
                   <img
-                    src={currentSong.cover}
+                    src={encodeURI(currentSong.cover)}
                     alt={currentSong.title}
                     className="w-full h-full object-cover"
                     onError={() =>
@@ -360,29 +436,27 @@ export default function App() {
                 )}
               </div>
 
-              {/* Song title + artist */}
               <div className="min-w-0 flex-1">
-                <p className="text-base sm:text-lg font-bold text-white truncate leading-tight">
+                <p className="text-base sm:text-lg font-display font-semibold text-ink truncate leading-tight">
                   {currentSong.title}
                 </p>
-                <p className="text-xs sm:text-sm text-accent truncate leading-snug mt-0.5">
+                <p className="text-xs sm:text-sm text-muted truncate leading-snug mt-0.5">
                   {currentSong.artist}
                 </p>
               </div>
 
-              {/* Controls + progress */}
               <div className="flex flex-col items-center gap-1.5 flex-shrink-0 w-[42%] sm:w-56">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <button
                     onClick={playPrev}
-                    className="p-1 text-warm-200/80 hover:text-white transition-colors cursor-pointer"
+                    className="p-1 text-muted hover:text-ink transition-colors cursor-pointer"
                     aria-label="Previous"
                   >
                     <PrevIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
                   <button
                     onClick={togglePlayPause}
-                    className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center bg-warm-50 rounded-full text-warm-900 hover:bg-white transition-colors cursor-pointer shadow-md shadow-black/25"
+                    className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center bg-coral rounded-full text-white hover:bg-pink transition-colors cursor-pointer shadow-md shadow-coral/30"
                     aria-label={isPlaying ? "Pause" : "Play"}
                   >
                     {isPlaying ? (
@@ -393,7 +467,7 @@ export default function App() {
                   </button>
                   <button
                     onClick={playNext}
-                    className="p-1 text-warm-200/80 hover:text-white transition-colors cursor-pointer"
+                    className="p-1 text-muted hover:text-ink transition-colors cursor-pointer"
                     aria-label="Next"
                   >
                     <NextIcon className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -401,7 +475,7 @@ export default function App() {
                 </div>
 
                 <div className="flex items-center gap-2 w-full">
-                  <span className="text-[10px] text-warm-200/70 tabular-nums w-7 text-right flex-shrink-0">
+                  <span className="text-[10px] text-muted tabular-nums w-7 text-right flex-shrink-0">
                     {formatTime(currentTime)}
                   </span>
                   <input
@@ -417,7 +491,7 @@ export default function App() {
                         : "0%",
                     }}
                   />
-                  <span className="text-[10px] text-warm-200/70 tabular-nums w-7 flex-shrink-0">
+                  <span className="text-[10px] text-muted tabular-nums w-7 flex-shrink-0">
                     {formatTime(duration)}
                   </span>
                 </div>
