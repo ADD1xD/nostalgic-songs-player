@@ -206,7 +206,7 @@ export default function App() {
   const t = text[lang];
 
   return (
-    <div className="min-h-screen bg-warm-950 pb-28">
+    <div className="min-h-screen bg-warm-950 pb-40">
       {/* Hidden audio element */}
       <audio ref={audioRef} preload="metadata" />
 
@@ -332,13 +332,12 @@ export default function App() {
 
       {/* ─── Sticky Bottom Player Bar ─────────────────────── */}
       {currentSong && (
-        <div className="fixed bottom-5 left-1/2 -translate-x-1/2 w-[calc(100%-2.5rem)] max-w-3xl z-50">
-          <div className="rounded-[28px] bg-gradient-to-r from-warm-900/90 via-warm-800/85 to-warm-900/90 backdrop-blur-2xl border border-warm-700/30 shadow-[0_8px_40px_rgba(0,0,0,0.5),0_0_80px_rgba(232,131,58,0.08)] px-5 py-4">
-            {/* Top row: album art, song info, controls */}
-            <div className="flex items-center gap-4">
-              {/* Album art — large circular */}
+        <div className="fixed bottom-5 left-1/2 -translate-x-1/2 w-[calc(100%-1.5rem)] sm:w-[calc(100%-3rem)] max-w-5xl z-50">
+          <div className="rounded-[2.5rem] bg-gradient-to-r from-warm-800/85 via-warm-700/75 to-warm-800/85 backdrop-blur-2xl border border-warm-500/20 shadow-[0_12px_40px_rgba(0,0,0,0.45)] px-4 py-3 sm:px-5 sm:py-3.5">
+            <div className="flex items-center gap-3 sm:gap-5">
+              {/* Album art thumbnail */}
               <div
-                className={`w-[60px] h-[60px] rounded-full overflow-hidden flex-shrink-0 ring-2 ring-accent/50 shadow-lg shadow-accent/20 ${
+                className={`w-[60px] h-[60px] rounded-full overflow-hidden flex-shrink-0 shadow-md shadow-black/30 ring-2 ring-warm-200/20 ${
                   isPlaying ? "animate-spin-slow" : ""
                 }`}
               >
@@ -363,60 +362,66 @@ export default function App() {
 
               {/* Song title + artist */}
               <div className="min-w-0 flex-1">
-                <p className="text-[15px] font-bold text-white truncate leading-snug">
+                <p className="text-base sm:text-lg font-bold text-white truncate leading-tight">
                   {currentSong.title}
                 </p>
-                <p className="text-[13px] text-accent truncate leading-snug mt-0.5">
+                <p className="text-xs sm:text-sm text-accent truncate leading-snug mt-0.5">
                   {currentSong.artist}
                 </p>
               </div>
 
-              {/* Controls */}
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <button
-                  onClick={playPrev}
-                  className="p-2 text-warm-300 hover:text-white transition-colors cursor-pointer"
-                  aria-label="Previous"
-                >
-                  <PrevIcon className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={togglePlayPause}
-                  className="w-12 h-12 flex items-center justify-center bg-accent rounded-full text-warm-950 hover:bg-accent-glow transition-colors cursor-pointer shadow-lg shadow-accent/40"
-                  aria-label={isPlaying ? "Pause" : "Play"}
-                >
-                  {isPlaying ? (
-                    <PauseIcon className="w-6 h-6" />
-                  ) : (
-                    <PlayIcon className="w-6 h-6" />
-                  )}
-                </button>
-                <button
-                  onClick={playNext}
-                  className="p-2 text-warm-300 hover:text-white transition-colors cursor-pointer"
-                  aria-label="Next"
-                >
-                  <NextIcon className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
+              {/* Controls + progress */}
+              <div className="flex flex-col items-center gap-1.5 flex-shrink-0 w-[42%] sm:w-56">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <button
+                    onClick={playPrev}
+                    className="p-1 text-warm-200/80 hover:text-white transition-colors cursor-pointer"
+                    aria-label="Previous"
+                  >
+                    <PrevIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                  <button
+                    onClick={togglePlayPause}
+                    className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center bg-warm-50 rounded-full text-warm-900 hover:bg-white transition-colors cursor-pointer shadow-md shadow-black/25"
+                    aria-label={isPlaying ? "Pause" : "Play"}
+                  >
+                    {isPlaying ? (
+                      <PauseIcon className="w-5 h-5" />
+                    ) : (
+                      <PlayIcon className="w-5 h-5 ml-0.5" />
+                    )}
+                  </button>
+                  <button
+                    onClick={playNext}
+                    className="p-1 text-warm-200/80 hover:text-white transition-colors cursor-pointer"
+                    aria-label="Next"
+                  >
+                    <NextIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                </div>
 
-            {/* Bottom row: seekable progress bar */}
-            <div className="flex items-center gap-3 mt-3">
-              <span className="text-[11px] text-warm-400 tabular-nums w-9 text-right flex-shrink-0">
-                {formatTime(currentTime)}
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={duration || 0}
-                value={currentTime}
-                onChange={seek}
-                className="flex-1 min-w-0"
-              />
-              <span className="text-[11px] text-warm-400 tabular-nums w-9 flex-shrink-0">
-                {formatTime(duration)}
-              </span>
+                <div className="flex items-center gap-2 w-full">
+                  <span className="text-[10px] text-warm-200/70 tabular-nums w-7 text-right flex-shrink-0">
+                    {formatTime(currentTime)}
+                  </span>
+                  <input
+                    type="range"
+                    min={0}
+                    max={duration || 0}
+                    value={currentTime}
+                    onChange={seek}
+                    className="player-seek flex-1 min-w-0"
+                    style={{
+                      ["--progress" as string]: duration
+                        ? `${(currentTime / duration) * 100}%`
+                        : "0%",
+                    }}
+                  />
+                  <span className="text-[10px] text-warm-200/70 tabular-nums w-7 flex-shrink-0">
+                    {formatTime(duration)}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
