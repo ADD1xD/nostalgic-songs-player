@@ -1,7 +1,8 @@
 import { songs as generated, type Song as GeneratedSong } from "./songs.generated";
-import { songMeta, type Mood } from "./songs.meta";
+import { songMeta, MOODS, type Mood } from "./songs.meta";
 
 export type { Mood };
+export { MOODS };
 
 export interface Song extends GeneratedSong {
   mood: Mood;

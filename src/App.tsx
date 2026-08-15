@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo, type ReactNode } from "react";
 
-import { songs, type Song } from "./songs";
+import { songs, type Song, MOODS } from "./songs";
 
 const text = {
   en: { headline: "Krishbuilds", tagline: "songs that take me back" },
@@ -150,6 +150,67 @@ function MoonIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function pulseEl(el: Element | null) {
+  if (!el || prefersReducedMotion()) return;
+  el.classList.remove("song-card-pop");
+  el.querySelectorAll(":scope > .song-ripple").forEach((node) => node.remove());
+  const ripple = document.createElement("span");
+  ripple.className = "song-ripple";
+  ripple.setAttribute("aria-hidden", "true");
+  el.appendChild(ripple);
+  void el.getBoundingClientRect();
+  el.classList.add("song-card-pop");
+  window.setTimeout(() => {
+    el.classList.remove("song-card-pop");
+    ripple.remove();
+  }, 430);
+}
+
+function pulseSong(index: number, trigger?: HTMLElement | null) {
+  const card = document.getElementById(`song-card-${index}`);
+  pulseEl(card);
+  if (trigger && trigger !== card && !card?.contains(trigger)) pulseEl(trigger);
+}
+
+function useCrossfadeIndex(index: number, ms = 280) {
+  const [curr, setCurr] = useState(index);
+  const [prev, setPrev] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (index === curr) return;
+    setPrev(curr);
+    setCurr(index);
+    const t = window.setTimeout(() => setPrev(null), ms);
+    return () => window.clearTimeout(t);
+  }, [index, curr, ms]);
+
+  return { curr, prev };
+}
+
+function EmptySongs({
+  icon,
+  title,
+  hint,
+}: {
+  icon: ReactNode;
+  title: string;
+  hint: string;
+}) {
+  return (
+    <div className="songs-empty" role="status">
+      <span className="songs-empty-icon" aria-hidden="true">
+        {icon}
+      </span>
+      <p className="text-fg font-semibold text-sm sm:text-base">{title}</p>
+      <p className="text-muted text-sm max-w-sm">{hint}</p>
+    </div>
+  );
+}
+
 function EqBars() {
   return (
     <div className="flex items-end gap-[3px] h-[14px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.7)]" aria-hidden="true">
@@ -157,6 +218,98 @@ function EqBars() {
       <span className="eq-bar" style={{ animationDelay: "120ms" }} />
       <span className="eq-bar" style={{ animationDelay: "240ms" }} />
       <span className="eq-bar" style={{ animationDelay: "80ms" }} />
+    </div>
+  );
+}
+
+const CATEGORIES = ["All", ...MOODS] as const;
+type Category = (typeof CATEGORIES)[number];
+const FADE_MS = 240;
+
+function fadeLinear(
+  audio: HTMLAudioElement,
+  to: number,
+  ms: number,
+  fadingRef: { current: boolean },
+): Promise<void> {
+  return new Promise((resolve) => {
+    fadingRef.current = true;
+    const from = audio.volume;
+    if (ms <= 0 || Math.abs(from - to) < 0.02) {
+      audio.volume = to;
+      fadingRef.current = false;
+      resolve();
+      return;
+    }
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / ms);
+      audio.volume = from + (to - from) * t;
+      if (t < 1) requestAnimationFrame(tick);
+      else {
+        audio.volume = to;
+        fadingRef.current = false;
+        resolve();
+      }
+    };
+    requestAnimationFrame(tick);
+  });
+}
+
+function WaveformVisualizer({
+  analyserRef,
+  active,
+  bars = 24,
+  className = "",
+}: {
+  analyserRef: React.RefObject<AnalyserNode | null>;
+  active: boolean;
+  bars?: number;
+  className?: string;
+}) {
+  const spansRef = useRef<(HTMLSpanElement | null)[]>([]);
+
+  useEffect(() => {
+    let raf = 0;
+    let data: Uint8Array<ArrayBuffer> | null = null;
+    const tick = () => {
+      const analyser = analyserRef.current;
+      const els = spansRef.current;
+      if (analyser && active) {
+        if (!data || data.length !== analyser.frequencyBinCount) {
+          data = new Uint8Array(analyser.frequencyBinCount);
+        }
+        analyser.getByteFrequencyData(data);
+        const step = Math.max(1, Math.floor(data.length / bars));
+        for (let i = 0; i < bars; i++) {
+          const v = data[Math.min(data.length - 1, i * step)] ?? 0;
+          const h = Math.max(0.1, v / 255);
+          const el = els[i];
+          if (el) el.style.transform = `scaleY(${h})`;
+        }
+      } else {
+        for (let i = 0; i < bars; i++) {
+          const el = els[i];
+          if (el) el.style.transform = "scaleY(0.12)";
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [active, bars, analyserRef]);
+
+  return (
+    <div className={`flex items-end justify-center gap-px ${className}`} aria-hidden="true">
+      {Array.from({ length: bars }, (_, i) => (
+        <span
+          key={i}
+          className="viz-bar"
+          ref={(el) => {
+            spansRef.current[i] = el;
+          }}
+        />
+      ))}
     </div>
   );
 }
@@ -236,6 +389,27 @@ function shuffleList(indices: number[], first?: number): number[] {
 }
 
 const FEATURED_INDEX = songs.findIndex((s) => s.title === "Kabira Encore");
+
+const SPLASH_NOTES = [
+  { char: "♪", left: "14%", top: "62%", delay: "0s", duration: "10s", tint: "white" },
+  { char: "♫", left: "81%", top: "54%", delay: "1.6s", duration: "12s", tint: "green" },
+  { char: "♪", left: "8%", top: "28%", delay: "3.2s", duration: "11s", tint: "white" },
+  { char: "♫", left: "72%", top: "22%", delay: "0.8s", duration: "13s", tint: "green" },
+  { char: "♪", left: "88%", top: "70%", delay: "4.4s", duration: "9.5s", tint: "white" },
+];
+
+const SPLASH_STARS = Array.from({ length: 96 }, (_, i) => {
+  const s = (i * 7919 + 104729) % 10000;
+  const t = (i * 104729 + 7919) % 10000;
+  return {
+    left: `${s / 100}%`,
+    top: `${t / 100}%`,
+    size: (i % 5 === 0 ? 2.4 : i % 3 === 0 ? 1.6 : 1.1),
+    delay: `${(i % 17) * 0.22}s`,
+    twinkle: i % 3 === 0,
+    tint: i % 4 === 0 ? "green" : "white",
+  };
+});
 
 function Transport({
   size,
@@ -328,19 +502,29 @@ function Transport({
         <span className="text-[10px] sm:text-[11px] text-muted tabular-nums w-7 sm:w-8 text-right flex-shrink-0">
           {formatTime(currentTime)}
         </span>
-        <input
-          type="range"
-          min={0}
-          max={duration || 0}
-          value={currentTime}
-          onChange={onSeek}
-          className="player-seek flex-1 min-w-0"
+        <div
+          className="seek-control flex-1 min-w-0"
           style={{
             ["--progress" as string]: duration
               ? `${(currentTime / duration) * 100}%`
               : "0%",
           }}
-        />
+        >
+          <div className="seek-visual" aria-hidden="true">
+            <span className="seek-visual-fill" />
+            <span className="seek-visual-thumb" />
+          </div>
+          <input
+            type="range"
+            min={0}
+            max={duration > 0 ? duration : 1}
+            step="any"
+            value={duration > 0 ? currentTime : 0}
+            onChange={onSeek}
+            aria-label="Seek"
+            className="player-seek"
+          />
+        </div>
         <span className="text-[10px] sm:text-[11px] text-muted tabular-nums w-7 sm:w-8 flex-shrink-0">
           {formatTime(duration)}
         </span>
@@ -374,6 +558,9 @@ export default function App() {
   const [recent, setRecent] = useState<number[]>([]);
   const [nowPlayingOpen, setNowPlayingOpen] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>(readTheme);
+  const [category, setCategory] = useState<Category>("All");
+  const [splash, setSplash] = useState(true);
+  const [splashOut, setSplashOut] = useState(false);
 
   const songsSectionRef = useRef<HTMLElement>(null);
   const shuffleRef = useRef(shuffle);
@@ -382,13 +569,56 @@ export default function App() {
   const queueRef = useRef(queue);
   const currentIndexRef = useRef(currentIndex);
   const toastTimer = useRef(0);
+  const volumeRef = useRef(volume);
+  const mutedRef = useRef(muted);
+  const fadingRef = useRef(false);
+  const fadeGen = useRef(0);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
   shuffleRef.current = shuffle;
   repeatRef.current = repeat;
   shuffleOrderRef.current = shuffleOrder;
   queueRef.current = queue;
   currentIndexRef.current = currentIndex;
+  volumeRef.current = volume;
+  mutedRef.current = muted;
 
+  const { curr: nowCurr, prev: nowPrev } = useCrossfadeIndex(currentIndex);
   const currentSong = currentIndex >= 0 ? songs[currentIndex] : null;
+  const nowPrevSong = nowPrev != null && nowPrev >= 0 ? songs[nowPrev] : null;
+  const nowCurrSong = nowCurr >= 0 ? songs[nowCurr] : null;
+
+  const ensureAudioGraph = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const AC =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (!audioCtxRef.current) {
+      audioCtxRef.current = new AC();
+    }
+    const ctx = audioCtxRef.current;
+    if (ctx.state === "suspended") {
+      ctx.resume().catch(() => {});
+    }
+    if (!sourceNodeRef.current) {
+      const source = ctx.createMediaElementSource(audio);
+      const analyser = ctx.createAnalyser();
+      analyser.fftSize = 128;
+      analyser.smoothingTimeConstant = 0.72;
+      source.connect(analyser);
+      analyser.connect(ctx.destination);
+      sourceNodeRef.current = source;
+      analyserRef.current = analyser;
+    }
+  }, []);
+
+  const enterSite = useCallback(() => {
+    ensureAudioGraph();
+    setSplashOut(true);
+    window.setTimeout(() => setSplash(false), 620);
+  }, [ensureAudioGraph]);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -443,6 +673,7 @@ export default function App() {
     const onPlay = () => {
       setIsPlaying(true);
       setBuffering(false);
+      ensureAudioGraph();
     };
     const onPause = () => setIsPlaying(false);
     const onWaiting = () => setBuffering(true);
@@ -471,15 +702,31 @@ export default function App() {
       audio.removeEventListener("playing", onPlaying);
       audio.removeEventListener("canplay", onCanPlay);
     };
-  }, []);
+  }, [ensureAudioGraph]);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || currentIndex < 0) return;
     setBuffering(true);
+    ensureAudioGraph();
+    audio.volume = 0;
     audio.src = encodeURI(songs[currentIndex].src);
-    audio.play().catch(() => setBuffering(false));
-  }, [currentIndex]);
+    const target = mutedRef.current ? 0 : volumeRef.current;
+    audio
+      .play()
+      .then(() => fadeLinear(audio, target, FADE_MS, fadingRef))
+      .catch(() => {
+        fadingRef.current = false;
+        setBuffering(false);
+        audio.volume = target;
+      });
+  }, [currentIndex, ensureAudioGraph]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || fadingRef.current) return;
+    audio.volume = muted ? 0 : volume;
+  }, [volume, muted]);
 
   useEffect(() => {
     if (currentIndex < 0) return;
@@ -488,12 +735,6 @@ export default function App() {
       return next.slice(0, 5);
     });
   }, [currentIndex]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.volume = muted ? 0 : volume;
-  }, [volume, muted]);
 
   useEffect(() => {
     if (!currentSong?.cover) {
@@ -531,44 +772,63 @@ export default function App() {
   }, [currentIndex]);
 
   useEffect(() => {
-    document.body.style.overflow = nowPlayingOpen ? "hidden" : "";
+    const lock = splash || nowPlayingOpen;
+    document.documentElement.style.overflow = lock ? "hidden" : "";
+    document.body.style.overflow = lock ? "hidden" : "";
     return () => {
+      document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
-  }, [nowPlayingOpen]);
+  }, [splash, nowPlayingOpen]);
 
   const filteredSongs = useMemo(() => {
     const q = query.trim().toLowerCase();
     return songs
       .map((song, index) => ({ song, index }))
-      .filter(
-        ({ song }) =>
-          !q ||
+      .filter(({ song }) => {
+        if (category !== "All" && song.mood !== category) return false;
+        if (!q) return true;
+        return (
           song.title.toLowerCase().includes(q) ||
           song.artist.toLowerCase().includes(q) ||
-          song.mood.toLowerCase().includes(q),
-      );
-  }, [query]);
+          song.mood.toLowerCase().includes(q)
+        );
+      });
+  }, [query, category]);
+
+  const changeTrack = useCallback(async (index: number) => {
+    if (index === currentIndexRef.current) return;
+    const audio = audioRef.current;
+    const gen = ++fadeGen.current;
+    if (audio && !audio.paused && audio.volume > 0.02) {
+      await fadeLinear(audio, 0, FADE_MS, fadingRef);
+      if (gen !== fadeGen.current) return;
+    }
+    setCurrentIndex(index);
+  }, []);
 
   const playSong = useCallback(
-    (index: number) => {
+    (index: number, trigger?: HTMLElement | null) => {
+      pulseSong(index, trigger);
       if (index === currentIndex) {
         togglePlayPause();
       } else {
-        setCurrentIndex(index);
+        void changeTrack(index);
         if (shuffle) {
           setShuffleOrder(shuffleList(songs.map((_, i) => i), index));
         }
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentIndex, shuffle],
+    [currentIndex, shuffle, changeTrack],
   );
 
   const togglePlayPause = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
+    ensureAudioGraph();
     if (currentIndex < 0) {
+      pulseSong(0);
       setCurrentIndex(0);
       return;
     }
@@ -577,7 +837,7 @@ export default function App() {
     } else {
       audio.pause();
     }
-  }, [currentIndex]);
+  }, [currentIndex, ensureAudioGraph]);
 
   const playPrev = useCallback(() => {
     if (currentIndex < 0) {
@@ -592,11 +852,11 @@ export default function App() {
     if (shuffle) {
       const pos = shuffleOrder.indexOf(currentIndex);
       const prevPos = pos <= 0 ? shuffleOrder.length - 1 : pos - 1;
-      setCurrentIndex(shuffleOrder[prevPos] ?? 0);
+      void changeTrack(shuffleOrder[prevPos] ?? 0);
     } else {
-      setCurrentIndex((prev) => (prev <= 0 ? songs.length - 1 : prev - 1));
+      void changeTrack(currentIndex <= 0 ? songs.length - 1 : currentIndex - 1);
     }
-  }, [currentIndex, shuffle, shuffleOrder]);
+  }, [currentIndex, shuffle, shuffleOrder, changeTrack]);
 
   const playNext = useCallback(() => {
     if (queue.length > 0) {
@@ -609,18 +869,18 @@ export default function App() {
           audio.play().catch(() => {});
         }
       } else {
-        setCurrentIndex(next);
+        void changeTrack(next);
       }
       return;
     }
     if (shuffle) {
       const pos = shuffleOrder.indexOf(currentIndex);
       const nextPos = pos >= 0 ? (pos + 1) % shuffleOrder.length : 0;
-      setCurrentIndex(shuffleOrder[nextPos] ?? 0);
+      void changeTrack(shuffleOrder[nextPos] ?? 0);
     } else {
-      setCurrentIndex((prev) => (prev < 0 ? 0 : (prev + 1) % songs.length));
+      void changeTrack(currentIndex < 0 ? 0 : (currentIndex + 1) % songs.length);
     }
-  }, [currentIndex, shuffle, shuffleOrder, queue]);
+  }, [currentIndex, shuffle, shuffleOrder, queue, changeTrack]);
 
   const toggleShuffle = useCallback(() => {
     setShuffle((on) => {
@@ -707,41 +967,59 @@ export default function App() {
 
   const seek = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const audio = audioRef.current;
-    if (!audio) return;
-    audio.currentTime = Number(e.target.value);
+    if (!audio || !Number.isFinite(audio.duration) || audio.duration <= 0) return;
+    const next = Math.min(audio.duration, Math.max(0, Number(e.target.value)));
+    audio.currentTime = next;
+    setCurrentTime(next);
   }, []);
 
-  const playFeatured = useCallback(() => {
-    if (FEATURED_INDEX < 0) return;
-    const needsRerender = query.trim().length > 0;
-    setQuery("");
-    if (FEATURED_INDEX === currentIndex) {
-      const audio = audioRef.current;
-      if (audio?.paused) audio.play().catch(() => {});
-    } else {
-      setCurrentIndex(FEATURED_INDEX);
-      if (shuffle) {
-        setShuffleOrder(shuffleList(songs.map((_, i) => i), FEATURED_INDEX));
+  const playFeatured = useCallback(
+    (trigger?: HTMLElement | null) => {
+      if (FEATURED_INDEX < 0) return;
+      const needsRerender = query.trim().length > 0 || category !== "All";
+      setQuery("");
+      setCategory("All");
+      pulseEl(trigger ?? null);
+      if (FEATURED_INDEX === currentIndex) {
+        const audio = audioRef.current;
+        if (audio?.paused) audio.play().catch(() => {});
+      } else {
+        void changeTrack(FEATURED_INDEX);
+        if (shuffle) {
+          setShuffleOrder(shuffleList(songs.map((_, i) => i), FEATURED_INDEX));
+        }
       }
-    }
-    const scrollToCard = () => {
-      document
-        .getElementById(`song-card-${FEATURED_INDEX}`)
-        ?.scrollIntoView({ behavior: "smooth", block: "center" });
-    };
-    window.setTimeout(scrollToCard, needsRerender ? 80 : 0);
-  }, [currentIndex, query, shuffle]);
+      const scrollToCard = () => {
+        document
+          .getElementById(`song-card-${FEATURED_INDEX}`)
+          ?.scrollIntoView({ behavior: "smooth", block: "center" });
+        pulseSong(FEATURED_INDEX);
+      };
+      window.setTimeout(scrollToCard, needsRerender ? 160 : 40);
+    },
+    [currentIndex, query, shuffle, changeTrack, category],
+  );
 
-  const playSurprise = useCallback(() => {
-    if (songs.length === 0) return;
-    const options = songs.map((_, i) => i).filter((i) => i !== currentIndex);
-    const pool = options.length > 0 ? options : [0];
-    const next = pool[Math.floor(Math.random() * pool.length)] ?? 0;
-    setCurrentIndex(next);
-    if (shuffle) {
-      setShuffleOrder(shuffleList(songs.map((_, i) => i), next));
-    }
-  }, [currentIndex, shuffle]);
+  const playSurprise = useCallback(
+    (trigger?: HTMLElement | null) => {
+      if (songs.length === 0) return;
+      const options = songs.map((_, i) => i).filter((i) => i !== currentIndex);
+      const pool = options.length > 0 ? options : [0];
+      const next = pool[Math.floor(Math.random() * pool.length)] ?? 0;
+      pulseEl(trigger ?? null);
+      void changeTrack(next);
+      if (shuffle) {
+        setShuffleOrder(shuffleList(songs.map((_, i) => i), next));
+      }
+      window.setTimeout(() => {
+        document
+          .getElementById(`song-card-${next}`)
+          ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        pulseSong(next);
+      }, 40);
+    },
+    [currentIndex, shuffle, changeTrack],
+  );
 
   const t = text[lang];
   const queuedCount = useMemo(() => {
@@ -784,11 +1062,21 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-spot pb-36 font-sans text-fg">
-      <audio ref={audioRef} preload="metadata" />
+    <div className={`app-shell min-h-screen bg-spot font-sans text-fg ${currentIndex >= 0 ? "pb-40" : "pb-10"}`}>
+      <div className={splashOut ? "site-reveal" : undefined}>
+      <audio ref={audioRef} preload="metadata" crossOrigin="anonymous" />
 
-      <section className="relative flex flex-col items-center justify-center min-h-[70vh] px-6 overflow-hidden">
+      <section className="relative flex flex-col items-center px-6 pt-24 pb-8 sm:pt-28 sm:pb-10 overflow-hidden">
         <div className="hero-wash absolute inset-0" />
+
+        <div className="pointer-events-none absolute inset-0 z-[1]" aria-hidden="true">
+          <span className="hero-note absolute left-[12%] top-[42%] text-green/25">
+            <MusicNoteIcon className="w-7 h-7 sm:w-8 sm:h-8" />
+          </span>
+          <span className="hero-note hero-note-b absolute right-[14%] top-[58%] text-muted/30">
+            <MusicNoteIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+          </span>
+        </div>
 
         <div className="absolute top-6 right-6 z-10">
           <div className="flex items-center gap-2 text-xs font-medium tracking-wide">
@@ -821,19 +1109,20 @@ export default function App() {
         </div>
 
         <div className="relative z-10 text-center max-w-3xl">
-          <h1 className="text-5xl sm:text-7xl md:text-8xl font-extrabold tracking-tight text-fg leading-none">
+          <h1 className="text-[clamp(2.6rem,9vw,5.25rem)] font-extrabold tracking-tight text-fg leading-[1.08]">
             {t.headline}
           </h1>
-          <p className="mt-5 text-base sm:text-lg text-muted font-medium">
+          <p className="mt-4 text-base sm:text-lg text-muted font-medium">
             {t.tagline}
           </p>
           <button
             type="button"
             onClick={() => {
               document.getElementById("songs")?.scrollIntoView({ behavior: "smooth" });
-              if (currentIndex < 0) setCurrentIndex(0);
+              if (currentIndex < 0) playSong(0);
+              else if (!isPlaying) togglePlayPause();
             }}
-            className="mt-10 inline-flex items-center justify-center rounded-full bg-green hover:bg-green-hover hover:scale-105 text-black font-bold text-base px-10 py-3.5 cursor-pointer transition-all"
+            className="mt-7 inline-flex items-center justify-center rounded-full bg-green hover:bg-green-hover hover:scale-105 text-black font-bold text-base px-10 py-3.5 cursor-pointer transition-all"
           >
             Play
           </button>
@@ -860,8 +1149,8 @@ export default function App() {
           </label>
           <button
             type="button"
-            onClick={playSurprise}
-            className="inline-flex items-center gap-2 self-start rounded-full bg-spot-raised hover:bg-spot-hover border border-spot-border text-fg font-bold text-sm px-4 py-2.5 cursor-pointer transition-colors"
+            onClick={(e) => playSurprise(e.currentTarget)}
+            className="relative inline-flex items-center gap-2 self-start rounded-full bg-spot-raised hover:bg-spot-hover border border-spot-border text-fg font-bold text-sm px-4 py-2.5 cursor-pointer transition-colors"
           >
             <SparkleIcon className="w-4 h-4 text-green" />
             Surprise Me
@@ -871,7 +1160,7 @@ export default function App() {
         {FEATURED_INDEX >= 0 && songs[FEATURED_INDEX] && (
           <button
             type="button"
-            onClick={playFeatured}
+            onClick={(e) => playFeatured(e.currentTarget)}
             className="rec-banner relative mb-8 w-full max-w-xl text-left rounded-2xl overflow-hidden bg-spot-raised border border-spot-border p-3 sm:p-3.5 flex items-center gap-3.5 cursor-pointer hover:bg-spot-hover transition-colors"
           >
             <span className="rec-banner-wash pointer-events-none absolute inset-0" aria-hidden="true" />
@@ -900,7 +1189,7 @@ export default function App() {
               Listening history
             </p>
             <h2 className="text-2xl sm:text-3xl font-bold mb-5">Recently Played</h2>
-            <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-1">
+            <div className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
               {recent.map((index) => {
                 const song = songs[index];
                 const isActive = index === currentIndex;
@@ -908,10 +1197,10 @@ export default function App() {
                   <button
                     key={index}
                     type="button"
-                    onClick={() => playSong(index)}
-                    className={`flex-shrink-0 w-[136px] sm:w-40 text-left rounded-lg p-2.5 cursor-pointer transition-colors ${
+                    onClick={(e) => playSong(index, e.currentTarget)}
+                    className={`song-card flex-shrink-0 w-[136px] sm:w-40 text-left rounded-lg p-2.5 cursor-pointer ${
                       isActive
-                        ? "bg-spot-hover ring-2 ring-green"
+                        ? "song-card-playing"
                         : "bg-spot-raised hover:bg-spot-hover"
                     }`}
                   >
@@ -923,7 +1212,7 @@ export default function App() {
                         </div>
                       )}
                     </div>
-                    <p className="font-bold text-sm text-fg truncate">{song.title}</p>
+                    <p className={`font-bold text-sm truncate ${isActive ? "text-green" : "text-fg"}`}>{song.title}</p>
                     <p className="text-xs text-muted truncate mt-0.5">{song.artist}</p>
                   </button>
                 );
@@ -935,17 +1224,44 @@ export default function App() {
         <p className="text-xs font-bold tracking-widest uppercase text-muted mb-1">
           Playlist
         </p>
-        <div className="flex items-end justify-between gap-3 mb-6">
+        <div className="flex items-end justify-between gap-3 mb-4">
           <h2 className="text-2xl sm:text-3xl font-bold">Made for You</h2>
           <span className="text-sm text-muted whitespace-nowrap pb-0.5">
             {filteredSongs.length} {filteredSongs.length === 1 ? "song" : "songs"}
           </span>
         </div>
 
-        {filteredSongs.length === 0 ? (
-          <p className="text-muted text-sm py-8">No songs found</p>
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide mb-6 pb-0.5">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setCategory(cat)}
+              className={`flex-shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold cursor-pointer transition-colors ${
+                category === cat
+                  ? "bg-green text-black"
+                  : "bg-spot-hover text-muted hover:text-fg"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {songs.length === 0 ? (
+          <EmptySongs
+            icon={<MusicNoteIcon className="w-6 h-6" />}
+            title="Loading your songs"
+            hint="Tracks will show up here as soon as they’re ready."
+          />
+        ) : filteredSongs.length === 0 ? (
+          <EmptySongs
+            icon={<SearchIcon className="w-6 h-6" />}
+            title="No matching songs"
+            hint="Try another search or pick a different mood — your library is still here."
+          />
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 py-1">
             {filteredSongs.map(({ song, index }, i) => {
               const isActive = index === currentIndex;
               const inQueue = queuedCount.get(index) ?? 0;
@@ -955,56 +1271,63 @@ export default function App() {
                   id={`song-card-${index}`}
                   role="button"
                   tabIndex={0}
-                  onClick={() => playSong(index)}
+                  onClick={(e) => playSong(index, e.currentTarget)}
                   onKeyDown={(e) => {
                     if (e.target !== e.currentTarget) return;
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
-                      playSong(index);
+                      playSong(index, e.currentTarget);
                     }
                   }}
-                  className={`group relative text-left rounded-lg p-3 cursor-pointer transition-colors min-w-0 scroll-mt-28 ${
-                    cardsVisible ? "song-card-enter" : "opacity-0"
-                  } ${
-                    isActive
-                      ? "bg-spot-hover ring-2 ring-green shadow-[0_0_24px_rgba(29,185,84,0.28)]"
-                      : "bg-spot-raised hover:bg-spot-hover"
+                  className={`song-card group relative text-left rounded-lg p-3 sm:p-4 cursor-pointer min-w-0 scroll-mt-28 ${
+                    isActive ? "song-card-playing" : "bg-spot-raised hover:bg-spot-hover"
                   }`}
-                  style={{ animationDelay: `${i * 55}ms` }}
                 >
+                  <div
+                    className={cardsVisible ? "song-card-enter" : "opacity-0"}
+                    style={{ animationDelay: `${Math.min(i, 14) * 50}ms` }}
+                  >
                   <div className="relative aspect-square rounded-md overflow-hidden mb-3 bg-spot-hover shadow-lg">
                     {coverFor(
                       index,
                       song,
                       isActive && buffering ? "opacity-70" : "",
                     )}
+                    <div className="song-art-veil" aria-hidden="true" />
                     {isActive && buffering && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/35">
+                      <div className="absolute inset-0 z-[3] flex items-center justify-center bg-black/35">
                         <div className="art-spinner" aria-hidden="true" />
                       </div>
                     )}
                     {isActive && isPlaying && !buffering && (
-                      <div className="absolute bottom-2 left-2">
+                      <div className="absolute bottom-2 left-2 z-[2]">
                         <EqBars />
                       </div>
                     )}
-                    <div
-                      className={`absolute bottom-2 right-2 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-green text-black flex items-center justify-center shadow-lg transition-all duration-200 ${
-                        isActive && isPlaying
-                          ? "opacity-100 translate-y-0"
-                          : "opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"
-                      }`}
-                    >
-                      {isActive && isPlaying ? (
-                        <PauseIcon className="w-5 h-5" />
-                      ) : (
-                        <PlayIcon className="w-5 h-5 ml-0.5" />
-                      )}
+                    <div className="song-play-pop z-[2]">
+                      <button
+                        type="button"
+                        tabIndex={-1}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          playSong(index, e.currentTarget.closest(".song-card") as HTMLElement | null);
+                        }}
+                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-green text-black flex items-center justify-center shadow-[0_8px_24px_rgba(0,0,0,0.45)] hover:scale-105 cursor-pointer"
+                        aria-label={
+                          isActive && isPlaying ? `Pause ${song.title}` : `Play ${song.title}`
+                        }
+                      >
+                        {isActive && isPlaying ? (
+                          <PauseIcon className="w-6 h-6" />
+                        ) : (
+                          <PlayIcon className="w-6 h-6 ml-0.5" />
+                        )}
+                      </button>
                     </div>
                   </div>
                   <div className="flex items-start gap-1 min-w-0">
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-bold text-sm text-fg truncate">
+                      <h3 className={`font-bold text-sm truncate ${isActive ? "text-green" : "text-fg"}`}>
                         {song.title}
                       </h3>
                       <p className="text-sm text-muted truncate mt-0.5">{song.artist}</p>
@@ -1012,7 +1335,8 @@ export default function App() {
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setQuery(song.mood);
+                          setCategory(song.mood);
+                          setQuery("");
                         }}
                         className={`mood-pill mood-${song.mood.toLowerCase()} mt-1.5 cursor-pointer`}
                       >
@@ -1049,6 +1373,7 @@ export default function App() {
                       <ShareIcon className="w-4 h-4" />
                     </button>
                   </div>
+                  </div>
                 </div>
               );
             })}
@@ -1073,43 +1398,70 @@ export default function App() {
         </div>
       </footer>
 
-      <div className={`fixed bottom-0 left-0 right-0 z-50 min-h-[88px] overflow-visible ${nowPlayingOpen ? "invisible pointer-events-none" : ""}`}>
+      {currentIndex >= 0 && (
+      <div className={`player-dock fixed bottom-0 left-0 right-0 z-50 overflow-visible px-3 sm:px-4 pb-3 sm:pb-4 ${nowPlayingOpen ? "invisible pointer-events-none" : ""}`}>
         <div
-          className="player-glow pointer-events-none absolute left-1/2 -top-16 h-32 w-[80%] max-w-3xl -translate-x-1/2 rounded-full blur-3xl"
+          className="player-glow pointer-events-none absolute left-1/2 -top-12 h-28 w-[80%] max-w-3xl -translate-x-1/2 rounded-full blur-3xl"
           style={{
             backgroundColor: glowColor,
-            opacity: currentIndex >= 0 ? (theme === "light" ? 0.22 : 0.35) : 0,
+            opacity: theme === "light" ? 0.22 : 0.35,
           }}
           aria-hidden="true"
         />
-        <div className="relative min-h-[88px] bg-player border-t border-spot-border px-2 sm:px-4">
-          <div className="h-full min-h-[88px] flex items-center gap-2 sm:gap-3 py-2">
+        <div className="relative min-h-[88px] rounded-2xl bg-player border border-spot-border px-3 sm:px-4 shadow-[0_8px_32px_rgba(0,0,0,0.45)]">
+          <div className="h-[18px] pt-1.5 px-2 sm:px-1">
+            <WaveformVisualizer
+              analyserRef={analyserRef}
+              active={isPlaying && !buffering}
+              bars={40}
+              className="h-full w-full max-w-xl mx-auto"
+            />
+          </div>
+          <div className="h-full flex items-center gap-2 sm:gap-3 py-2 min-h-[70px]">
             <button
               type="button"
-              disabled={!currentSong}
-              onClick={() => currentSong && setNowPlayingOpen(true)}
-              className="flex items-center gap-2 sm:gap-3 min-w-0 w-[32%] sm:w-[28%] text-left cursor-pointer disabled:cursor-default"
-              aria-label={currentSong ? "Open now playing" : undefined}
+              onClick={() => setNowPlayingOpen(true)}
+              className="flex items-center gap-2 sm:gap-3 min-w-0 w-[32%] sm:w-[28%] text-left cursor-pointer"
+              aria-label="Open now playing"
             >
               <div className="relative w-11 h-11 sm:w-14 sm:h-14 rounded overflow-hidden flex-shrink-0 bg-spot-hover">
-                {currentSong ? coverFor(currentIndex, currentSong, buffering ? "opacity-70" : "") : (
-                  <div className="w-full h-full flex items-center justify-center text-muted">
-                    <MusicNoteIcon className="w-6 h-6 opacity-40" />
+                {nowPrevSong && nowPrev != null && (
+                  <div key={`art-out-${nowPrev}`} className="player-now-out absolute inset-0">
+                    {coverFor(nowPrev, nowPrevSong)}
                   </div>
                 )}
-                {buffering && currentIndex >= 0 && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/35">
-                    <div className="art-spinner" aria-hidden="true" />
+                {nowCurrSong && (
+                  <div key={`art-in-${nowCurr}`} className="player-now-in absolute inset-0">
+                    {coverFor(nowCurr, nowCurrSong, buffering ? "opacity-70" : "")}
+                    {buffering && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/35">
+                        <div className="art-spinner" aria-hidden="true" />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
-              <div className="min-w-0">
-                <p className="text-xs sm:text-sm font-semibold text-fg truncate">
-                  {currentSong?.title ?? "Not playing"}
-                </p>
-                <p className="text-[11px] sm:text-xs text-muted truncate">
-                  {currentSong?.artist ?? "Pick a song"}
-                </p>
+              <div className="relative min-w-0 h-10 flex-1">
+                {nowPrevSong && nowPrev != null && (
+                  <div key={`txt-out-${nowPrev}`} className="player-now-out absolute inset-0 min-w-0">
+                    <p className="text-xs sm:text-sm font-semibold text-fg truncate">
+                      {nowPrevSong.title}
+                    </p>
+                    <p className="text-[11px] sm:text-xs text-muted truncate">
+                      {nowPrevSong.artist}
+                    </p>
+                  </div>
+                )}
+                {nowCurrSong && (
+                  <div key={`txt-in-${nowCurr}`} className="player-now-in min-w-0">
+                    <p className="text-xs sm:text-sm font-semibold text-fg truncate">
+                      {nowCurrSong.title}
+                    </p>
+                    <p className="text-[11px] sm:text-xs text-muted truncate">
+                      {nowCurrSong.artist}
+                    </p>
+                  </div>
+                )}
               </div>
             </button>
 
@@ -1142,6 +1494,7 @@ export default function App() {
           </div>
         </div>
       </div>
+      )}
 
       {nowPlayingOpen && currentSong && (
         <div className="now-playing-enter fixed inset-0 z-[70] bg-spot flex flex-col overflow-hidden">
@@ -1182,6 +1535,12 @@ export default function App() {
                 </span>
               </div>
             </div>
+            <WaveformVisualizer
+              analyserRef={analyserRef}
+              active={isPlaying && !buffering}
+              bars={32}
+              className="h-12 w-full max-w-md mb-6"
+            />
             <Transport size="full" {...transportProps} />
             <div className="flex items-center justify-center gap-3 mt-8 w-full max-w-xs">
               <button
@@ -1213,10 +1572,70 @@ export default function App() {
 
       {toast && (
         <div
-          className="copied-toast fixed bottom-24 left-1/2 z-[80] -translate-x-1/2 rounded-full bg-fg text-spot px-4 py-2 text-sm font-semibold shadow-lg"
+          className="copied-toast fixed bottom-28 left-1/2 z-[80] -translate-x-1/2 rounded-full bg-fg text-spot px-4 py-2 text-sm font-semibold shadow-lg"
           role="status"
         >
           {toast}
+        </div>
+      )}
+
+      </div>
+
+      {splash && (
+        <div className={`splash-screen ${splashOut ? "splash-out" : ""}`}>
+          <div className="splash-nebula" aria-hidden="true" />
+          <div className="splash-stars" aria-hidden="true">
+            {SPLASH_STARS.map((star, i) => (
+              <span
+                key={i}
+                className={`splash-star${star.twinkle ? " splash-star-twinkle" : ""}${star.tint === "green" ? " splash-star-green" : ""}`}
+                style={{
+                  left: star.left,
+                  top: star.top,
+                  width: star.size,
+                  height: star.size,
+                  animationDelay: star.delay,
+                }}
+              />
+            ))}
+          </div>
+          {SPLASH_NOTES.map((note, i) => (
+            <span
+              key={`note-${i}`}
+              className={`splash-note${note.tint === "green" ? " splash-note-green" : ""}`}
+              aria-hidden="true"
+              style={{
+                left: note.left,
+                top: note.top,
+                animationDelay: note.delay,
+                animationDuration: note.duration,
+              }}
+            >
+              {note.char}
+            </span>
+          ))}
+          <span className="splash-orb splash-orb-a" aria-hidden="true" />
+          <span className="splash-orb splash-orb-b" aria-hidden="true" />
+          <span className="splash-orb splash-orb-c" aria-hidden="true" />
+          <div className="splash-inner">
+            <div className="splash-title-wrap">
+              <span className="splash-halo" aria-hidden="true" />
+              <h1 className="splash-mark">Krishbuilds</h1>
+            </div>
+            <p className="splash-tagline">songs that take me back</p>
+            <div className="splash-wave" aria-hidden="true">
+              <span style={{ animationDelay: "0ms" }} />
+              <span style={{ animationDelay: "120ms" }} />
+              <span style={{ animationDelay: "240ms" }} />
+              <span style={{ animationDelay: "80ms" }} />
+              <span style={{ animationDelay: "200ms" }} />
+              <span style={{ animationDelay: "40ms" }} />
+              <span style={{ animationDelay: "160ms" }} />
+            </div>
+            <button type="button" className="splash-enter" onClick={enterSite}>
+              Enter
+            </button>
+          </div>
         </div>
       )}
     </div>
