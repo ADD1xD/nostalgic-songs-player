@@ -16,7 +16,7 @@ function formatTime(s: number): string {
 
 function PlayIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M8 5.14v14l11-7z" />
     </svg>
   );
@@ -24,7 +24,7 @@ function PlayIcon({ className = "w-5 h-5" }: { className?: string }) {
 
 function PauseIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M6 4h4v16H6zm8 0h4v16h-4z" />
     </svg>
   );
@@ -32,7 +32,7 @@ function PauseIcon({ className = "w-5 h-5" }: { className?: string }) {
 
 function PrevIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M6 6h2v12H6zm3.5 6 8.5 6V6z" />
     </svg>
   );
@@ -40,7 +40,7 @@ function PrevIcon({ className = "w-5 h-5" }: { className?: string }) {
 
 function NextIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M16 18h2V6h-2zM6 18l8.5-6L6 6z" />
     </svg>
   );
@@ -48,7 +48,7 @@ function NextIcon({ className = "w-5 h-5" }: { className?: string }) {
 
 function ShuffleIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
     </svg>
   );
@@ -56,7 +56,7 @@ function ShuffleIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 function RepeatIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
     </svg>
   );
@@ -64,7 +64,7 @@ function RepeatIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 function VolumeIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
     </svg>
   );
@@ -72,7 +72,7 @@ function VolumeIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 function VolumeOffIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z" />
     </svg>
   );
@@ -80,7 +80,7 @@ function VolumeOffIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 function MusicNoteIcon({ className = "w-8 h-8" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55C7.79 13 6 14.79 6 17s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
     </svg>
   );
@@ -88,7 +88,7 @@ function MusicNoteIcon({ className = "w-8 h-8" }: { className?: string }) {
 
 function SearchIcon({ className = "w-4 h-4" }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
     </svg>
   );
@@ -195,10 +195,12 @@ function EmptySongs({
   icon,
   title,
   hint,
+  action,
 }: {
   icon: ReactNode;
   title: string;
   hint: string;
+  action?: { label: string; onClick: () => void };
 }) {
   return (
     <div className="songs-empty" role="status">
@@ -207,6 +209,21 @@ function EmptySongs({
       </span>
       <p className="text-fg font-semibold text-sm sm:text-base">{title}</p>
       <p className="text-muted text-sm max-w-sm">{hint}</p>
+      {action && (
+        <button type="button" onClick={action.onClick} className="empty-action">
+          {action.label}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function SongGridSkeleton() {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 py-1" aria-hidden="true">
+      {Array.from({ length: 8 }, (_, i) => (
+        <div key={i} className="song-skeleton" style={{ animationDelay: `${i * 80}ms` }} />
+      ))}
     </div>
   );
 }
@@ -227,6 +244,8 @@ type Category = (typeof CATEGORIES)[number];
 const FADE_MS = 240;
 const RESUME_KEY = "kb-resume";
 const PLAYS_KEY = "kb-plays";
+const LISTEN_KEY = "kb-listen-sec";
+const LISTEN_MAP_KEY = "kb-listen-map";
 
 type ResumeState = { src: string; time: number };
 
@@ -277,6 +296,103 @@ function writePlays(plays: Record<string, number>) {
   } catch {
     /* ignore */
   }
+}
+
+function readListenSec(): number {
+  try {
+    const n = Number(localStorage.getItem(LISTEN_KEY));
+    return Number.isFinite(n) && n > 0 ? n : 0;
+  } catch {
+    return 0;
+  }
+}
+
+function writeListenSec(sec: number) {
+  try {
+    localStorage.setItem(LISTEN_KEY, String(Math.max(0, Math.round(sec))));
+  } catch {
+    /* ignore */
+  }
+}
+
+function readListenMap(): Record<string, number> {
+  try {
+    const raw = localStorage.getItem(LISTEN_MAP_KEY);
+    if (!raw) return {};
+    const data = JSON.parse(raw) as Record<string, number>;
+    if (!data || typeof data !== "object") return {};
+    const out: Record<string, number> = {};
+    for (const [key, value] of Object.entries(data)) {
+      if (typeof value === "number" && isFinite(value) && value > 0) out[key] = value;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+function writeListenMap(map: Record<string, number>) {
+  try {
+    const rounded: Record<string, number> = {};
+    for (const [key, value] of Object.entries(map)) {
+      const n = Math.round(value);
+      if (n > 0) rounded[key] = n;
+    }
+    localStorage.setItem(LISTEN_MAP_KEY, JSON.stringify(rounded));
+  } catch {
+    /* ignore */
+  }
+}
+
+function formatListen(sec: number): string {
+  const s = Math.max(0, Math.round(sec));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const rem = s % 60;
+  if (h > 0) return m > 0 ? `${h}h ${m}m` : `${h}h`;
+  if (m > 0) return rem > 0 && m < 5 ? `${m} min ${rem}s` : `${m} min`;
+  return `${s} sec`;
+}
+
+function pickRecommendations(
+  currentIndex: number,
+  playCounts: Record<string, number>,
+): { seedIndex: number; indices: number[] } | null {
+  let seedIndex = currentIndex;
+  if (seedIndex < 0) {
+    let best = -1;
+    let bestCount = 0;
+    songs.forEach((song, i) => {
+      const n = playCounts[song.src] ?? 0;
+      if (n > bestCount) {
+        bestCount = n;
+        best = i;
+      }
+    });
+    seedIndex = best;
+  }
+  if (seedIndex < 0) return null;
+
+  const mood = songs[seedIndex].mood;
+  const same = songs
+    .map((_, i) => i)
+    .filter((i) => i !== seedIndex && songs[i].mood === mood)
+    .sort((a, b) => {
+      const pa = playCounts[songs[a].src] ?? 0;
+      const pb = playCounts[songs[b].src] ?? 0;
+      if (pa !== pb) return pa - pb;
+      return a - b;
+    });
+
+  const picked = same.slice(0, 3);
+  if (picked.length < 2) {
+    const extras = songs
+      .map((_, i) => i)
+      .filter((i) => i !== seedIndex && !picked.includes(i));
+    while (picked.length < 3 && extras.length > 0) picked.push(extras.shift()!);
+  }
+  if (picked.length < 2) return null;
+  return { seedIndex, indices: picked.slice(0, 3) };
 }
 
 function initialResumeOffer(): { index: number; time: number } | null {
@@ -351,7 +467,7 @@ function extractDominantColor(src: string): Promise<string> {
         canvas.height = size;
         const ctx = canvas.getContext("2d");
         if (!ctx) {
-          resolve("#e8a44a");
+          resolve("#1ed760");
           return;
         }
         ctx.drawImage(img, 0, 0, size, size);
@@ -376,14 +492,14 @@ function extractDominantColor(src: string): Promise<string> {
         }
         const color = n
           ? `rgb(${Math.round(r / n)}, ${Math.round(g / n)}, ${Math.round(b / n)})`
-          : "#e8a44a";
+          : "#1ed760";
         colorCache.set(src, color);
         resolve(color);
       } catch {
-        resolve("#e8a44a");
+        resolve("#1ed760");
       }
     };
-    img.onerror = () => resolve("#e8a44a");
+    img.onerror = () => resolve("#1ed760");
     img.src = encodeURI(src);
   });
 }
@@ -429,25 +545,45 @@ function seededWave(seed: string, count: number): number[] {
 }
 
 function SeekBar({
-  currentTime,
-  duration,
+  audioRef,
   compact,
   seed,
   showTimes = true,
-  onSeek,
+  onSeekCommit,
 }: {
-  currentTime: number;
-  duration: number;
+  audioRef: React.RefObject<HTMLAudioElement | null>;
   compact: boolean;
   seed: string;
   showTimes?: boolean;
-  onSeek: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSeekCommit?: () => void;
 }) {
   const count = compact ? 36 : 48;
   const bars = useMemo(() => seededWave(seed || "kb", count), [seed, count]);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [hover, setHover] = useState<{ ratio: number; time: number } | null>(null);
   const progress = duration > 0 ? Math.min(1, Math.max(0, currentTime / duration)) : 0;
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const sync = () => {
+      setCurrentTime(audio.currentTime);
+      setDuration(Number.isFinite(audio.duration) ? audio.duration : 0);
+    };
+    audio.addEventListener("timeupdate", sync);
+    audio.addEventListener("durationchange", sync);
+    audio.addEventListener("seeked", sync);
+    audio.addEventListener("loadedmetadata", sync);
+    sync();
+    return () => {
+      audio.removeEventListener("timeupdate", sync);
+      audio.removeEventListener("durationchange", sync);
+      audio.removeEventListener("seeked", sync);
+      audio.removeEventListener("loadedmetadata", sync);
+    };
+  }, [audioRef, seed]);
 
   useEffect(() => {
     if (!dragging) return;
@@ -464,6 +600,15 @@ function SeekBar({
     const rect = target.getBoundingClientRect();
     const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / Math.max(rect.width, 1)));
     setHover({ ratio, time: ratio * (duration > 0 ? duration : 0) });
+  };
+
+  const onSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const audio = audioRef.current;
+    if (!audio || !Number.isFinite(audio.duration) || audio.duration <= 0) return;
+    const next = Math.min(audio.duration, Math.max(0, Number(e.target.value)));
+    audio.currentTime = next;
+    setCurrentTime(next);
+    onSeekCommit?.();
   };
 
   const waveLayer = (className: string) => (
@@ -499,6 +644,9 @@ function SeekBar({
         onChange={onSeek}
         onPointerDown={() => setDragging(true)}
         aria-label="Seek"
+        aria-valuemin={0}
+        aria-valuemax={Math.floor(duration)}
+        aria-valuenow={Math.floor(currentTime)}
         aria-valuetext={formatTime(currentTime)}
         className="player-seek"
       />
@@ -520,51 +668,51 @@ function SeekBar({
 
 function Transport({
   size,
+  audioRef,
   shuffle,
   repeat,
   isPlaying,
-  currentTime,
-  duration,
   waveSeed,
   onShuffle,
   onPrev,
   onToggle,
   onNext,
   onRepeat,
-  onSeek,
+  onSeekCommit,
 }: {
   size: "bar" | "full";
+  audioRef: React.RefObject<HTMLAudioElement | null>;
   shuffle: boolean;
   repeat: RepeatMode;
   isPlaying: boolean;
-  currentTime: number;
-  duration: number;
   waveSeed: string;
   onShuffle: () => void;
   onPrev: () => void;
   onToggle: () => void;
   onNext: () => void;
   onRepeat: () => void;
-  onSeek: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSeekCommit?: () => void;
 }) {
   const full = size === "full";
+  const repeatLabel = repeat === "one" ? "Repeat one" : repeat === "all" ? "Repeat all" : "Repeat off";
   return (
     <div className={`flex flex-col items-center justify-center min-w-0 w-full ${full ? "max-w-xl gap-6" : "gap-3.5"}`}>
       <div className={`flex items-center ${full ? "gap-6" : "gap-5 sm:gap-6"}`}>
         <button
           type="button"
           onClick={onShuffle}
-          className={`cursor-pointer p-1.5 ${
+          className={`ctrl-btn cursor-pointer p-1.5 ${
             shuffle ? "text-green" : "text-muted hover:text-fg"
           }`}
           aria-label="Shuffle"
+          aria-pressed={shuffle}
         >
           <ShuffleIcon className={full ? "w-5 h-5" : "w-[18px] h-[18px]"} />
         </button>
         <button
           type="button"
           onClick={onPrev}
-          className="text-muted hover:text-fg cursor-pointer p-1.5"
+          className="ctrl-btn text-muted hover:text-fg cursor-pointer p-1.5"
           aria-label="Previous"
         >
           <PrevIcon className={full ? "w-7 h-7" : "w-6 h-6"} />
@@ -572,7 +720,7 @@ function Transport({
         <button
           type="button"
           onClick={onToggle}
-          className={`flex items-center justify-center rounded-full bg-green text-[#1a1612] hover:scale-105 cursor-pointer flex-shrink-0 ${
+          className={`ctrl-btn-play flex items-center justify-center rounded-full text-control-fg hover:scale-105 cursor-pointer flex-shrink-0 ${
             full ? "w-16 h-16" : "w-11 h-11 sm:w-12 sm:h-12"
           }`}
           aria-label={isPlaying ? "Pause" : "Play"}
@@ -586,7 +734,7 @@ function Transport({
         <button
           type="button"
           onClick={onNext}
-          className="text-muted hover:text-fg cursor-pointer p-1.5"
+          className="ctrl-btn text-muted hover:text-fg cursor-pointer p-1.5"
           aria-label="Next"
         >
           <NextIcon className={full ? "w-7 h-7" : "w-6 h-6"} />
@@ -594,10 +742,11 @@ function Transport({
         <button
           type="button"
           onClick={onRepeat}
-          className={`relative cursor-pointer p-1.5 ${
+          className={`ctrl-btn relative cursor-pointer p-1.5 ${
             repeat !== "off" ? "text-green" : "text-muted hover:text-fg"
           }`}
-          aria-label="Repeat"
+          aria-label={repeatLabel}
+          aria-pressed={repeat !== "off"}
         >
           <RepeatIcon className={full ? "w-5 h-5" : "w-[18px] h-[18px]"} />
           {repeat === "one" && (
@@ -608,11 +757,10 @@ function Transport({
         </button>
       </div>
       <SeekBar
-        currentTime={currentTime}
-        duration={duration}
+        audioRef={audioRef}
         compact={!full}
         seed={waveSeed}
-        onSeek={onSeek}
+        onSeekCommit={onSeekCommit}
       />
     </div>
   );
@@ -623,8 +771,6 @@ export default function App() {
 
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [lang, setLang] = useState<"en" | "hi">("en");
   const [coverErrors, setCoverErrors] = useState<Record<number, boolean>>({});
   const [shuffle, setShuffle] = useState(false);
@@ -641,19 +787,28 @@ export default function App() {
     songs.map((_, i) => i),
   );
   const [buffering, setBuffering] = useState(false);
-  const [glowColor, setGlowColor] = useState("#e8a44a");
+  const [glowColor, setGlowColor] = useState("#1ed760");
   const [toast, setToast] = useState<string | null>(null);
   const [queue, setQueue] = useState<number[]>([]);
   const [recent, setRecent] = useState<number[]>([]);
   const [nowPlayingOpen, setNowPlayingOpen] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>(readTheme);
   const [category, setCategory] = useState<Category>("All");
+  const [statsOpen, setStatsOpen] = useState(false);
+  const [listenSec, setListenSec] = useState(readListenSec);
+  const [listenMap, setListenMap] = useState(readListenMap);
 
   const songsSectionRef = useRef<HTMLElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const statsBtnRef = useRef<HTMLButtonElement>(null);
+  const statsCloseRef = useRef<HTMLButtonElement>(null);
   const pendingSeekRef = useRef<number | null>(null);
   const lastResumeSave = useRef(0);
   const lastPlayBump = useRef({ index: -1, at: 0 });
+  const listenSecRef = useRef(readListenSec());
+  const listenMapRef = useRef(readListenMap());
+  const playClockRef = useRef<number | null>(null);
+  const listenSrcRef = useRef<string | null>(null);
   const shuffleRef = useRef(shuffle);
   const repeatRef = useRef(repeat);
   const shuffleOrderRef = useRef(shuffleOrder);
@@ -665,7 +820,6 @@ export default function App() {
   const fadingRef = useRef(false);
   const fadeGen = useRef(0);
   const audioCtxRef = useRef<AudioContext | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
   const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
   shuffleRef.current = shuffle;
   repeatRef.current = repeat;
@@ -695,13 +849,8 @@ export default function App() {
     }
     if (!sourceNodeRef.current) {
       const source = ctx.createMediaElementSource(audio);
-      const analyser = ctx.createAnalyser();
-      analyser.fftSize = 128;
-      analyser.smoothingTimeConstant = 0.72;
-      source.connect(analyser);
-      analyser.connect(ctx.destination);
+      source.connect(ctx.destination);
       sourceNodeRef.current = source;
-      analyserRef.current = analyser;
     }
   }, []);
 
@@ -719,8 +868,35 @@ export default function App() {
     writeResume(songs[index].src, time);
   }, []);
 
+  const flushListenClock = useCallback(() => {
+    if (playClockRef.current == null) return;
+    const now = performance.now();
+    const dt = (now - playClockRef.current) / 1000;
+    playClockRef.current = now;
+    if (!(dt > 0) || dt > 300) return;
+    listenSecRef.current += dt;
+    const src = listenSrcRef.current;
+    if (src) {
+      listenMapRef.current[src] = (listenMapRef.current[src] ?? 0) + dt;
+    }
+  }, []);
+
+  const persistListen = useCallback(() => {
+    flushListenClock();
+    writeListenSec(listenSecRef.current);
+    writeListenMap(listenMapRef.current);
+  }, [flushListenClock]);
+
+  const syncStatsView = useCallback(() => {
+    persistListen();
+    setListenSec(listenSecRef.current);
+    setListenMap({ ...listenMapRef.current });
+  }, [persistListen]);
+
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", theme === "light" ? "#eef6f0" : "#070b08");
     try {
       localStorage.setItem("kb-theme", theme);
     } catch {
@@ -733,14 +909,13 @@ export default function App() {
     if (!audio) return;
 
     const onTimeUpdate = () => {
-      setCurrentTime(audio.currentTime);
       const now = Date.now();
       if (now - lastResumeSave.current > 2000) {
         lastResumeSave.current = now;
         persistResume();
+        persistListen();
       }
     };
-    const onDurationChange = () => setDuration(audio.duration);
     const onEnded = () => {
       if (repeatRef.current !== "one") clearResume();
       if (repeatRef.current === "one") {
@@ -780,11 +955,16 @@ export default function App() {
     const onPlay = () => {
       setIsPlaying(true);
       setBuffering(false);
+      const index = currentIndexRef.current;
+      listenSrcRef.current = index >= 0 ? songs[index].src : null;
+      if (playClockRef.current == null) playClockRef.current = performance.now();
       ensureAudioGraph();
     };
     const onPause = () => {
       setIsPlaying(false);
       persistResume();
+      persistListen();
+      playClockRef.current = null;
     };
     const onWaiting = () => setBuffering(true);
     const onPlaying = () => {
@@ -794,7 +974,6 @@ export default function App() {
     const onCanPlay = () => setBuffering(false);
 
     audio.addEventListener("timeupdate", onTimeUpdate);
-    audio.addEventListener("durationchange", onDurationChange);
     audio.addEventListener("ended", onEnded);
     audio.addEventListener("play", onPlay);
     audio.addEventListener("pause", onPause);
@@ -802,14 +981,17 @@ export default function App() {
     audio.addEventListener("playing", onPlaying);
     audio.addEventListener("canplay", onCanPlay);
 
-    const onLeave = () => persistResume();
+    const onLeave = () => {
+      persistResume();
+      persistListen();
+    };
     window.addEventListener("pagehide", onLeave);
     document.addEventListener("visibilitychange", onLeave);
 
     return () => {
       persistResume();
+      persistListen();
       audio.removeEventListener("timeupdate", onTimeUpdate);
-      audio.removeEventListener("durationchange", onDurationChange);
       audio.removeEventListener("ended", onEnded);
       audio.removeEventListener("play", onPlay);
       audio.removeEventListener("pause", onPause);
@@ -819,11 +1001,13 @@ export default function App() {
       window.removeEventListener("pagehide", onLeave);
       document.removeEventListener("visibilitychange", onLeave);
     };
-  }, [ensureAudioGraph, persistResume]);
+  }, [ensureAudioGraph, persistResume, persistListen]);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || currentIndex < 0) return;
+    persistListen();
+    listenSrcRef.current = songs[currentIndex].src;
     setBuffering(true);
     ensureAudioGraph();
     audio.volume = 0;
@@ -834,7 +1018,6 @@ export default function App() {
     const start = () => {
       if (seekTo && seekTo > 0 && isFinite(audio.duration) && seekTo < audio.duration - 0.5) {
         audio.currentTime = seekTo;
-        setCurrentTime(seekTo);
       }
       audio
         .play()
@@ -867,13 +1050,23 @@ export default function App() {
       window.clearTimeout(scrollTimer);
       audio.removeEventListener("loadedmetadata", start);
     };
-  }, [currentIndex, ensureAudioGraph]);
+  }, [currentIndex, ensureAudioGraph, persistListen]);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio || fadingRef.current) return;
     audio.volume = muted ? 0 : volume;
   }, [volume, muted]);
+
+  useEffect(() => {
+    if (!isPlaying) return;
+    if (playClockRef.current == null) playClockRef.current = performance.now();
+    const id = window.setInterval(() => persistListen(), 2000);
+    return () => {
+      persistListen();
+      window.clearInterval(id);
+    };
+  }, [isPlaying, persistListen]);
 
   useEffect(() => {
     if (currentIndex < 0) return;
@@ -885,7 +1078,7 @@ export default function App() {
 
   useEffect(() => {
     if (!currentSong?.cover) {
-      setGlowColor("#e8a44a");
+      setGlowColor("#1ed760");
       return;
     }
     let cancelled = false;
@@ -919,14 +1112,27 @@ export default function App() {
   }, [currentIndex]);
 
   useEffect(() => {
-    const lock = nowPlayingOpen;
+    const lock = nowPlayingOpen || statsOpen;
     document.documentElement.style.overflow = lock ? "hidden" : "";
     document.body.style.overflow = lock ? "hidden" : "";
     return () => {
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
-  }, [nowPlayingOpen]);
+  }, [nowPlayingOpen, statsOpen]);
+
+  useEffect(() => {
+    if (!statsOpen) return;
+    syncStatsView();
+    const trigger = statsBtnRef.current;
+    const id = window.setInterval(syncStatsView, 1000);
+    const t = window.setTimeout(() => statsCloseRef.current?.focus(), 20);
+    return () => {
+      window.clearInterval(id);
+      window.clearTimeout(t);
+      trigger?.focus();
+    };
+  }, [statsOpen, syncStatsView]);
 
   const filteredSongs = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -1078,6 +1284,10 @@ export default function App() {
           searchEl?.blur();
           return;
         }
+        if (statsOpen) {
+          setStatsOpen(false);
+          return;
+        }
         if (nowPlayingOpen) {
           setNowPlayingOpen(false);
           return;
@@ -1106,7 +1316,7 @@ export default function App() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [togglePlayPause, playNext, playPrev, nowPlayingOpen]);
+  }, [togglePlayPause, playNext, playPrev, nowPlayingOpen, statsOpen]);
 
   const shareSong = useCallback(
     async (song: Song) => {
@@ -1130,12 +1340,7 @@ export default function App() {
     [showToast],
   );
 
-  const seek = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const audio = audioRef.current;
-    if (!audio || !Number.isFinite(audio.duration) || audio.duration <= 0) return;
-    const next = Math.min(audio.duration, Math.max(0, Number(e.target.value)));
-    audio.currentTime = next;
-    setCurrentTime(next);
+  const seek = useCallback(() => {
     persistResume();
   }, [persistResume]);
 
@@ -1197,7 +1402,6 @@ export default function App() {
         const audio = audioRef.current;
         if (audio) {
           audio.currentTime = time;
-          setCurrentTime(time);
           audio.play().catch(() => {});
         }
         persistResume();
@@ -1223,11 +1427,37 @@ export default function App() {
     return counts;
   }, [queue]);
 
-  const coverFor = (index: number, song: Song, extraClass = "") => {
+  const recommendations = useMemo(
+    () => pickRecommendations(currentIndex, playCounts),
+    [currentIndex, playCounts],
+  );
+
+  const listeningStats = useMemo(() => {
+    const ranked = songs
+      .map((song, index) => ({
+        index,
+        plays: playCounts[song.src] ?? 0,
+        time: listenMap[song.src] ?? 0,
+      }))
+      .filter((row) => row.plays > 0 || row.time >= 1)
+      .sort((a, b) => (b.time !== a.time ? b.time - a.time : b.plays - a.plays));
+    const totalPlays = Object.values(playCounts).reduce((sum, n) => sum + n, 0);
+    return {
+      top: ranked.slice(0, 5),
+      most: ranked[0] ?? null,
+      totalPlays,
+    };
+  }, [playCounts, listenMap]);
+
+  const coverFor = useCallback((index: number, song: Song, extraClass = "") => {
     const hasError = coverErrors[index];
     if (hasError || !song.cover) {
       return (
-        <div className={`w-full h-full flex items-center justify-center text-muted bg-spot-hover ${extraClass}`}>
+        <div
+          className={`w-full h-full flex items-center justify-center text-muted bg-spot-hover ${extraClass}`}
+          role="img"
+          aria-label={`${song.title} by ${song.artist}`}
+        >
           <MusicNoteIcon className="w-1/2 h-1/2 max-w-12 max-h-12 opacity-40" />
         </div>
       );
@@ -1235,26 +1465,27 @@ export default function App() {
     return (
       <img
         src={encodeURI(song.cover)}
-        alt={song.title}
+        alt={`${song.title} by ${song.artist}`}
+        decoding="async"
+        draggable={false}
         className={`w-full h-full object-cover ${extraClass}`}
         onError={() => setCoverErrors((prev) => ({ ...prev, [index]: true }))}
       />
     );
-  };
+  }, [coverErrors]);
 
   const transportProps = {
+    audioRef,
     shuffle,
     repeat,
     isPlaying,
-    currentTime,
-    duration,
     waveSeed: currentSong?.src ?? "",
     onShuffle: toggleShuffle,
     onPrev: playPrev,
     onToggle: togglePlayPause,
     onNext: playNext,
     onRepeat: cycleRepeat,
-    onSeek: seek,
+    onSeekCommit: seek,
   };
 
   return (
@@ -1263,33 +1494,49 @@ export default function App() {
 
       <section className="relative flex flex-col items-center px-4 sm:px-8 pt-20 sm:pt-24 pb-8 sm:pb-10 overflow-hidden">
         <div className="hero-wash" />
-        <div className="hero-disc" aria-hidden="true" />
         <div className="hero-grain" aria-hidden="true" />
 
-        <div className="absolute top-5 right-4 sm:right-8 z-10 hero-in" style={{ animationDelay: "0.05s" }}>
+        <div className="absolute top-5 right-4 sm:right-8 z-10 hero-in flex items-center gap-2.5" style={{ animationDelay: "0.05s" }}>
+          <button
+            ref={statsBtnRef}
+            type="button"
+            onClick={() => setStatsOpen(true)}
+            className={`hero-vinyl-btn${isPlaying ? " is-playing" : ""}`}
+            aria-label="Listening stats"
+            aria-haspopup="dialog"
+            aria-expanded={statsOpen}
+          >
+            <span className="hero-vinyl" aria-hidden="true" />
+          </button>
           <div className="flex items-center gap-1 rounded-2xl border border-spot-border bg-spot-raised/80 px-1.5 py-1 text-xs font-medium tracking-wide backdrop-blur-sm">
             <button
               type="button"
               onClick={() => setTheme((mode) => (mode === "dark" ? "light" : "dark"))}
-              className="p-1.5 rounded-full text-muted hover:text-fg hover:bg-fg/10 cursor-pointer"
+              className="ctrl-btn p-1.5 rounded-full text-muted hover:text-fg hover:bg-fg/10 cursor-pointer"
               aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             >
               {theme === "dark" ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
             </button>
             <button
+              type="button"
               onClick={() => setLang("en")}
-              className={`px-2 py-1 cursor-pointer ${
+              className={`ctrl-btn px-2 py-1 cursor-pointer rounded-lg ${
                 lang === "en" ? "text-green" : "text-muted hover:text-fg"
               }`}
+              aria-pressed={lang === "en"}
+              aria-label="English"
             >
               EN
             </button>
-            <span className="text-spot-border">/</span>
+            <span className="text-spot-border" aria-hidden="true">/</span>
             <button
+              type="button"
               onClick={() => setLang("hi")}
-              className={`px-2 py-1 cursor-pointer ${
+              className={`ctrl-btn px-2 py-1 cursor-pointer rounded-lg ${
                 lang === "hi" ? "text-green" : "text-muted hover:text-fg"
               }`}
+              aria-pressed={lang === "hi"}
+              aria-label="Hindi"
             >
               हिं
             </button>
@@ -1310,7 +1557,7 @@ export default function App() {
               if (currentIndex < 0) playSong(0);
               else if (!isPlaying) togglePlayPause();
             }}
-            className="hero-cta hero-in mt-7 sm:mt-8 inline-flex items-center justify-center rounded-2xl bg-green hover:bg-green-hover text-[#1a1612] font-semibold text-base px-11 py-3.5 cursor-pointer"
+            className="hero-cta hero-in mt-7 sm:mt-8 inline-flex items-center justify-center rounded-2xl font-semibold text-base px-11 py-3.5 cursor-pointer"
             style={{ animationDelay: "0.3s" }}
           >
             Play
@@ -1320,7 +1567,7 @@ export default function App() {
         <div className="hero-in relative z-10 mt-9 sm:mt-11 w-full" style={{ animationDelay: "0.46s" }}>
           <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             <label className="relative block w-full max-w-md">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none">
                 <SearchIcon className="w-4 h-4" />
               </span>
               <input
@@ -1336,14 +1583,29 @@ export default function App() {
                   }
                 }}
                 placeholder="Search songs, artists, or moods"
-                className="search-input w-full rounded-2xl bg-search text-fg placeholder:text-muted text-sm py-3 pl-11 pr-4"
+                className="search-input w-full rounded-2xl bg-search text-fg placeholder:text-muted text-sm py-3 pl-11 pr-10"
+                aria-label="Search songs, artists, or moods"
                 aria-keyshortcuts="/"
               />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery("");
+                    searchInputRef.current?.focus();
+                  }}
+                  className="ctrl-btn absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-muted hover:text-fg hover:bg-fg/10 cursor-pointer"
+                  aria-label="Clear search"
+                >
+                  <CloseIcon className="w-4 h-4" />
+                </button>
+              )}
             </label>
             <button
               type="button"
               onClick={(e) => playSurprise(e.currentTarget)}
-              className="relative inline-flex items-center gap-2 self-start rounded-2xl bg-spot-raised hover:bg-spot-hover border border-spot-border text-fg font-semibold text-sm px-4 py-3 cursor-pointer transition-colors"
+              className="relative inline-flex items-center gap-2 self-start rounded-2xl bg-spot-raised hover:bg-spot-hover border border-spot-border hover:border-green text-fg font-semibold text-sm px-4 py-3 cursor-pointer transition-colors"
+              aria-label="Play a random song"
             >
               <SparkleIcon className="w-4 h-4 text-green" />
               Surprise Me
@@ -1358,14 +1620,14 @@ export default function App() {
         className="px-4 sm:px-8 pt-2 sm:pt-3 pb-12 scroll-mt-4"
       >
         {resumeOffer && songs[resumeOffer.index] && (
-          <div className="continue-banner relative mb-5 w-full max-w-xl rounded-[1.35rem] overflow-hidden bg-spot-raised border border-spot-border p-3 sm:p-3.5 flex items-center gap-2 sm:gap-3.5">
+          <div className="continue-banner relative mb-5 w-full max-w-xl rounded-[var(--radius-panel)] overflow-hidden bg-spot-raised border border-spot-border p-3 sm:p-3.5 flex items-center gap-2 sm:gap-3.5">
             <button
               type="button"
               onClick={(e) => continueListening(e.currentTarget)}
               className="relative min-w-0 flex-1 flex items-center gap-3.5 text-left cursor-pointer hover:opacity-95"
               aria-label={`Continue ${songs[resumeOffer.index].title}`}
             >
-              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden flex-shrink-0 shadow-md ring-1 ring-white/10">
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden flex-shrink-0 shadow-md ring-1 ring-fg/10">
                 {coverFor(resumeOffer.index, songs[resumeOffer.index])}
               </div>
               <div className="relative min-w-0 flex-1">
@@ -1381,7 +1643,7 @@ export default function App() {
                   {formatTime(resumeOffer.time)}
                 </p>
               </div>
-              <span className="relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-green text-[#1a1612] flex items-center justify-center shadow-[0_0_16px_rgba(232,164,74,0.45)]">
+              <span className="relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-green text-control-fg flex items-center justify-center shadow-[0_0_16px_rgba(57,255,136,0.4)]">
                 <PlayIcon className="w-4 h-4 sm:w-5 sm:h-5 ml-0.5" />
               </span>
             </button>
@@ -1403,10 +1665,10 @@ export default function App() {
           <button
             type="button"
             onClick={(e) => playFeatured(e.currentTarget)}
-            className="rec-banner relative mb-7 w-full max-w-xl text-left rounded-[1.35rem] overflow-hidden bg-spot-raised border border-spot-border p-3 sm:p-3.5 flex items-center gap-3.5 cursor-pointer hover:bg-spot-hover transition-colors"
+            className="rec-banner relative mb-7 w-full max-w-xl text-left rounded-[var(--radius-panel)] overflow-hidden bg-spot-raised border border-spot-border p-3 sm:p-3.5 flex items-center gap-3.5 cursor-pointer hover:bg-spot-hover transition-colors"
           >
             <span className="rec-banner-wash pointer-events-none absolute inset-0" aria-hidden="true" />
-            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden flex-shrink-0 shadow-md ring-1 ring-white/10">
+            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden flex-shrink-0 shadow-md ring-1 ring-fg/10">
               {coverFor(FEATURED_INDEX, songs[FEATURED_INDEX])}
             </div>
             <div className="relative min-w-0 flex-1">
@@ -1419,7 +1681,7 @@ export default function App() {
                 {songs[FEATURED_INDEX].artist}
               </p>
             </div>
-            <span className="relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-green text-[#1a1612] flex items-center justify-center shadow-[0_0_16px_rgba(232,164,74,0.45)]">
+            <span className="relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-green text-control-fg flex items-center justify-center shadow-[0_0_16px_rgba(57,255,136,0.4)]">
               <PlayIcon className="w-4 h-4 sm:w-5 sm:h-5 ml-0.5" />
             </span>
           </button>
@@ -1445,6 +1707,8 @@ export default function App() {
                         ? "song-card-playing"
                         : "bg-spot-raised hover:bg-spot-hover"
                     }`}
+                    aria-label={`${isActive && isPlaying ? "Pause" : "Play"} ${song.title} by ${song.artist}`}
+                    aria-current={isActive ? "true" : undefined}
                   >
                     <div className="relative aspect-square rounded-[0.85rem] overflow-hidden mb-2 bg-spot-hover">
                       {coverFor(index, song)}
@@ -1456,6 +1720,50 @@ export default function App() {
                     </div>
                     <p className={`font-bold text-sm truncate ${isActive ? "text-green" : "text-fg"}`}>{song.title}</p>
                     <p className="text-xs text-muted truncate mt-0.5">{song.artist}</p>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {recommendations && (
+          <div className="mb-8">
+            <p className="section-kicker mb-1">For you</p>
+            <h2 className="section-title text-2xl sm:text-3xl mb-4">
+              Because you listened to{" "}
+              <span className="text-green">{songs[recommendations.seedIndex].title}</span>
+            </h2>
+            <div className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
+              {recommendations.indices.map((index) => {
+                const song = songs[index];
+                const isActive = index === currentIndex;
+                return (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={(e) => playSong(index, e.currentTarget)}
+                    className={`song-card flex-shrink-0 w-[136px] sm:w-40 text-left p-2.5 cursor-pointer ${
+                      isActive
+                        ? "song-card-playing"
+                        : "bg-spot-raised hover:bg-spot-hover"
+                    }`}
+                    aria-label={`${isActive && isPlaying ? "Pause" : "Play"} ${song.title} by ${song.artist}`}
+                    aria-current={isActive ? "true" : undefined}
+                  >
+                    <div className="relative aspect-square rounded-[0.85rem] overflow-hidden mb-2 bg-spot-hover">
+                      {coverFor(index, song)}
+                      {isActive && isPlaying && !buffering && (
+                        <div className="absolute bottom-1.5 left-1.5">
+                          <EqBars />
+                        </div>
+                      )}
+                    </div>
+                    <p className={`font-bold text-sm truncate ${isActive ? "text-green" : "text-fg"}`}>{song.title}</p>
+                    <p className="text-xs text-muted truncate mt-0.5">{song.artist}</p>
+                    <span className={`mood-pill mood-${song.mood.toLowerCase()} mt-1.5`}>
+                      {song.mood}
+                    </span>
                   </button>
                 );
               })}
@@ -1481,9 +1789,10 @@ export default function App() {
               onClick={() => setCategory(cat)}
               className={`flex-shrink-0 rounded-xl px-3.5 py-1.5 text-xs font-semibold tracking-wide cursor-pointer transition-colors ${
                 category === cat
-                  ? "bg-green text-[#1a1612]"
-                  : "bg-spot-hover text-muted hover:text-fg"
+                  ? "bg-green text-control-fg"
+                  : "bg-spot-hover text-muted hover:text-green"
               }`}
+              aria-pressed={category === cat}
             >
               {cat}
             </button>
@@ -1491,16 +1800,26 @@ export default function App() {
         </div>
 
         {songs.length === 0 ? (
-          <EmptySongs
-            icon={<MusicNoteIcon className="w-6 h-6" />}
-            title="Loading your songs"
-            hint="Tracks will show up here as soon as they’re ready."
-          />
+          <div>
+            <p className="sr-only" role="status">Loading your songs</p>
+            <SongGridSkeleton />
+          </div>
         ) : filteredSongs.length === 0 ? (
           <EmptySongs
             icon={<SearchIcon className="w-6 h-6" />}
-            title="No matching songs"
-            hint="Try another search or pick a different mood — your library is still here."
+            title={query.trim() ? `No songs matching “${query.trim()}”` : `No ${category.toLowerCase()} songs`}
+            hint={
+              query.trim()
+                ? "Try another search or pick a different mood — your library is still here."
+                : "Nothing in this mood yet. Browse the full playlist or surprise yourself."
+            }
+            action={{
+              label: query.trim() ? "Clear search" : "Show all songs",
+              onClick: () => {
+                setQuery("");
+                setCategory("All");
+              },
+            }}
           />
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 py-1">
@@ -1525,6 +1844,8 @@ export default function App() {
                   className={`song-card group relative text-left p-3 sm:p-4 cursor-pointer min-w-0 scroll-mt-36 ${
                     isActive ? "song-card-playing" : "bg-spot-raised hover:bg-spot-hover"
                   }`}
+                  aria-label={`${isActive && isPlaying ? "Pause" : "Play"} ${song.title} by ${song.artist}`}
+                  aria-current={isActive ? "true" : undefined}
                 >
                   <div
                     className={cardsVisible ? "song-card-enter" : "opacity-0"}
@@ -1555,7 +1876,7 @@ export default function App() {
                           e.stopPropagation();
                           playSong(index, e.currentTarget.closest(".song-card") as HTMLElement | null);
                         }}
-                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-green text-[#1a1612] flex items-center justify-center shadow-[0_8px_24px_rgba(12,11,9,0.5)] hover:scale-105 cursor-pointer"
+                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full text-control-fg flex items-center justify-center shadow-[0_8px_24px_rgba(7,11,8,0.5)] hover:scale-105 cursor-pointer"
                         aria-label={
                           isActive && isPlaying ? `Pause ${song.title}` : `Play ${song.title}`
                         }
@@ -1585,6 +1906,7 @@ export default function App() {
                           setQuery("");
                         }}
                         className={`mood-pill mood-${song.mood.toLowerCase()} mt-1.5 cursor-pointer`}
+                        aria-label={`Filter by ${song.mood}`}
                       >
                         {song.mood}
                       </button>
@@ -1602,7 +1924,7 @@ export default function App() {
                     >
                       <QueueIcon className="w-4 h-4" />
                       {inQueue > 0 && (
-                        <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] px-0.5 rounded-full bg-green text-[#1a1612] text-[9px] font-bold leading-[14px] text-center">
+                        <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] px-0.5 rounded-full bg-green text-control-fg text-[9px] font-bold leading-[14px] text-center">
                           {inQueue}
                         </span>
                       )}
@@ -1628,7 +1950,7 @@ export default function App() {
       </section>
 
       <footer className="px-4 sm:px-8 pb-10">
-        <div className="mx-auto max-w-xl rounded-[1.5rem] bg-spot-raised border border-spot-border px-6 py-8 text-center">
+        <div className="mx-auto max-w-xl rounded-[var(--radius-panel)] bg-spot-raised border border-green/30 px-6 py-8 text-center">
           <p className="text-muted text-sm sm:text-base mb-5">
             Want to suggest a song? Contact me on WhatsApp
           </p>
@@ -1636,7 +1958,8 @@ export default function App() {
             href="https://wa.me/919267939780"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-2xl bg-green hover:bg-green-hover text-[#1a1612] font-semibold text-sm px-6 py-3 transition-colors"
+            className="inline-flex items-center gap-2 rounded-2xl bg-green hover:bg-green-hover text-control-fg font-semibold text-sm px-6 py-3 transition-colors"
+            aria-label="Suggest a song on WhatsApp (opens in a new tab)"
           >
             <WhatsAppIcon className="w-5 h-5" />
             WhatsApp
@@ -1658,10 +1981,11 @@ export default function App() {
           <button
             type="button"
             onClick={() => setNowPlayingOpen(true)}
-            className="player-now flex items-center gap-3 min-w-0 text-left cursor-pointer"
-            aria-label="Open now playing"
+            className="player-now flex items-center gap-3 min-w-0 text-left cursor-pointer rounded-xl"
+            aria-label={`Open now playing, ${nowCurrSong ? `${nowCurrSong.title} by ${nowCurrSong.artist}` : "current track"}`}
+            aria-expanded={nowPlayingOpen}
           >
-            <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden flex-shrink-0 bg-spot-hover shadow-md ring-1 ring-white/10">
+            <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden flex-shrink-0 bg-spot-hover shadow-md ring-1 ring-fg/10">
               {nowPrevSong && nowPrev != null && (
                 <div key={`art-out-${nowPrev}`} className="player-now-out absolute inset-0">
                   {coverFor(nowPrev, nowPrevSong)}
@@ -1707,17 +2031,18 @@ export default function App() {
               <button
                 type="button"
                 onClick={toggleShuffle}
-                className={`hidden sm:inline-flex cursor-pointer p-2 mr-1 ${
+                className={`ctrl-btn hidden sm:inline-flex cursor-pointer p-2 mr-1 rounded-full ${
                   shuffle ? "text-green" : "text-muted hover:text-fg"
                 }`}
                 aria-label="Shuffle"
+                aria-pressed={shuffle}
               >
                 <ShuffleIcon className="w-5 h-5" />
               </button>
               <button
                 type="button"
                 onClick={playPrev}
-                className="text-muted hover:text-fg cursor-pointer p-2"
+                className="ctrl-btn text-muted hover:text-fg cursor-pointer p-2 rounded-full"
                 aria-label="Previous"
               >
                 <PrevIcon className="w-6 h-6" />
@@ -1725,7 +2050,7 @@ export default function App() {
               <button
                 type="button"
                 onClick={togglePlayPause}
-                className="mx-1.5 w-11 h-11 rounded-full bg-green text-[#1a1612] flex items-center justify-center hover:scale-105 cursor-pointer flex-shrink-0 shadow-[0_0_16px_rgba(232,164,74,0.35)]"
+                className="ctrl-btn-play mx-1.5 w-11 h-11 rounded-full text-control-fg flex items-center justify-center hover:scale-105 cursor-pointer flex-shrink-0"
                 aria-label={isPlaying ? "Pause" : "Play"}
               >
                 {isPlaying ? <PauseIcon className="w-5 h-5" /> : <PlayIcon className="w-5 h-5 ml-0.5" />}
@@ -1733,7 +2058,7 @@ export default function App() {
               <button
                 type="button"
                 onClick={playNext}
-                className="text-muted hover:text-fg cursor-pointer p-2"
+                className="ctrl-btn text-muted hover:text-fg cursor-pointer p-2 rounded-full"
                 aria-label="Next"
               >
                 <NextIcon className="w-6 h-6" />
@@ -1741,10 +2066,11 @@ export default function App() {
               <button
                 type="button"
                 onClick={cycleRepeat}
-                className={`relative hidden sm:inline-flex cursor-pointer p-2 ml-1 ${
+                className={`ctrl-btn relative hidden sm:inline-flex cursor-pointer p-2 ml-1 rounded-full ${
                   repeat !== "off" ? "text-green" : "text-muted hover:text-fg"
                 }`}
-                aria-label="Repeat"
+                aria-label={repeat === "one" ? "Repeat one" : repeat === "all" ? "Repeat all" : "Repeat off"}
+                aria-pressed={repeat !== "off"}
               >
                 <RepeatIcon className="w-5 h-5" />
                 {repeat === "one" && (
@@ -1755,11 +2081,10 @@ export default function App() {
               </button>
             </div>
             <SeekBar
-              currentTime={currentTime}
-              duration={duration}
+              audioRef={audioRef}
               compact
               seed={currentSong?.src ?? ""}
-              onSeek={seek}
+              onSeekCommit={seek}
             />
           </div>
 
@@ -1767,8 +2092,9 @@ export default function App() {
             <button
               type="button"
               onClick={() => setMuted((m) => !m)}
-              className="p-2 text-muted hover:text-fg cursor-pointer flex-shrink-0"
+              className="ctrl-btn p-2 text-muted hover:text-fg cursor-pointer flex-shrink-0 rounded-full"
               aria-label={muted ? "Unmute" : "Mute"}
+              aria-pressed={muted}
             >
               {muted || volume === 0 ? <VolumeOffIcon className="w-5 h-5" /> : <VolumeIcon className="w-5 h-5" />}
             </button>
@@ -1786,6 +2112,9 @@ export default function App() {
               className="volume-seek w-16 md:w-24 min-w-0"
               style={{ ["--progress" as string]: `${(muted ? 0 : volume) * 100}%` }}
               aria-label="Volume"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={Math.round((muted ? 0 : volume) * 100)}
             />
           </div>
         </div>
@@ -1793,7 +2122,12 @@ export default function App() {
       )}
 
       {nowPlayingOpen && currentSong && (
-        <div className="now-playing-enter fixed inset-0 z-[70] bg-spot flex flex-col overflow-hidden">
+        <div
+          className="now-playing-enter fixed inset-0 z-[70] bg-spot flex flex-col overflow-hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="now-playing-title"
+        >
           <div
             className="pointer-events-none absolute inset-0"
             style={{
@@ -1823,7 +2157,7 @@ export default function App() {
               )}
             </div>
             <div className="w-full max-w-xl text-center mb-8">
-              <h2 className="section-title text-2xl sm:text-4xl text-fg truncate">{currentSong.title}</h2>
+              <h2 id="now-playing-title" className="section-title text-2xl sm:text-4xl text-fg truncate">{currentSong.title}</h2>
               <p className="mt-2 text-base sm:text-lg text-muted truncate">{currentSong.artist}</p>
               <div className="mt-3">
                 <span className={`mood-pill mood-${currentSong.mood.toLowerCase()}`}>
@@ -1836,8 +2170,9 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => setMuted((m) => !m)}
-                className="p-1 text-muted hover:text-fg cursor-pointer flex-shrink-0"
+                className="ctrl-btn p-1.5 rounded-full text-muted hover:text-fg cursor-pointer flex-shrink-0"
                 aria-label={muted ? "Unmute" : "Mute"}
+                aria-pressed={muted}
               >
                 {muted || volume === 0 ? <VolumeOffIcon className="w-5 h-5" /> : <VolumeIcon className="w-5 h-5" />}
               </button>
@@ -1854,7 +2189,122 @@ export default function App() {
                 }}
                 className="volume-seek flex-1 min-w-0"
                 style={{ ["--progress" as string]: `${(muted ? 0 : volume) * 100}%` }}
+                aria-label="Volume"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Math.round((muted ? 0 : volume) * 100)}
               />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {statsOpen && (
+        <div
+          className="stats-overlay"
+          onClick={() => setStatsOpen(false)}
+          role="presentation"
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="stats-title"
+            className="stats-dialog"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="stats-dialog-head">
+              <div>
+                <p className="section-kicker mb-1">Your listening</p>
+                <h2 id="stats-title" className="section-title text-2xl text-fg">
+                  Stats
+                </h2>
+              </div>
+              <button
+                ref={statsCloseRef}
+                type="button"
+                onClick={() => setStatsOpen(false)}
+                className="ctrl-btn p-2 rounded-full text-muted hover:text-fg hover:bg-fg/10 cursor-pointer flex-shrink-0"
+                aria-label="Close stats"
+              >
+                <CloseIcon className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="stats-dialog-body">
+              {listeningStats.totalPlays === 0 && listenSec < 1 ? (
+                <p className="stats-empty">
+                  Play a few songs and your listening time and top tracks will show up here.
+                </p>
+              ) : (
+                <>
+                  <div className="stats-card">
+                    <p className="stats-label">Total listening time</p>
+                    <p className="stats-value">{formatListen(listenSec)}</p>
+                  </div>
+                  <div className="stats-card">
+                    <p className="stats-label">Most played</p>
+                    {listeningStats.most ? (
+                      <>
+                        <button
+                          type="button"
+                          className="stats-most"
+                          onClick={() => {
+                            const most = listeningStats.most;
+                            if (!most) return;
+                            setStatsOpen(false);
+                            playSong(most.index);
+                          }}
+                          aria-label={`Play ${songs[listeningStats.most.index].title}, rank 1`}
+                        >
+                          <div className="stats-most-art">
+                            {coverFor(listeningStats.most.index, songs[listeningStats.most.index])}
+                            <span className="stats-art-badge">#1</span>
+                          </div>
+                          <div className="min-w-0">
+                            <p className="stats-most-title">{songs[listeningStats.most.index].title}</p>
+                            <p className="stats-most-meta">
+                              {listeningStats.most.plays === 1 ? "1 play" : `${listeningStats.most.plays} plays`}
+                              {listeningStats.most.time >= 1 ? ` · ${formatListen(listeningStats.most.time)}` : ""}
+                            </p>
+                          </div>
+                        </button>
+                        {listeningStats.top.length > 1 && (
+                          <ol className="stats-rank-list">
+                            {listeningStats.top.slice(1).map((row, i) => {
+                              const song = songs[row.index];
+                              const rank = i + 2;
+                              const detail = [
+                                row.plays === 1 ? "1 play" : `${row.plays} plays`,
+                                row.time >= 1 ? formatListen(row.time) : null,
+                              ]
+                                .filter(Boolean)
+                                .join(" · ");
+                              return (
+                                <li key={song.src}>
+                                  <button
+                                    type="button"
+                                    className="stats-rank-row"
+                                    onClick={() => {
+                                      setStatsOpen(false);
+                                      playSong(row.index);
+                                    }}
+                                    aria-label={`Play ${song.title}, rank ${rank}`}
+                                  >
+                                    <span className="stats-rank-num">#{rank}</span>
+                                    <span className="stats-rank-title">{song.title}</span>
+                                    <span className="stats-rank-meta">{detail}</span>
+                                  </button>
+                                </li>
+                              );
+                            })}
+                          </ol>
+                        )}
+                      </>
+                    ) : (
+                      <p className="stats-most-meta mt-2">No plays yet</p>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
