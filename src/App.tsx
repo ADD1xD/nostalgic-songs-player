@@ -225,6 +225,84 @@ function EqBars() {
 const CATEGORIES = ["All", ...MOODS] as const;
 type Category = (typeof CATEGORIES)[number];
 const FADE_MS = 240;
+const RESUME_KEY = "kb-resume";
+const PLAYS_KEY = "kb-plays";
+
+type ResumeState = { src: string; time: number };
+
+function readResume(): ResumeState | null {
+  try {
+    const raw = localStorage.getItem(RESUME_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw) as ResumeState;
+    if (typeof data.src !== "string" || typeof data.time !== "number" || !isFinite(data.time)) {
+      return null;
+    }
+    return data;
+  } catch {
+    return null;
+  }
+}
+
+function writeResume(src: string, time: number) {
+  try {
+    localStorage.setItem(RESUME_KEY, JSON.stringify({ src, time }));
+  } catch {
+    /* ignore */
+  }
+}
+
+function clearResume() {
+  try {
+    localStorage.removeItem(RESUME_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
+function readPlays(): Record<string, number> {
+  try {
+    const raw = localStorage.getItem(PLAYS_KEY);
+    if (!raw) return {};
+    const data = JSON.parse(raw) as Record<string, number>;
+    return data && typeof data === "object" ? data : {};
+  } catch {
+    return {};
+  }
+}
+
+function writePlays(plays: Record<string, number>) {
+  try {
+    localStorage.setItem(PLAYS_KEY, JSON.stringify(plays));
+  } catch {
+    /* ignore */
+  }
+}
+
+function initialResumeOffer(): { index: number; time: number } | null {
+  const saved = readResume();
+  if (!saved || saved.time < 5) return null;
+  const index = songs.findIndex((song) => song.src === saved.src);
+  if (index < 0) return null;
+  return { index, time: saved.time };
+}
+
+function scrollSongIntoView(index: number, attempt = 0) {
+  const el = document.getElementById(`song-card-${index}`);
+  if (!el) {
+    if (attempt < 10) window.setTimeout(() => scrollSongIntoView(index, attempt + 1), 50);
+    return;
+  }
+  const rect = el.getBoundingClientRect();
+  const topPad = 80;
+  const bottomPad = 168;
+  const visible = rect.top >= topPad && rect.bottom <= window.innerHeight - bottomPad;
+  if (visible) return;
+  el.scrollIntoView({
+    behavior: prefersReducedMotion() ? "auto" : "smooth",
+    block: "center",
+  });
+}
 
 function fadeLinear(
   audio: HTMLAudioElement,
@@ -256,64 +334,6 @@ function fadeLinear(
   });
 }
 
-function WaveformVisualizer({
-  analyserRef,
-  active,
-  bars = 24,
-  className = "",
-}: {
-  analyserRef: React.RefObject<AnalyserNode | null>;
-  active: boolean;
-  bars?: number;
-  className?: string;
-}) {
-  const spansRef = useRef<(HTMLSpanElement | null)[]>([]);
-
-  useEffect(() => {
-    let raf = 0;
-    let data: Uint8Array<ArrayBuffer> | null = null;
-    const tick = () => {
-      const analyser = analyserRef.current;
-      const els = spansRef.current;
-      if (analyser && active) {
-        if (!data || data.length !== analyser.frequencyBinCount) {
-          data = new Uint8Array(analyser.frequencyBinCount);
-        }
-        analyser.getByteFrequencyData(data);
-        const step = Math.max(1, Math.floor(data.length / bars));
-        for (let i = 0; i < bars; i++) {
-          const v = data[Math.min(data.length - 1, i * step)] ?? 0;
-          const h = Math.max(0.1, v / 255);
-          const el = els[i];
-          if (el) el.style.transform = `scaleY(${h})`;
-        }
-      } else {
-        for (let i = 0; i < bars; i++) {
-          const el = els[i];
-          if (el) el.style.transform = "scaleY(0.12)";
-        }
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [active, bars, analyserRef]);
-
-  return (
-    <div className={`flex items-end justify-center gap-px ${className}`} aria-hidden="true">
-      {Array.from({ length: bars }, (_, i) => (
-        <span
-          key={i}
-          className="viz-bar"
-          ref={(el) => {
-            spansRef.current[i] = el;
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
 const colorCache = new Map<string, string>();
 
 function extractDominantColor(src: string): Promise<string> {
@@ -331,7 +351,7 @@ function extractDominantColor(src: string): Promise<string> {
         canvas.height = size;
         const ctx = canvas.getContext("2d");
         if (!ctx) {
-          resolve("#1db954");
+          resolve("#e8a44a");
           return;
         }
         ctx.drawImage(img, 0, 0, size, size);
@@ -356,14 +376,14 @@ function extractDominantColor(src: string): Promise<string> {
         }
         const color = n
           ? `rgb(${Math.round(r / n)}, ${Math.round(g / n)}, ${Math.round(b / n)})`
-          : "#1db954";
+          : "#e8a44a";
         colorCache.set(src, color);
         resolve(color);
       } catch {
-        resolve("#1db954");
+        resolve("#e8a44a");
       }
     };
-    img.onerror = () => resolve("#1db954");
+    img.onerror = () => resolve("#e8a44a");
     img.src = encodeURI(src);
   });
 }
@@ -390,26 +410,113 @@ function shuffleList(indices: number[], first?: number): number[] {
 
 const FEATURED_INDEX = songs.findIndex((s) => s.title === "Kabira Encore");
 
-const SPLASH_NOTES = [
-  { char: "♪", left: "14%", top: "62%", delay: "0s", duration: "10s", tint: "white" },
-  { char: "♫", left: "81%", top: "54%", delay: "1.6s", duration: "12s", tint: "green" },
-  { char: "♪", left: "8%", top: "28%", delay: "3.2s", duration: "11s", tint: "white" },
-  { char: "♫", left: "72%", top: "22%", delay: "0.8s", duration: "13s", tint: "green" },
-  { char: "♪", left: "88%", top: "70%", delay: "4.4s", duration: "9.5s", tint: "white" },
-];
+function seededWave(seed: string, count: number): number[] {
+  let h = 2166136261;
+  for (let i = 0; i < seed.length; i++) {
+    h = Math.imul(h ^ seed.charCodeAt(i), 16777619);
+  }
+  const heights: number[] = [];
+  for (let i = 0; i < count; i++) {
+    h ^= h << 13;
+    h ^= h >>> 17;
+    h ^= h << 5;
+    const n = ((h >>> 0) % 1000) / 1000;
+    const t = count <= 1 ? 0.5 : i / (count - 1);
+    const env = Math.sin(t * Math.PI) ** 0.7;
+    heights.push(0.22 + 0.78 * env * (0.4 + 0.6 * n));
+  }
+  return heights;
+}
 
-const SPLASH_STARS = Array.from({ length: 96 }, (_, i) => {
-  const s = (i * 7919 + 104729) % 10000;
-  const t = (i * 104729 + 7919) % 10000;
-  return {
-    left: `${s / 100}%`,
-    top: `${t / 100}%`,
-    size: (i % 5 === 0 ? 2.4 : i % 3 === 0 ? 1.6 : 1.1),
-    delay: `${(i % 17) * 0.22}s`,
-    twinkle: i % 3 === 0,
-    tint: i % 4 === 0 ? "green" : "white",
+function SeekBar({
+  currentTime,
+  duration,
+  compact,
+  seed,
+  showTimes = true,
+  onSeek,
+}: {
+  currentTime: number;
+  duration: number;
+  compact: boolean;
+  seed: string;
+  showTimes?: boolean;
+  onSeek: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
+  const count = compact ? 36 : 48;
+  const bars = useMemo(() => seededWave(seed || "kb", count), [seed, count]);
+  const [dragging, setDragging] = useState(false);
+  const [hover, setHover] = useState<{ ratio: number; time: number } | null>(null);
+  const progress = duration > 0 ? Math.min(1, Math.max(0, currentTime / duration)) : 0;
+
+  useEffect(() => {
+    if (!dragging) return;
+    const end = () => setDragging(false);
+    window.addEventListener("pointerup", end);
+    window.addEventListener("pointercancel", end);
+    return () => {
+      window.removeEventListener("pointerup", end);
+      window.removeEventListener("pointercancel", end);
+    };
+  }, [dragging]);
+
+  const updateHover = (clientX: number, target: HTMLElement) => {
+    const rect = target.getBoundingClientRect();
+    const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / Math.max(rect.width, 1)));
+    setHover({ ratio, time: ratio * (duration > 0 ? duration : 0) });
   };
-});
+
+  const waveLayer = (className: string) => (
+    <div className={className} aria-hidden="true">
+      {bars.map((h, i) => (
+        <span key={i} className="seek-wave-bar" style={{ height: `${Math.round(h * 100)}%` }} />
+      ))}
+    </div>
+  );
+
+  const control = (
+    <div
+      className={`seek-control${compact ? "" : " seek-control-lg"}${dragging ? " is-dragging" : ""}${hover ? " is-hovering" : ""}`}
+      style={{
+        ["--progress" as string]: `${progress * 100}%`,
+        ["--hover" as string]: hover ? `${hover.ratio * 100}%` : "0%",
+      }}
+      onMouseMove={(e) => updateHover(e.clientX, e.currentTarget)}
+      onMouseLeave={() => setHover(null)}
+    >
+      <div className="seek-wave" aria-hidden="true">
+        {waveLayer("seek-wave-rest")}
+        {waveLayer("seek-wave-played")}
+      </div>
+      <span className="seek-visual-thumb" />
+      {hover && <span className="seek-tip">{formatTime(hover.time)}</span>}
+      <input
+        type="range"
+        min={0}
+        max={duration > 0 ? duration : 1}
+        step="any"
+        value={duration > 0 ? currentTime : 0}
+        onChange={onSeek}
+        onPointerDown={() => setDragging(true)}
+        aria-label="Seek"
+        aria-valuetext={formatTime(currentTime)}
+        className="player-seek"
+      />
+    </div>
+  );
+
+  if (!showTimes) {
+    return <div className="player-progress player-progress-bare">{control}</div>;
+  }
+
+  return (
+    <div className={`player-progress${compact ? "" : " is-full"}`}>
+      <span className="seek-time seek-time-current">{formatTime(currentTime)}</span>
+      {control}
+      <span className="seek-time seek-time-total">{formatTime(duration)}</span>
+    </div>
+  );
+}
 
 function Transport({
   size,
@@ -418,6 +525,7 @@ function Transport({
   isPlaying,
   currentTime,
   duration,
+  waveSeed,
   onShuffle,
   onPrev,
   onToggle,
@@ -431,6 +539,7 @@ function Transport({
   isPlaying: boolean;
   currentTime: number;
   duration: number;
+  waveSeed: string;
   onShuffle: () => void;
   onPrev: () => void;
   onToggle: () => void;
@@ -440,95 +549,71 @@ function Transport({
 }) {
   const full = size === "full";
   return (
-    <div className={`flex flex-col items-center justify-center min-w-0 ${full ? "w-full gap-5" : "flex-1 gap-1.5"}`}>
-      <div className={`flex items-center ${full ? "gap-5" : "gap-2 sm:gap-4"}`}>
+    <div className={`flex flex-col items-center justify-center min-w-0 w-full ${full ? "max-w-xl gap-6" : "gap-3.5"}`}>
+      <div className={`flex items-center ${full ? "gap-6" : "gap-5 sm:gap-6"}`}>
         <button
           type="button"
           onClick={onShuffle}
-          className={`cursor-pointer ${full ? "p-2" : "p-1"} ${
+          className={`cursor-pointer p-1.5 ${
             shuffle ? "text-green" : "text-muted hover:text-fg"
           }`}
           aria-label="Shuffle"
         >
-          <ShuffleIcon className={full ? "w-6 h-6" : "w-4 h-4"} />
+          <ShuffleIcon className={full ? "w-5 h-5" : "w-[18px] h-[18px]"} />
         </button>
         <button
           type="button"
           onClick={onPrev}
-          className={`text-muted hover:text-fg cursor-pointer ${full ? "p-2" : "p-1"}`}
+          className="text-muted hover:text-fg cursor-pointer p-1.5"
           aria-label="Previous"
         >
-          <PrevIcon className={full ? "w-8 h-8" : "w-5 h-5"} />
+          <PrevIcon className={full ? "w-7 h-7" : "w-6 h-6"} />
         </button>
         <button
           type="button"
           onClick={onToggle}
-          className={`flex items-center justify-center rounded-full bg-control text-control-fg hover:scale-105 cursor-pointer flex-shrink-0 ${
-            full ? "w-16 h-16" : "w-8 h-8 sm:w-9 sm:h-9"
+          className={`flex items-center justify-center rounded-full bg-green text-[#1a1612] hover:scale-105 cursor-pointer flex-shrink-0 ${
+            full ? "w-16 h-16" : "w-11 h-11 sm:w-12 sm:h-12"
           }`}
           aria-label={isPlaying ? "Pause" : "Play"}
         >
           {isPlaying ? (
-            <PauseIcon className={full ? "w-7 h-7" : "w-4 h-4"} />
+            <PauseIcon className={full ? "w-7 h-7" : "w-5 h-5"} />
           ) : (
-            <PlayIcon className={full ? "w-7 h-7 ml-0.5" : "w-4 h-4 ml-0.5"} />
+            <PlayIcon className={full ? "w-7 h-7 ml-0.5" : "w-5 h-5 ml-0.5"} />
           )}
         </button>
         <button
           type="button"
           onClick={onNext}
-          className={`text-muted hover:text-fg cursor-pointer ${full ? "p-2" : "p-1"}`}
+          className="text-muted hover:text-fg cursor-pointer p-1.5"
           aria-label="Next"
         >
-          <NextIcon className={full ? "w-8 h-8" : "w-5 h-5"} />
+          <NextIcon className={full ? "w-7 h-7" : "w-6 h-6"} />
         </button>
         <button
           type="button"
           onClick={onRepeat}
-          className={`relative cursor-pointer ${full ? "p-2" : "p-1"} ${
+          className={`relative cursor-pointer p-1.5 ${
             repeat !== "off" ? "text-green" : "text-muted hover:text-fg"
           }`}
           aria-label="Repeat"
         >
-          <RepeatIcon className={full ? "w-6 h-6" : "w-4 h-4"} />
+          <RepeatIcon className={full ? "w-5 h-5" : "w-[18px] h-[18px]"} />
           {repeat === "one" && (
-            <span className={`absolute left-1/2 -translate-x-1/2 font-bold leading-none ${full ? "-bottom-0.5 text-[10px]" : "-bottom-0.5 text-[8px]"}`}>
+            <span className={`absolute left-1/2 -translate-x-1/2 font-semibold leading-none ${full ? "-bottom-0.5 text-[10px]" : "-bottom-0.5 text-[9px]"}`}>
               1
             </span>
           )}
         </button>
       </div>
-      <div className={`flex items-center gap-1.5 sm:gap-2 min-w-0 ${full ? "w-full max-w-xl" : "w-full max-w-xl"}`}>
-        <span className="text-[10px] sm:text-[11px] text-muted tabular-nums w-7 sm:w-8 text-right flex-shrink-0">
-          {formatTime(currentTime)}
-        </span>
-        <div
-          className="seek-control flex-1 min-w-0"
-          style={{
-            ["--progress" as string]: duration
-              ? `${(currentTime / duration) * 100}%`
-              : "0%",
-          }}
-        >
-          <div className="seek-visual" aria-hidden="true">
-            <span className="seek-visual-fill" />
-            <span className="seek-visual-thumb" />
-          </div>
-          <input
-            type="range"
-            min={0}
-            max={duration > 0 ? duration : 1}
-            step="any"
-            value={duration > 0 ? currentTime : 0}
-            onChange={onSeek}
-            aria-label="Seek"
-            className="player-seek"
-          />
-        </div>
-        <span className="text-[10px] sm:text-[11px] text-muted tabular-nums w-7 sm:w-8 flex-shrink-0">
-          {formatTime(duration)}
-        </span>
-      </div>
+      <SeekBar
+        currentTime={currentTime}
+        duration={duration}
+        compact={!full}
+        seed={waveSeed}
+        onSeek={onSeek}
+      />
     </div>
   );
 }
@@ -547,22 +632,28 @@ export default function App() {
   const [volume, setVolume] = useState(0.8);
   const [muted, setMuted] = useState(false);
   const [query, setQuery] = useState("");
+  const [playCounts, setPlayCounts] = useState<Record<string, number>>(readPlays);
+  const [resumeOffer, setResumeOffer] = useState<{ index: number; time: number } | null>(
+    initialResumeOffer,
+  );
   const [cardsVisible, setCardsVisible] = useState(false);
   const [shuffleOrder, setShuffleOrder] = useState<number[]>(() =>
     songs.map((_, i) => i),
   );
   const [buffering, setBuffering] = useState(false);
-  const [glowColor, setGlowColor] = useState("#1db954");
+  const [glowColor, setGlowColor] = useState("#e8a44a");
   const [toast, setToast] = useState<string | null>(null);
   const [queue, setQueue] = useState<number[]>([]);
   const [recent, setRecent] = useState<number[]>([]);
   const [nowPlayingOpen, setNowPlayingOpen] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>(readTheme);
   const [category, setCategory] = useState<Category>("All");
-  const [splash, setSplash] = useState(true);
-  const [splashOut, setSplashOut] = useState(false);
 
   const songsSectionRef = useRef<HTMLElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const pendingSeekRef = useRef<number | null>(null);
+  const lastResumeSave = useRef(0);
+  const lastPlayBump = useRef({ index: -1, at: 0 });
   const shuffleRef = useRef(shuffle);
   const repeatRef = useRef(repeat);
   const shuffleOrderRef = useRef(shuffleOrder);
@@ -614,11 +705,19 @@ export default function App() {
     }
   }, []);
 
-  const enterSite = useCallback(() => {
-    ensureAudioGraph();
-    setSplashOut(true);
-    window.setTimeout(() => setSplash(false), 620);
-  }, [ensureAudioGraph]);
+  const persistResume = useCallback(() => {
+    const audio = audioRef.current;
+    const index = currentIndexRef.current;
+    if (!audio || index < 0) return;
+    const time = audio.currentTime;
+    const dur = audio.duration;
+    if (!isFinite(time) || time < 2) return;
+    if (isFinite(dur) && dur > 0 && time >= dur - 4) {
+      clearResume();
+      return;
+    }
+    writeResume(songs[index].src, time);
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -633,9 +732,17 @@ export default function App() {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const onTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const onTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+      const now = Date.now();
+      if (now - lastResumeSave.current > 2000) {
+        lastResumeSave.current = now;
+        persistResume();
+      }
+    };
     const onDurationChange = () => setDuration(audio.duration);
     const onEnded = () => {
+      if (repeatRef.current !== "one") clearResume();
       if (repeatRef.current === "one") {
         audio.currentTime = 0;
         audio.play().catch(() => {});
@@ -675,7 +782,10 @@ export default function App() {
       setBuffering(false);
       ensureAudioGraph();
     };
-    const onPause = () => setIsPlaying(false);
+    const onPause = () => {
+      setIsPlaying(false);
+      persistResume();
+    };
     const onWaiting = () => setBuffering(true);
     const onPlaying = () => {
       setIsPlaying(true);
@@ -692,7 +802,12 @@ export default function App() {
     audio.addEventListener("playing", onPlaying);
     audio.addEventListener("canplay", onCanPlay);
 
+    const onLeave = () => persistResume();
+    window.addEventListener("pagehide", onLeave);
+    document.addEventListener("visibilitychange", onLeave);
+
     return () => {
+      persistResume();
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("durationchange", onDurationChange);
       audio.removeEventListener("ended", onEnded);
@@ -701,8 +816,10 @@ export default function App() {
       audio.removeEventListener("waiting", onWaiting);
       audio.removeEventListener("playing", onPlaying);
       audio.removeEventListener("canplay", onCanPlay);
+      window.removeEventListener("pagehide", onLeave);
+      document.removeEventListener("visibilitychange", onLeave);
     };
-  }, [ensureAudioGraph]);
+  }, [ensureAudioGraph, persistResume]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -711,15 +828,45 @@ export default function App() {
     ensureAudioGraph();
     audio.volume = 0;
     audio.src = encodeURI(songs[currentIndex].src);
+    const seekTo = pendingSeekRef.current;
+    pendingSeekRef.current = null;
     const target = mutedRef.current ? 0 : volumeRef.current;
-    audio
-      .play()
-      .then(() => fadeLinear(audio, target, FADE_MS, fadingRef))
-      .catch(() => {
-        fadingRef.current = false;
-        setBuffering(false);
-        audio.volume = target;
+    const start = () => {
+      if (seekTo && seekTo > 0 && isFinite(audio.duration) && seekTo < audio.duration - 0.5) {
+        audio.currentTime = seekTo;
+        setCurrentTime(seekTo);
+      }
+      audio
+        .play()
+        .then(() => fadeLinear(audio, target, FADE_MS, fadingRef))
+        .catch(() => {
+          fadingRef.current = false;
+          setBuffering(false);
+          audio.volume = target;
+        });
+    };
+    if (audio.readyState >= 1) start();
+    else audio.addEventListener("loadedmetadata", start, { once: true });
+
+    const now = Date.now();
+    if (
+      lastPlayBump.current.index !== currentIndex ||
+      now - lastPlayBump.current.at > 800
+    ) {
+      lastPlayBump.current = { index: currentIndex, at: now };
+      const src = songs[currentIndex].src;
+      setPlayCounts((prev) => {
+        const next = { ...prev, [src]: (prev[src] ?? 0) + 1 };
+        writePlays(next);
+        return next;
       });
+    }
+    setResumeOffer(null);
+    const scrollTimer = window.setTimeout(() => scrollSongIntoView(currentIndex), 80);
+    return () => {
+      window.clearTimeout(scrollTimer);
+      audio.removeEventListener("loadedmetadata", start);
+    };
   }, [currentIndex, ensureAudioGraph]);
 
   useEffect(() => {
@@ -738,7 +885,7 @@ export default function App() {
 
   useEffect(() => {
     if (!currentSong?.cover) {
-      setGlowColor("#1db954");
+      setGlowColor("#e8a44a");
       return;
     }
     let cancelled = false;
@@ -760,7 +907,7 @@ export default function App() {
       { threshold: 0.12 },
     );
     io.observe(el);
-    const fallback = window.setTimeout(() => setCardsVisible(true), 900);
+    const fallback = window.setTimeout(() => setCardsVisible(true), 400);
     return () => {
       io.disconnect();
       window.clearTimeout(fallback);
@@ -772,14 +919,14 @@ export default function App() {
   }, [currentIndex]);
 
   useEffect(() => {
-    const lock = splash || nowPlayingOpen;
+    const lock = nowPlayingOpen;
     document.documentElement.style.overflow = lock ? "hidden" : "";
     document.body.style.overflow = lock ? "hidden" : "";
     return () => {
       document.documentElement.style.overflow = "";
       document.body.style.overflow = "";
     };
-  }, [splash, nowPlayingOpen]);
+  }, [nowPlayingOpen]);
 
   const filteredSongs = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -914,19 +1061,37 @@ export default function App() {
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
-      if (
+      const inField = Boolean(
         target &&
-        (target.tagName === "INPUT" ||
-          target.tagName === "TEXTAREA" ||
-          target.tagName === "SELECT" ||
-          target.isContentEditable)
-      ) {
-        return;
-      }
+          (target.tagName === "INPUT" ||
+            target.tagName === "TEXTAREA" ||
+            target.tagName === "SELECT" ||
+            target.isContentEditable),
+      );
+      const searchEl = searchInputRef.current;
+      const searchFocused = Boolean(searchEl && document.activeElement === searchEl);
+
       if (e.key === "Escape") {
-        setNowPlayingOpen(false);
+        if (searchFocused) {
+          e.preventDefault();
+          setQuery("");
+          searchEl?.blur();
+          return;
+        }
+        if (nowPlayingOpen) {
+          setNowPlayingOpen(false);
+          return;
+        }
+      }
+
+      if (e.key === "/" && !inField && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        searchEl?.focus();
+        searchEl?.select();
         return;
       }
+
+      if (inField) return;
       if (e.key === " " || e.code === "Space") {
         if (target?.closest("button, [role='button'], a")) return;
         e.preventDefault();
@@ -941,12 +1106,12 @@ export default function App() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [togglePlayPause, playNext, playPrev]);
+  }, [togglePlayPause, playNext, playPrev, nowPlayingOpen]);
 
   const shareSong = useCallback(
     async (song: Song) => {
       const link = window.location.origin;
-      const shareText = `${song.title} — ${song.artist}\n${link}`;
+      const shareText = `Listening to ${song.title} by ${song.artist} on Krishbuilds — ${link}`;
       try {
         await navigator.clipboard.writeText(shareText);
       } catch {
@@ -971,7 +1136,8 @@ export default function App() {
     const next = Math.min(audio.duration, Math.max(0, Number(e.target.value)));
     audio.currentTime = next;
     setCurrentTime(next);
-  }, []);
+    persistResume();
+  }, [persistResume]);
 
   const playFeatured = useCallback(
     (trigger?: HTMLElement | null) => {
@@ -1006,19 +1172,48 @@ export default function App() {
       const options = songs.map((_, i) => i).filter((i) => i !== currentIndex);
       const pool = options.length > 0 ? options : [0];
       const next = pool[Math.floor(Math.random() * pool.length)] ?? 0;
+      setQuery("");
+      setCategory("All");
       pulseEl(trigger ?? null);
       void changeTrack(next);
       if (shuffle) {
         setShuffleOrder(shuffleList(songs.map((_, i) => i), next));
       }
-      window.setTimeout(() => {
-        document
-          .getElementById(`song-card-${next}`)
-          ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-        pulseSong(next);
-      }, 40);
+      window.setTimeout(() => pulseSong(next), 80);
     },
     [currentIndex, shuffle, changeTrack],
+  );
+
+  const continueListening = useCallback(
+    (trigger?: HTMLElement | null) => {
+      if (!resumeOffer) return;
+      const { index, time } = resumeOffer;
+      pendingSeekRef.current = time;
+      setResumeOffer(null);
+      setQuery("");
+      setCategory("All");
+      pulseEl(trigger ?? null);
+      if (index === currentIndex) {
+        const audio = audioRef.current;
+        if (audio) {
+          audio.currentTime = time;
+          setCurrentTime(time);
+          audio.play().catch(() => {});
+        }
+        persistResume();
+        window.setTimeout(() => {
+          scrollSongIntoView(index);
+          pulseSong(index);
+        }, 40);
+        return;
+      }
+      void changeTrack(index);
+      if (shuffle) {
+        setShuffleOrder(shuffleList(songs.map((_, i) => i), index));
+      }
+      window.setTimeout(() => pulseSong(index), 80);
+    },
+    [resumeOffer, currentIndex, shuffle, changeTrack, persistResume],
   );
 
   const t = text[lang];
@@ -1053,6 +1248,7 @@ export default function App() {
     isPlaying,
     currentTime,
     duration,
+    waveSeed: currentSong?.src ?? "",
     onShuffle: toggleShuffle,
     onPrev: playPrev,
     onToggle: togglePlayPause,
@@ -1062,24 +1258,16 @@ export default function App() {
   };
 
   return (
-    <div className={`app-shell min-h-screen bg-spot font-sans text-fg ${currentIndex >= 0 ? "pb-40" : "pb-10"}`}>
-      <div className={splashOut ? "site-reveal" : undefined}>
+    <div className={`app-shell min-h-screen bg-spot font-sans text-fg ${currentIndex >= 0 ? "pb-36" : "pb-10"}`}>
       <audio ref={audioRef} preload="metadata" crossOrigin="anonymous" />
 
-      <section className="relative flex flex-col items-center px-6 pt-24 pb-8 sm:pt-28 sm:pb-10 overflow-hidden">
-        <div className="hero-wash absolute inset-0" />
+      <section className="relative flex flex-col items-center px-4 sm:px-8 pt-20 sm:pt-24 pb-8 sm:pb-10 overflow-hidden">
+        <div className="hero-wash" />
+        <div className="hero-disc" aria-hidden="true" />
+        <div className="hero-grain" aria-hidden="true" />
 
-        <div className="pointer-events-none absolute inset-0 z-[1]" aria-hidden="true">
-          <span className="hero-note absolute left-[12%] top-[42%] text-green/25">
-            <MusicNoteIcon className="w-7 h-7 sm:w-8 sm:h-8" />
-          </span>
-          <span className="hero-note hero-note-b absolute right-[14%] top-[58%] text-muted/30">
-            <MusicNoteIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-          </span>
-        </div>
-
-        <div className="absolute top-6 right-6 z-10">
-          <div className="flex items-center gap-2 text-xs font-medium tracking-wide">
+        <div className="absolute top-5 right-4 sm:right-8 z-10 hero-in" style={{ animationDelay: "0.05s" }}>
+          <div className="flex items-center gap-1 rounded-2xl border border-spot-border bg-spot-raised/80 px-1.5 py-1 text-xs font-medium tracking-wide backdrop-blur-sm">
             <button
               type="button"
               onClick={() => setTheme((mode) => (mode === "dark" ? "light" : "dark"))}
@@ -1108,11 +1296,11 @@ export default function App() {
           </div>
         </div>
 
-        <div className="relative z-10 text-center max-w-3xl">
-          <h1 className="text-[clamp(2.6rem,9vw,5.25rem)] font-extrabold tracking-tight text-fg leading-[1.08]">
-            {t.headline}
+        <div className="relative z-10 text-center w-full max-w-3xl">
+          <h1 className="hero-mark hero-in text-[clamp(3.6rem,12vw,7.4rem)] font-semibold tracking-[-0.04em] text-fg leading-[0.9]">
+            K<span className="hero-ital">ri</span>shbu<span className="hero-ital">i</span>lds
           </h1>
-          <p className="mt-4 text-base sm:text-lg text-muted font-medium">
+          <p className="hero-in mt-4 sm:mt-5 text-base sm:text-lg text-muted font-medium tracking-wide" style={{ animationDelay: "0.16s" }}>
             {t.tagline}
           </p>
           <button
@@ -1122,49 +1310,103 @@ export default function App() {
               if (currentIndex < 0) playSong(0);
               else if (!isPlaying) togglePlayPause();
             }}
-            className="mt-7 inline-flex items-center justify-center rounded-full bg-green hover:bg-green-hover hover:scale-105 text-black font-bold text-base px-10 py-3.5 cursor-pointer transition-all"
+            className="hero-cta hero-in mt-7 sm:mt-8 inline-flex items-center justify-center rounded-2xl bg-green hover:bg-green-hover text-[#1a1612] font-semibold text-base px-11 py-3.5 cursor-pointer"
+            style={{ animationDelay: "0.3s" }}
           >
             Play
           </button>
+        </div>
+
+        <div className="hero-in relative z-10 mt-9 sm:mt-11 w-full" style={{ animationDelay: "0.46s" }}>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+            <label className="relative block w-full max-w-md">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted">
+                <SearchIcon className="w-4 h-4" />
+              </span>
+              <input
+                ref={searchInputRef}
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") {
+                    e.preventDefault();
+                    setQuery("");
+                    e.currentTarget.blur();
+                  }
+                }}
+                placeholder="Search songs, artists, or moods"
+                className="search-input w-full rounded-2xl bg-search text-fg placeholder:text-muted text-sm py-3 pl-11 pr-4"
+                aria-keyshortcuts="/"
+              />
+            </label>
+            <button
+              type="button"
+              onClick={(e) => playSurprise(e.currentTarget)}
+              className="relative inline-flex items-center gap-2 self-start rounded-2xl bg-spot-raised hover:bg-spot-hover border border-spot-border text-fg font-semibold text-sm px-4 py-3 cursor-pointer transition-colors"
+            >
+              <SparkleIcon className="w-4 h-4 text-green" />
+              Surprise Me
+            </button>
+          </div>
         </div>
       </section>
 
       <section
         id="songs"
         ref={songsSectionRef}
-        className="px-4 sm:px-8 pb-10 scroll-mt-4"
+        className="px-4 sm:px-8 pt-2 sm:pt-3 pb-12 scroll-mt-4"
       >
-        <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-8">
-          <label className="relative block w-full max-w-md">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted">
-              <SearchIcon className="w-4 h-4" />
-            </span>
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search songs, artists, or moods"
-              className="search-input w-full rounded-full bg-search text-fg placeholder:text-muted text-sm py-2.5 pl-10 pr-4 border-0"
-            />
-          </label>
-          <button
-            type="button"
-            onClick={(e) => playSurprise(e.currentTarget)}
-            className="relative inline-flex items-center gap-2 self-start rounded-full bg-spot-raised hover:bg-spot-hover border border-spot-border text-fg font-bold text-sm px-4 py-2.5 cursor-pointer transition-colors"
-          >
-            <SparkleIcon className="w-4 h-4 text-green" />
-            Surprise Me
-          </button>
-        </div>
+        {resumeOffer && songs[resumeOffer.index] && (
+          <div className="continue-banner relative mb-5 w-full max-w-xl rounded-[1.35rem] overflow-hidden bg-spot-raised border border-spot-border p-3 sm:p-3.5 flex items-center gap-2 sm:gap-3.5">
+            <button
+              type="button"
+              onClick={(e) => continueListening(e.currentTarget)}
+              className="relative min-w-0 flex-1 flex items-center gap-3.5 text-left cursor-pointer hover:opacity-95"
+              aria-label={`Continue ${songs[resumeOffer.index].title}`}
+            >
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden flex-shrink-0 shadow-md ring-1 ring-white/10">
+                {coverFor(resumeOffer.index, songs[resumeOffer.index])}
+              </div>
+              <div className="relative min-w-0 flex-1">
+                <p className="text-[11px] font-bold tracking-widest uppercase text-green">
+                  Continue listening
+                </p>
+                <p className="mt-0.5 text-sm font-semibold text-fg truncate">
+                  {songs[resumeOffer.index].title}
+                </p>
+                <p className="text-xs text-muted truncate">
+                  {songs[resumeOffer.index].artist}
+                  <span className="text-spot-border"> · </span>
+                  {formatTime(resumeOffer.time)}
+                </p>
+              </div>
+              <span className="relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-green text-[#1a1612] flex items-center justify-center shadow-[0_0_16px_rgba(232,164,74,0.45)]">
+                <PlayIcon className="w-4 h-4 sm:w-5 sm:h-5 ml-0.5" />
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setResumeOffer(null);
+                clearResume();
+              }}
+              className="relative flex-shrink-0 p-1.5 rounded-full text-muted hover:text-fg hover:bg-fg/10 cursor-pointer"
+              aria-label="Dismiss continue listening"
+            >
+              <CloseIcon className="w-4 h-4" />
+            </button>
+          </div>
+        )}
 
         {FEATURED_INDEX >= 0 && songs[FEATURED_INDEX] && (
           <button
             type="button"
             onClick={(e) => playFeatured(e.currentTarget)}
-            className="rec-banner relative mb-8 w-full max-w-xl text-left rounded-2xl overflow-hidden bg-spot-raised border border-spot-border p-3 sm:p-3.5 flex items-center gap-3.5 cursor-pointer hover:bg-spot-hover transition-colors"
+            className="rec-banner relative mb-7 w-full max-w-xl text-left rounded-[1.35rem] overflow-hidden bg-spot-raised border border-spot-border p-3 sm:p-3.5 flex items-center gap-3.5 cursor-pointer hover:bg-spot-hover transition-colors"
           >
             <span className="rec-banner-wash pointer-events-none absolute inset-0" aria-hidden="true" />
-            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden flex-shrink-0 shadow-md ring-1 ring-white/10">
+            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden flex-shrink-0 shadow-md ring-1 ring-white/10">
               {coverFor(FEATURED_INDEX, songs[FEATURED_INDEX])}
             </div>
             <div className="relative min-w-0 flex-1">
@@ -1177,18 +1419,18 @@ export default function App() {
                 {songs[FEATURED_INDEX].artist}
               </p>
             </div>
-            <span className="relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-green text-black flex items-center justify-center shadow-[0_0_16px_rgba(29,185,84,0.45)]">
+            <span className="relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-green text-[#1a1612] flex items-center justify-center shadow-[0_0_16px_rgba(232,164,74,0.45)]">
               <PlayIcon className="w-4 h-4 sm:w-5 sm:h-5 ml-0.5" />
             </span>
           </button>
         )}
 
         {recent.length > 0 && (
-          <div className="mb-10">
-            <p className="text-xs font-bold tracking-widest uppercase text-muted mb-1">
+          <div className="mb-8">
+            <p className="section-kicker mb-1">
               Listening history
             </p>
-            <h2 className="text-2xl sm:text-3xl font-bold mb-5">Recently Played</h2>
+            <h2 className="section-title text-2xl sm:text-3xl mb-4">Recently Played</h2>
             <div className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
               {recent.map((index) => {
                 const song = songs[index];
@@ -1198,13 +1440,13 @@ export default function App() {
                     key={index}
                     type="button"
                     onClick={(e) => playSong(index, e.currentTarget)}
-                    className={`song-card flex-shrink-0 w-[136px] sm:w-40 text-left rounded-lg p-2.5 cursor-pointer ${
+                    className={`song-card flex-shrink-0 w-[136px] sm:w-40 text-left p-2.5 cursor-pointer ${
                       isActive
                         ? "song-card-playing"
                         : "bg-spot-raised hover:bg-spot-hover"
                     }`}
                   >
-                    <div className="relative aspect-square rounded-md overflow-hidden mb-2 bg-spot-hover">
+                    <div className="relative aspect-square rounded-[0.85rem] overflow-hidden mb-2 bg-spot-hover">
                       {coverFor(index, song)}
                       {isActive && isPlaying && !buffering && (
                         <div className="absolute bottom-1.5 left-1.5">
@@ -1221,25 +1463,25 @@ export default function App() {
           </div>
         )}
 
-        <p className="text-xs font-bold tracking-widest uppercase text-muted mb-1">
+        <p className="section-kicker mb-1">
           Playlist
         </p>
-        <div className="flex items-end justify-between gap-3 mb-4">
-          <h2 className="text-2xl sm:text-3xl font-bold">Made for You</h2>
+        <div className="flex items-end justify-between gap-3 mb-3">
+          <h2 className="section-title text-2xl sm:text-3xl">Made for You</h2>
           <span className="text-sm text-muted whitespace-nowrap pb-0.5">
             {filteredSongs.length} {filteredSongs.length === 1 ? "song" : "songs"}
           </span>
         </div>
 
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide mb-6 pb-0.5">
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide mb-5 pb-0.5">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               type="button"
               onClick={() => setCategory(cat)}
-              className={`flex-shrink-0 rounded-full px-3.5 py-1.5 text-xs font-bold cursor-pointer transition-colors ${
+              className={`flex-shrink-0 rounded-xl px-3.5 py-1.5 text-xs font-semibold tracking-wide cursor-pointer transition-colors ${
                 category === cat
-                  ? "bg-green text-black"
+                  ? "bg-green text-[#1a1612]"
                   : "bg-spot-hover text-muted hover:text-fg"
               }`}
             >
@@ -1265,6 +1507,7 @@ export default function App() {
             {filteredSongs.map(({ song, index }, i) => {
               const isActive = index === currentIndex;
               const inQueue = queuedCount.get(index) ?? 0;
+              const plays = playCounts[song.src] ?? 0;
               return (
                 <div
                   key={index}
@@ -1279,7 +1522,7 @@ export default function App() {
                       playSong(index, e.currentTarget);
                     }
                   }}
-                  className={`song-card group relative text-left rounded-lg p-3 sm:p-4 cursor-pointer min-w-0 scroll-mt-28 ${
+                  className={`song-card group relative text-left p-3 sm:p-4 cursor-pointer min-w-0 scroll-mt-36 ${
                     isActive ? "song-card-playing" : "bg-spot-raised hover:bg-spot-hover"
                   }`}
                 >
@@ -1287,7 +1530,7 @@ export default function App() {
                     className={cardsVisible ? "song-card-enter" : "opacity-0"}
                     style={{ animationDelay: `${Math.min(i, 14) * 50}ms` }}
                   >
-                  <div className="relative aspect-square rounded-md overflow-hidden mb-3 bg-spot-hover shadow-lg">
+                  <div className="relative aspect-square rounded-[0.95rem] overflow-hidden mb-3 bg-spot-hover shadow-lg">
                     {coverFor(
                       index,
                       song,
@@ -1312,7 +1555,7 @@ export default function App() {
                           e.stopPropagation();
                           playSong(index, e.currentTarget.closest(".song-card") as HTMLElement | null);
                         }}
-                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-green text-black flex items-center justify-center shadow-[0_8px_24px_rgba(0,0,0,0.45)] hover:scale-105 cursor-pointer"
+                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-green text-[#1a1612] flex items-center justify-center shadow-[0_8px_24px_rgba(12,11,9,0.5)] hover:scale-105 cursor-pointer"
                         aria-label={
                           isActive && isPlaying ? `Pause ${song.title}` : `Play ${song.title}`
                         }
@@ -1331,6 +1574,9 @@ export default function App() {
                         {song.title}
                       </h3>
                       <p className="text-sm text-muted truncate mt-0.5">{song.artist}</p>
+                      <p className="text-[11px] text-muted/80 mt-0.5">
+                        {plays === 1 ? "1 play" : `${plays} plays`}
+                      </p>
                       <button
                         type="button"
                         onClick={(e) => {
@@ -1356,7 +1602,7 @@ export default function App() {
                     >
                       <QueueIcon className="w-4 h-4" />
                       {inQueue > 0 && (
-                        <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] px-0.5 rounded-full bg-green text-black text-[9px] font-bold leading-[14px] text-center">
+                        <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] px-0.5 rounded-full bg-green text-[#1a1612] text-[9px] font-bold leading-[14px] text-center">
                           {inQueue}
                         </span>
                       )}
@@ -1382,7 +1628,7 @@ export default function App() {
       </section>
 
       <footer className="px-4 sm:px-8 pb-10">
-        <div className="mx-auto max-w-xl rounded-2xl bg-spot-raised border border-spot-border px-6 py-8 text-center">
+        <div className="mx-auto max-w-xl rounded-[1.5rem] bg-spot-raised border border-spot-border px-6 py-8 text-center">
           <p className="text-muted text-sm sm:text-base mb-5">
             Want to suggest a song? Contact me on WhatsApp
           </p>
@@ -1390,7 +1636,7 @@ export default function App() {
             href="https://wa.me/919267939780"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-green hover:bg-green-hover text-black font-bold text-sm px-6 py-3 transition-colors"
+            className="inline-flex items-center gap-2 rounded-2xl bg-green hover:bg-green-hover text-[#1a1612] font-semibold text-sm px-6 py-3 transition-colors"
           >
             <WhatsAppIcon className="w-5 h-5" />
             WhatsApp
@@ -1399,98 +1645,148 @@ export default function App() {
       </footer>
 
       {currentIndex >= 0 && (
-      <div className={`player-dock fixed bottom-0 left-0 right-0 z-50 overflow-visible px-3 sm:px-4 pb-3 sm:pb-4 ${nowPlayingOpen ? "invisible pointer-events-none" : ""}`}>
+      <div className={`player-dock fixed bottom-0 left-0 right-0 z-50 flex justify-center overflow-visible px-3 pb-3 sm:px-4 sm:pb-4 ${nowPlayingOpen ? "invisible pointer-events-none" : ""}`}>
         <div
-          className="player-glow pointer-events-none absolute left-1/2 -top-12 h-28 w-[80%] max-w-3xl -translate-x-1/2 rounded-full blur-3xl"
+          className="player-glow pointer-events-none absolute left-1/2 bottom-0 h-20 w-[min(32rem,80%)] -translate-x-1/2 rounded-full blur-3xl"
           style={{
             backgroundColor: glowColor,
-            opacity: theme === "light" ? 0.22 : 0.35,
+            opacity: theme === "light" ? 0.18 : 0.28,
           }}
           aria-hidden="true"
         />
-        <div className="relative min-h-[88px] rounded-2xl bg-player border border-spot-border px-3 sm:px-4 shadow-[0_8px_32px_rgba(0,0,0,0.45)]">
-          <div className="h-[18px] pt-1.5 px-2 sm:px-1">
-            <WaveformVisualizer
-              analyserRef={analyserRef}
-              active={isPlaying && !buffering}
-              bars={40}
-              className="h-full w-full max-w-xl mx-auto"
-            />
-          </div>
-          <div className="h-full flex items-center gap-2 sm:gap-3 py-2 min-h-[70px]">
-            <button
-              type="button"
-              onClick={() => setNowPlayingOpen(true)}
-              className="flex items-center gap-2 sm:gap-3 min-w-0 w-[32%] sm:w-[28%] text-left cursor-pointer"
-              aria-label="Open now playing"
-            >
-              <div className="relative w-11 h-11 sm:w-14 sm:h-14 rounded overflow-hidden flex-shrink-0 bg-spot-hover">
-                {nowPrevSong && nowPrev != null && (
-                  <div key={`art-out-${nowPrev}`} className="player-now-out absolute inset-0">
-                    {coverFor(nowPrev, nowPrevSong)}
-                  </div>
-                )}
-                {nowCurrSong && (
-                  <div key={`art-in-${nowCurr}`} className="player-now-in absolute inset-0">
-                    {coverFor(nowCurr, nowCurrSong, buffering ? "opacity-70" : "")}
-                    {buffering && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/35">
-                        <div className="art-spinner" aria-hidden="true" />
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-              <div className="relative min-w-0 h-10 flex-1">
-                {nowPrevSong && nowPrev != null && (
-                  <div key={`txt-out-${nowPrev}`} className="player-now-out absolute inset-0 min-w-0">
-                    <p className="text-xs sm:text-sm font-semibold text-fg truncate">
-                      {nowPrevSong.title}
-                    </p>
-                    <p className="text-[11px] sm:text-xs text-muted truncate">
-                      {nowPrevSong.artist}
-                    </p>
-                  </div>
-                )}
-                {nowCurrSong && (
-                  <div key={`txt-in-${nowCurr}`} className="player-now-in min-w-0">
-                    <p className="text-xs sm:text-sm font-semibold text-fg truncate">
-                      {nowCurrSong.title}
-                    </p>
-                    <p className="text-[11px] sm:text-xs text-muted truncate">
-                      {nowCurrSong.artist}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </button>
+        <div className="player-card player-bar relative">
+          <button
+            type="button"
+            onClick={() => setNowPlayingOpen(true)}
+            className="player-now flex items-center gap-3 min-w-0 text-left cursor-pointer"
+            aria-label="Open now playing"
+          >
+            <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden flex-shrink-0 bg-spot-hover shadow-md ring-1 ring-white/10">
+              {nowPrevSong && nowPrev != null && (
+                <div key={`art-out-${nowPrev}`} className="player-now-out absolute inset-0">
+                  {coverFor(nowPrev, nowPrevSong)}
+                </div>
+              )}
+              {nowCurrSong && (
+                <div key={`art-in-${nowCurr}`} className="player-now-in absolute inset-0">
+                  {coverFor(nowCurr, nowCurrSong, buffering ? "opacity-70" : "")}
+                  {buffering && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/35">
+                      <div className="art-spinner" aria-hidden="true" />
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="relative min-w-0 h-10 flex-1">
+              {nowPrevSong && nowPrev != null && (
+                <div key={`txt-out-${nowPrev}`} className="player-now-out absolute inset-0 min-w-0">
+                  <p className="text-sm font-semibold text-fg truncate leading-snug">
+                    {nowPrevSong.title}
+                  </p>
+                  <p className="text-xs text-muted truncate leading-snug mt-0.5">
+                    {nowPrevSong.artist}
+                  </p>
+                </div>
+              )}
+              {nowCurrSong && (
+                <div key={`txt-in-${nowCurr}`} className="player-now-in min-w-0">
+                  <p className="text-sm font-semibold text-fg truncate leading-snug">
+                    {nowCurrSong.title}
+                  </p>
+                  <p className="text-xs text-muted truncate leading-snug mt-0.5">
+                    {nowCurrSong.artist}
+                  </p>
+                </div>
+              )}
+            </div>
+          </button>
 
-            <Transport size="bar" {...transportProps} />
-
-            <div className="flex items-center justify-end gap-1 sm:gap-2 w-[22%] sm:w-[28%] min-w-0">
+          <div className="player-transport">
+            <div className="player-controls flex items-center justify-center">
               <button
                 type="button"
-                onClick={() => setMuted((m) => !m)}
-                className="p-1 text-muted hover:text-fg cursor-pointer flex-shrink-0"
-                aria-label={muted ? "Unmute" : "Mute"}
+                onClick={toggleShuffle}
+                className={`hidden sm:inline-flex cursor-pointer p-2 mr-1 ${
+                  shuffle ? "text-green" : "text-muted hover:text-fg"
+                }`}
+                aria-label="Shuffle"
               >
-                {muted || volume === 0 ? <VolumeOffIcon /> : <VolumeIcon />}
+                <ShuffleIcon className="w-5 h-5" />
               </button>
-              <input
-                type="range"
-                min={0}
-                max={1}
-                step={0.01}
-                value={muted ? 0 : volume}
-                onChange={(e) => {
-                  const v = Number(e.target.value);
-                  setVolume(v);
-                  if (v > 0) setMuted(false);
-                }}
-                className="volume-seek w-14 sm:w-24 min-w-0"
-                style={{ ["--progress" as string]: `${(muted ? 0 : volume) * 100}%` }}
-              />
+              <button
+                type="button"
+                onClick={playPrev}
+                className="text-muted hover:text-fg cursor-pointer p-2"
+                aria-label="Previous"
+              >
+                <PrevIcon className="w-6 h-6" />
+              </button>
+              <button
+                type="button"
+                onClick={togglePlayPause}
+                className="mx-1.5 w-11 h-11 rounded-full bg-green text-[#1a1612] flex items-center justify-center hover:scale-105 cursor-pointer flex-shrink-0 shadow-[0_0_16px_rgba(232,164,74,0.35)]"
+                aria-label={isPlaying ? "Pause" : "Play"}
+              >
+                {isPlaying ? <PauseIcon className="w-5 h-5" /> : <PlayIcon className="w-5 h-5 ml-0.5" />}
+              </button>
+              <button
+                type="button"
+                onClick={playNext}
+                className="text-muted hover:text-fg cursor-pointer p-2"
+                aria-label="Next"
+              >
+                <NextIcon className="w-6 h-6" />
+              </button>
+              <button
+                type="button"
+                onClick={cycleRepeat}
+                className={`relative hidden sm:inline-flex cursor-pointer p-2 ml-1 ${
+                  repeat !== "off" ? "text-green" : "text-muted hover:text-fg"
+                }`}
+                aria-label="Repeat"
+              >
+                <RepeatIcon className="w-5 h-5" />
+                {repeat === "one" && (
+                  <span className="absolute left-1/2 -translate-x-1/2 -bottom-0.5 text-[10px] font-semibold leading-none">
+                    1
+                  </span>
+                )}
+              </button>
             </div>
+            <SeekBar
+              currentTime={currentTime}
+              duration={duration}
+              compact
+              seed={currentSong?.src ?? ""}
+              onSeek={seek}
+            />
+          </div>
+
+          <div className="player-vol">
+            <button
+              type="button"
+              onClick={() => setMuted((m) => !m)}
+              className="p-2 text-muted hover:text-fg cursor-pointer flex-shrink-0"
+              aria-label={muted ? "Unmute" : "Mute"}
+            >
+              {muted || volume === 0 ? <VolumeOffIcon className="w-5 h-5" /> : <VolumeIcon className="w-5 h-5" />}
+            </button>
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={muted ? 0 : volume}
+              onChange={(e) => {
+                const v = Number(e.target.value);
+                setVolume(v);
+                if (v > 0) setMuted(false);
+              }}
+              className="volume-seek w-16 md:w-24 min-w-0"
+              style={{ ["--progress" as string]: `${(muted ? 0 : volume) * 100}%` }}
+              aria-label="Volume"
+            />
           </div>
         </div>
       </div>
@@ -1507,7 +1803,7 @@ export default function App() {
             aria-hidden="true"
           />
           <div className="relative z-10 flex items-center justify-between px-4 sm:px-8 pt-5 pb-2">
-            <p className="text-xs font-bold tracking-widest uppercase text-muted">Now playing</p>
+            <p className="section-kicker">Now playing</p>
             <button
               type="button"
               onClick={() => setNowPlayingOpen(false)}
@@ -1518,7 +1814,7 @@ export default function App() {
             </button>
           </div>
           <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pb-10 min-h-0">
-            <div className="relative w-full max-w-sm sm:max-w-md aspect-square rounded-xl overflow-hidden shadow-2xl bg-spot-hover mb-8">
+            <div className="relative w-full max-w-sm sm:max-w-md aspect-square rounded-[1.75rem] overflow-hidden shadow-2xl bg-spot-hover mb-8">
               {coverFor(currentIndex, currentSong, buffering ? "opacity-70" : "")}
               {buffering && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/35">
@@ -1527,7 +1823,7 @@ export default function App() {
               )}
             </div>
             <div className="w-full max-w-xl text-center mb-8">
-              <h2 className="text-2xl sm:text-4xl font-extrabold text-fg truncate">{currentSong.title}</h2>
+              <h2 className="section-title text-2xl sm:text-4xl text-fg truncate">{currentSong.title}</h2>
               <p className="mt-2 text-base sm:text-lg text-muted truncate">{currentSong.artist}</p>
               <div className="mt-3">
                 <span className={`mood-pill mood-${currentSong.mood.toLowerCase()}`}>
@@ -1535,12 +1831,6 @@ export default function App() {
                 </span>
               </div>
             </div>
-            <WaveformVisualizer
-              analyserRef={analyserRef}
-              active={isPlaying && !buffering}
-              bars={32}
-              className="h-12 w-full max-w-md mb-6"
-            />
             <Transport size="full" {...transportProps} />
             <div className="flex items-center justify-center gap-3 mt-8 w-full max-w-xs">
               <button
@@ -1572,70 +1862,10 @@ export default function App() {
 
       {toast && (
         <div
-          className="copied-toast fixed bottom-28 left-1/2 z-[80] -translate-x-1/2 rounded-full bg-fg text-spot px-4 py-2 text-sm font-semibold shadow-lg"
+          className="copied-toast fixed bottom-36 left-1/2 z-[80] -translate-x-1/2 rounded-2xl bg-fg text-spot px-4 py-2 text-sm font-semibold shadow-lg"
           role="status"
         >
           {toast}
-        </div>
-      )}
-
-      </div>
-
-      {splash && (
-        <div className={`splash-screen ${splashOut ? "splash-out" : ""}`}>
-          <div className="splash-nebula" aria-hidden="true" />
-          <div className="splash-stars" aria-hidden="true">
-            {SPLASH_STARS.map((star, i) => (
-              <span
-                key={i}
-                className={`splash-star${star.twinkle ? " splash-star-twinkle" : ""}${star.tint === "green" ? " splash-star-green" : ""}`}
-                style={{
-                  left: star.left,
-                  top: star.top,
-                  width: star.size,
-                  height: star.size,
-                  animationDelay: star.delay,
-                }}
-              />
-            ))}
-          </div>
-          {SPLASH_NOTES.map((note, i) => (
-            <span
-              key={`note-${i}`}
-              className={`splash-note${note.tint === "green" ? " splash-note-green" : ""}`}
-              aria-hidden="true"
-              style={{
-                left: note.left,
-                top: note.top,
-                animationDelay: note.delay,
-                animationDuration: note.duration,
-              }}
-            >
-              {note.char}
-            </span>
-          ))}
-          <span className="splash-orb splash-orb-a" aria-hidden="true" />
-          <span className="splash-orb splash-orb-b" aria-hidden="true" />
-          <span className="splash-orb splash-orb-c" aria-hidden="true" />
-          <div className="splash-inner">
-            <div className="splash-title-wrap">
-              <span className="splash-halo" aria-hidden="true" />
-              <h1 className="splash-mark">Krishbuilds</h1>
-            </div>
-            <p className="splash-tagline">songs that take me back</p>
-            <div className="splash-wave" aria-hidden="true">
-              <span style={{ animationDelay: "0ms" }} />
-              <span style={{ animationDelay: "120ms" }} />
-              <span style={{ animationDelay: "240ms" }} />
-              <span style={{ animationDelay: "80ms" }} />
-              <span style={{ animationDelay: "200ms" }} />
-              <span style={{ animationDelay: "40ms" }} />
-              <span style={{ animationDelay: "160ms" }} />
-            </div>
-            <button type="button" className="splash-enter" onClick={enterSite}>
-              Enter
-            </button>
-          </div>
         </div>
       )}
     </div>
