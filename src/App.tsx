@@ -1736,9 +1736,9 @@ export default function App() {
         {recommendations && (
           <div className="mb-8">
             <p className="section-kicker mb-2">For you</p>
-            <h2 className="section-title text-2xl sm:text-3xl mb-4">
-              Because you listened to{" "}
-              <span className="text-green">{songs[recommendations.seedIndex].title}</span>
+            <h2 className="because-title section-title text-2xl sm:text-3xl mb-4">
+              <span className="because-prefix">Because you listened to</span>
+              <span className="because-song text-green">{songs[recommendations.seedIndex].title}</span>
             </h2>
             <div className="flex gap-4 overflow-x-auto scrollbar-hide py-2">
               {recommendations.indices.map((index) => {
@@ -1780,9 +1780,9 @@ export default function App() {
         <p className="section-kicker mb-2">
           Playlist
         </p>
-        <div className="flex items-end justify-between gap-4 mb-4">
-          <h2 className="section-title text-2xl sm:text-3xl leading-tight">Made for You</h2>
-          <span className="text-sm text-muted whitespace-nowrap pb-1">
+        <div className="playlist-head mb-4">
+          <h2 className="section-title text-2xl sm:text-3xl leading-tight min-w-0">Made for You</h2>
+          <span className="playlist-count text-sm text-muted">
             {filteredSongs.length} {filteredSongs.length === 1 ? "song" : "songs"}
           </span>
         </div>
@@ -1895,7 +1895,8 @@ export default function App() {
                       </button>
                     </div>
                   </div>
-                  <div className="flex items-start gap-2 min-w-0 overflow-hidden">
+                  <div className="min-w-0">
+                  <div className="flex items-start gap-2 min-w-0">
                     <div className="min-w-0 flex-1 overflow-hidden">
                       <h3 className={`song-card-title font-bold text-sm ${isActive ? "text-green" : "text-fg"}`}>
                         {song.title}
@@ -1904,18 +1905,6 @@ export default function App() {
                       <p className="text-[11px] text-muted/80 mt-0.5">
                         {plays === 1 ? "1 play" : `${plays} plays`}
                       </p>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setCategory(song.mood);
-                          setQuery("");
-                        }}
-                        className={`mood-pill mood-${song.mood.toLowerCase()} mt-1.5 cursor-pointer`}
-                        aria-label={`Filter by ${song.mood}`}
-                      >
-                        {song.mood}
-                      </button>
                     </div>
                     <button
                       type="button"
@@ -1946,6 +1935,19 @@ export default function App() {
                     >
                       <ShareIcon className="w-5 h-5" />
                     </button>
+                  </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setCategory(song.mood);
+                          setQuery("");
+                        }}
+                        className={`mood-pill mood-${song.mood.toLowerCase()} mt-1.5 cursor-pointer`}
+                        aria-label={`Filter by ${song.mood}`}
+                      >
+                        {song.mood}
+                      </button>
                   </div>
                   </div>
                 </div>

@@ -1383,22 +1383,77 @@ html[data-theme="light"] .stats-overlay {
   line-height: 1.2;
 }
 
+.because-title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35em;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.because-prefix {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.because-song {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playlist-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.playlist-count {
+  flex-shrink: 0;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
 .mood-pill {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 3px 8px;
+  padding: 4px 8px;
   border-radius: var(--radius-pill);
-  line-height: 1.4;
+  line-height: 1.2;
   border: none;
   background: transparent;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 
 button.mood-pill {
-  min-height: 32px;
-  padding: 8px 12px;
+  min-height: 0;
+  padding: 4px 8px;
+}
+
+@media (max-width: 640px) {
+  .because-title {
+    font-size: 1.25rem;
+  }
+
+  .mood-pill,
+  button.mood-pill {
+    font-size: 10px;
+    padding: 4px 8px;
+    letter-spacing: 0.04em;
+  }
 }
 
 .mood-nostalgic {
