@@ -46,7 +46,7 @@ function NextIcon({ className = "w-5 h-5" }: { className?: string }) {
   );
 }
 
-function ShuffleIcon({ className = "w-4 h-4" }: { className?: string }) {
+function ShuffleIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z" />
@@ -54,7 +54,7 @@ function ShuffleIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-function RepeatIcon({ className = "w-4 h-4" }: { className?: string }) {
+function RepeatIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
@@ -62,7 +62,7 @@ function RepeatIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-function VolumeIcon({ className = "w-4 h-4" }: { className?: string }) {
+function VolumeIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
@@ -70,7 +70,7 @@ function VolumeIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-function VolumeOffIcon({ className = "w-4 h-4" }: { className?: string }) {
+function VolumeOffIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3 3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4 9.91 6.09 12 8.18V4z" />
@@ -86,7 +86,7 @@ function MusicNoteIcon({ className = "w-8 h-8" }: { className?: string }) {
   );
 }
 
-function SearchIcon({ className = "w-4 h-4" }: { className?: string }) {
+function SearchIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
@@ -94,7 +94,7 @@ function SearchIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-function SparkleIcon({ className = "w-4 h-4" }: { className?: string }) {
+function SparkleIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M12 2.5 13.4 8l5.6 1.4L13.4 11 12 16.5 10.6 11 5 9.4 10.6 8 12 2.5zm7.5 11.2 1 3.3 3.3 1-3.3 1-1 3.3-1-3.3-3.3-1 3.3-1 1-3.3zM4.2 13.5l.7 2.2 2.2.7-2.2.7-.7 2.2-.7-2.2-2.2-.7 2.2-.7.7-2.2z" />
@@ -110,7 +110,7 @@ function WhatsAppIcon({ className = "w-5 h-5" }: { className?: string }) {
   );
 }
 
-function ShareIcon({ className = "w-4 h-4" }: { className?: string }) {
+function ShareIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z" />
@@ -118,7 +118,7 @@ function ShareIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-function QueueIcon({ className = "w-4 h-4" }: { className?: string }) {
+function QueueIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M14 10H3v2h11v-2zm0-4H3v2h11V6zm4 8v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zM3 16h7v-2H3v2z" />
@@ -126,7 +126,7 @@ function QueueIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-function CloseIcon({ className = "w-6 h-6" }: { className?: string }) {
+function CloseIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
@@ -134,7 +134,7 @@ function CloseIcon({ className = "w-6 h-6" }: { className?: string }) {
   );
 }
 
-function SunIcon({ className = "w-4 h-4" }: { className?: string }) {
+function SunIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M12 7a5 5 0 1 0 .001 10.001A5 5 0 0 0 12 7zm0-5c.55 0 1 .45 1 1v1c0 .55-.45 1-1 1s-1-.45-1-1V3c0-.55.45-1 1-1zm0 16c.55 0 1 .45 1 1v1c0 .55-.45 1-1 1s-1-.45-1-1v-1c0-.55.45-1 1-1zM3 11h1c.55 0 1 .45 1 1s-.45 1-1 1H3c-.55 0-1-.45-1-1s.45-1 1-1zm17 0h1c.55 0 1 .45 1 1s-.45 1-1 1h-1c-.55 0-1-.45-1-1s.45-1 1-1zM5.64 5.64c.39-.39 1.02-.39 1.41 0l.71.71c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0l-.71-.71c-.39-.39-.39-1.02 0-1.41zm10.6 10.6c.39-.39 1.02-.39 1.41 0l.71.71c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0l-.71-.71c-.39-.39-.39-1.02 0-1.41zM18.36 5.64c.39.39.39 1.02 0 1.41l-.71.71c-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41l.71-.71c.39-.39 1.02-.39 1.41 0zM7.76 16.24c.39.39.39 1.02 0 1.41l-.71.71c-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41l.71-.71c.39-.39 1.02-.39 1.41 0z" />
@@ -142,7 +142,7 @@ function SunIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-function MoonIcon({ className = "w-4 h-4" }: { className?: string }) {
+function MoonIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M12.34 2.02C6.59 1.82 2 6.42 2 12.12 2 17.52 6.48 22 11.88 22c5.71 0 10.31-4.59 10.1-10.34-.08-2.13-.85-4.1-2.09-5.64-.31 3.23-2.92 5.81-6.19 6.13-3.52.35-6.57-2.28-6.92-5.7-.08-.78-.02-1.53.14-2.24 1.48-1.4 3.42-2.19 5.42-2.19z" />
@@ -696,59 +696,59 @@ function Transport({
   const full = size === "full";
   const repeatLabel = repeat === "one" ? "Repeat one" : repeat === "all" ? "Repeat all" : "Repeat off";
   return (
-    <div className={`flex flex-col items-center justify-center min-w-0 w-full ${full ? "max-w-xl gap-6" : "gap-3.5"}`}>
-      <div className={`flex items-center ${full ? "gap-6" : "gap-5 sm:gap-6"}`}>
+    <div className={`flex flex-col items-center justify-center min-w-0 w-full ${full ? "max-w-xl gap-6" : "gap-4"}`}>
+      <div className={`flex items-center ${full ? "gap-6" : "gap-4 sm:gap-6"}`}>
         <button
           type="button"
           onClick={onShuffle}
-          className={`ctrl-btn cursor-pointer p-1.5 ${
+          className={`ctrl-btn cursor-pointer rounded-full ${
             shuffle ? "text-green" : "text-muted hover:text-fg"
           }`}
           aria-label="Shuffle"
           aria-pressed={shuffle}
         >
-          <ShuffleIcon className={full ? "w-5 h-5" : "w-[18px] h-[18px]"} />
+          <ShuffleIcon className="w-5 h-5" />
         </button>
         <button
           type="button"
           onClick={onPrev}
-          className="ctrl-btn text-muted hover:text-fg cursor-pointer p-1.5"
+          className="ctrl-btn text-muted hover:text-fg cursor-pointer rounded-full"
           aria-label="Previous"
         >
-          <PrevIcon className={full ? "w-7 h-7" : "w-6 h-6"} />
+          <PrevIcon className="w-5 h-5" />
         </button>
         <button
           type="button"
           onClick={onToggle}
-          className={`ctrl-btn-play flex items-center justify-center rounded-full text-control-fg hover:scale-105 cursor-pointer flex-shrink-0 ${
-            full ? "w-16 h-16" : "w-11 h-11 sm:w-12 sm:h-12"
+          className={`ctrl-btn-play flex items-center justify-center text-control-fg cursor-pointer flex-shrink-0 ${
+            full ? "w-16 h-16" : "w-11 h-11"
           }`}
           aria-label={isPlaying ? "Pause" : "Play"}
         >
           {isPlaying ? (
-            <PauseIcon className={full ? "w-7 h-7" : "w-5 h-5"} />
+            <PauseIcon className={full ? "w-6 h-6" : "w-5 h-5"} />
           ) : (
-            <PlayIcon className={full ? "w-7 h-7 ml-0.5" : "w-5 h-5 ml-0.5"} />
+            <PlayIcon className={full ? "w-6 h-6 ml-0.5" : "w-5 h-5 ml-0.5"} />
           )}
         </button>
         <button
           type="button"
           onClick={onNext}
-          className="ctrl-btn text-muted hover:text-fg cursor-pointer p-1.5"
+          className="ctrl-btn text-muted hover:text-fg cursor-pointer rounded-full"
           aria-label="Next"
         >
-          <NextIcon className={full ? "w-7 h-7" : "w-6 h-6"} />
+          <NextIcon className="w-5 h-5" />
         </button>
         <button
           type="button"
           onClick={onRepeat}
-          className={`ctrl-btn relative cursor-pointer p-1.5 ${
+          className={`ctrl-btn relative cursor-pointer rounded-full ${
             repeat !== "off" ? "text-green" : "text-muted hover:text-fg"
           }`}
           aria-label={repeatLabel}
           aria-pressed={repeat !== "off"}
         >
-          <RepeatIcon className={full ? "w-5 h-5" : "w-[18px] h-[18px]"} />
+          <RepeatIcon className="w-5 h-5" />
           {repeat === "one" && (
             <span className={`absolute left-1/2 -translate-x-1/2 font-semibold leading-none ${full ? "-bottom-0.5 text-[10px]" : "-bottom-0.5 text-[9px]"}`}>
               1
@@ -1489,14 +1489,19 @@ export default function App() {
   };
 
   return (
-    <div className={`app-shell min-h-screen bg-spot font-sans text-fg ${currentIndex >= 0 ? "pb-36" : "pb-10"}`}>
+    <div className={`app-shell min-h-screen font-sans text-fg ${currentIndex >= 0 ? "pb-36" : "pb-10"}`}>
+      <div className="atmos" aria-hidden="true">
+        <span className="atmos-orb atmos-orb-gold" />
+        <span className="atmos-orb atmos-orb-violet" />
+        <span className="atmos-orb atmos-orb-teal" />
+      </div>
       <audio ref={audioRef} preload="metadata" crossOrigin="anonymous" />
 
-      <section className="relative flex flex-col items-center px-4 sm:px-8 pt-20 sm:pt-24 pb-8 sm:pb-10 overflow-hidden">
+      <section className="hero-stage relative flex flex-col items-center px-4 sm:px-8 pt-16 sm:pt-24 pb-8 overflow-x-clip">
         <div className="hero-wash" />
         <div className="hero-grain" aria-hidden="true" />
 
-        <div className="absolute top-5 right-4 sm:right-8 z-10 hero-in flex items-center gap-2.5" style={{ animationDelay: "0.05s" }}>
+        <div className="absolute top-4 right-4 sm:right-8 z-10 hero-in flex items-center gap-2" style={{ animationDelay: "0.05s" }}>
           <button
             ref={statsBtnRef}
             type="button"
@@ -1508,19 +1513,19 @@ export default function App() {
           >
             <span className="hero-vinyl" aria-hidden="true" />
           </button>
-          <div className="flex items-center gap-1 rounded-2xl border border-spot-border bg-spot-raised/80 px-1.5 py-1 text-xs font-medium tracking-wide backdrop-blur-sm">
+          <div className="flex items-center min-h-11 gap-0 rounded-full border border-spot-border bg-spot-raised/80 px-1 text-xs font-medium tracking-wide backdrop-blur-sm">
             <button
               type="button"
               onClick={() => setTheme((mode) => (mode === "dark" ? "light" : "dark"))}
-              className="ctrl-btn p-1.5 rounded-full text-muted hover:text-fg hover:bg-fg/10 cursor-pointer"
+              className="ctrl-btn inline-flex items-center justify-center rounded-full text-muted hover:text-fg hover:bg-fg/10 cursor-pointer"
               aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
             >
-              {theme === "dark" ? <SunIcon className="w-4 h-4" /> : <MoonIcon className="w-4 h-4" />}
+              {theme === "dark" ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
             </button>
             <button
               type="button"
               onClick={() => setLang("en")}
-              className={`ctrl-btn px-2 py-1 cursor-pointer rounded-lg ${
+              className={`ctrl-btn inline-flex items-center justify-center cursor-pointer rounded-[8px] ${
                 lang === "en" ? "text-green" : "text-muted hover:text-fg"
               }`}
               aria-pressed={lang === "en"}
@@ -1528,11 +1533,11 @@ export default function App() {
             >
               EN
             </button>
-            <span className="text-spot-border" aria-hidden="true">/</span>
+            <span className="text-spot-border px-1" aria-hidden="true">/</span>
             <button
               type="button"
               onClick={() => setLang("hi")}
-              className={`ctrl-btn px-2 py-1 cursor-pointer rounded-lg ${
+              className={`ctrl-btn inline-flex items-center justify-center cursor-pointer rounded-[8px] ${
                 lang === "hi" ? "text-green" : "text-muted hover:text-fg"
               }`}
               aria-pressed={lang === "hi"}
@@ -1544,10 +1549,11 @@ export default function App() {
         </div>
 
         <div className="relative z-10 text-center w-full max-w-3xl">
-          <h1 className="hero-mark hero-in text-[clamp(3.6rem,12vw,7.4rem)] font-semibold tracking-[-0.04em] text-fg leading-[0.9]">
-            K<span className="hero-ital">ri</span>shbu<span className="hero-ital">i</span>lds
+          <h1 className="hero-mark hero-in text-[clamp(2.5rem,10vw,6rem)] font-semibold tracking-[-0.03em] text-fg leading-[1.1]">
+            Krishbuilds
           </h1>
-          <p className="hero-in mt-4 sm:mt-5 text-base sm:text-lg text-muted font-medium tracking-wide" style={{ animationDelay: "0.16s" }}>
+          <span className="hero-rule hero-in" aria-hidden="true" style={{ animationDelay: "0.12s" }} />
+          <p className="hero-tagline hero-in mt-4 text-base sm:text-lg font-medium leading-relaxed" style={{ animationDelay: "0.16s" }}>
             {t.tagline}
           </p>
           <button
@@ -1557,18 +1563,18 @@ export default function App() {
               if (currentIndex < 0) playSong(0);
               else if (!isPlaying) togglePlayPause();
             }}
-            className="hero-cta hero-in mt-7 sm:mt-8 inline-flex items-center justify-center rounded-2xl font-semibold text-base px-11 py-3.5 cursor-pointer"
+            className="hero-cta hero-in mt-8 inline-flex items-center justify-center font-semibold text-base px-8 cursor-pointer"
             style={{ animationDelay: "0.3s" }}
           >
             Play
           </button>
         </div>
 
-        <div className="hero-in relative z-10 mt-9 sm:mt-11 w-full" style={{ animationDelay: "0.46s" }}>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-            <label className="relative block w-full max-w-md">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none">
-                <SearchIcon className="w-4 h-4" />
+        <div className="hero-in relative z-10 mt-8 w-full max-w-4xl" style={{ animationDelay: "0.46s" }}>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <label className="hero-search relative block w-full min-w-0 flex-1">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-green pointer-events-none">
+                <SearchIcon className="w-5 h-5" />
               </span>
               <input
                 ref={searchInputRef}
@@ -1583,7 +1589,7 @@ export default function App() {
                   }
                 }}
                 placeholder="Search songs, artists, or moods"
-                className="search-input w-full rounded-2xl bg-search text-fg placeholder:text-muted text-sm py-3 pl-11 pr-10"
+                className="search-input w-full bg-search text-fg placeholder:text-muted text-sm py-3 pl-12 pr-12"
                 aria-label="Search songs, artists, or moods"
                 aria-keyshortcuts="/"
               />
@@ -1594,47 +1600,73 @@ export default function App() {
                     setQuery("");
                     searchInputRef.current?.focus();
                   }}
-                  className="ctrl-btn absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-full text-muted hover:text-fg hover:bg-fg/10 cursor-pointer"
+                  className="ctrl-btn inline-flex items-center justify-center absolute right-1 top-1/2 -translate-y-1/2 rounded-full text-muted hover:text-fg hover:bg-fg/10 cursor-pointer"
                   aria-label="Clear search"
                 >
-                  <CloseIcon className="w-4 h-4" />
+                  <CloseIcon className="w-5 h-5" />
                 </button>
               )}
             </label>
             <button
               type="button"
               onClick={(e) => playSurprise(e.currentTarget)}
-              className="relative inline-flex items-center gap-2 self-start rounded-2xl bg-spot-raised hover:bg-spot-hover border border-spot-border hover:border-green text-fg font-semibold text-sm px-4 py-3 cursor-pointer transition-colors"
+              className="surprise-btn relative inline-flex items-center justify-center gap-2 w-full sm:w-auto min-h-11 font-semibold text-sm px-4 cursor-pointer"
               aria-label="Play a random song"
             >
-              <SparkleIcon className="w-4 h-4 text-green" />
+              <SparkleIcon className="w-5 h-5" />
               Surprise Me
             </button>
           </div>
+
+          {FEATURED_INDEX >= 0 && songs[FEATURED_INDEX] && (
+            <button
+              type="button"
+              onClick={(e) => playFeatured(e.currentTarget)}
+              className="rec-banner relative mt-4 w-full text-left overflow-hidden bg-spot-raised border border-spot-border px-3 py-3 sm:p-4 flex items-center gap-3 cursor-pointer hover:bg-spot-hover"
+            >
+              <span className="rec-banner-wash pointer-events-none absolute inset-0" aria-hidden="true" />
+              <span className="rec-vinyl flex-shrink-0" aria-hidden="true" />
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-[8px] overflow-hidden flex-shrink-0 ring-1 ring-fg/10">
+                {coverFor(FEATURED_INDEX, songs[FEATURED_INDEX])}
+              </div>
+              <div className="relative min-w-0 flex-1 overflow-hidden">
+                <p className="rec-banner-copy rec-banner-line">
+                  Feeling sad? Listen to this — you won&apos;t forget it
+                  <span className="text-spot-border"> · </span>
+                  {songs[FEATURED_INDEX].title}
+                  <span className="text-spot-border"> · </span>
+                  {songs[FEATURED_INDEX].artist}
+                </p>
+              </div>
+              <span className="relative flex-shrink-0 w-11 h-11 rounded-full bg-green text-control-fg flex items-center justify-center">
+                <PlayIcon className="w-5 h-5 ml-0.5" />
+              </span>
+            </button>
+          )}
         </div>
       </section>
 
       <section
         id="songs"
         ref={songsSectionRef}
-        className="px-4 sm:px-8 pt-2 sm:pt-3 pb-12 scroll-mt-4"
+        className="px-4 sm:px-8 pt-8 pb-8 scroll-mt-4"
       >
         {resumeOffer && songs[resumeOffer.index] && (
-          <div className="continue-banner relative mb-5 w-full max-w-xl rounded-[var(--radius-panel)] overflow-hidden bg-spot-raised border border-spot-border p-3 sm:p-3.5 flex items-center gap-2 sm:gap-3.5">
+          <div className="continue-banner relative mb-8 w-full max-w-xl overflow-hidden bg-spot-raised border border-spot-border p-4 flex items-center gap-4">
             <button
               type="button"
               onClick={(e) => continueListening(e.currentTarget)}
-              className="relative min-w-0 flex-1 flex items-center gap-3.5 text-left cursor-pointer hover:opacity-95"
+              className="relative min-w-0 flex-1 flex items-center gap-4 text-left cursor-pointer hover:opacity-95"
               aria-label={`Continue ${songs[resumeOffer.index].title}`}
             >
-              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden flex-shrink-0 shadow-md ring-1 ring-fg/10">
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-[8px] overflow-hidden flex-shrink-0 ring-1 ring-fg/10">
                 {coverFor(resumeOffer.index, songs[resumeOffer.index])}
               </div>
               <div className="relative min-w-0 flex-1">
                 <p className="text-[11px] font-bold tracking-widest uppercase text-green">
                   Continue listening
                 </p>
-                <p className="mt-0.5 text-sm font-semibold text-fg truncate">
+                <p className="mt-1 text-sm font-semibold text-fg truncate">
                   {songs[resumeOffer.index].title}
                 </p>
                 <p className="text-xs text-muted truncate">
@@ -1643,8 +1675,8 @@ export default function App() {
                   {formatTime(resumeOffer.time)}
                 </p>
               </div>
-              <span className="relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-green text-control-fg flex items-center justify-center shadow-[0_0_16px_rgba(57,255,136,0.4)]">
-                <PlayIcon className="w-4 h-4 sm:w-5 sm:h-5 ml-0.5" />
+              <span className="relative flex-shrink-0 w-11 h-11 rounded-full bg-green text-control-fg flex items-center justify-center">
+                <PlayIcon className="w-5 h-5 ml-0.5" />
               </span>
             </button>
             <button
@@ -1653,43 +1685,17 @@ export default function App() {
                 setResumeOffer(null);
                 clearResume();
               }}
-              className="relative flex-shrink-0 p-1.5 rounded-full text-muted hover:text-fg hover:bg-fg/10 cursor-pointer"
+              className="ctrl-btn relative flex-shrink-0 rounded-full text-muted hover:text-fg hover:bg-fg/10 cursor-pointer"
               aria-label="Dismiss continue listening"
             >
-              <CloseIcon className="w-4 h-4" />
+              <CloseIcon className="w-5 h-5" />
             </button>
           </div>
         )}
 
-        {FEATURED_INDEX >= 0 && songs[FEATURED_INDEX] && (
-          <button
-            type="button"
-            onClick={(e) => playFeatured(e.currentTarget)}
-            className="rec-banner relative mb-7 w-full max-w-xl text-left rounded-[var(--radius-panel)] overflow-hidden bg-spot-raised border border-spot-border p-3 sm:p-3.5 flex items-center gap-3.5 cursor-pointer hover:bg-spot-hover transition-colors"
-          >
-            <span className="rec-banner-wash pointer-events-none absolute inset-0" aria-hidden="true" />
-            <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden flex-shrink-0 shadow-md ring-1 ring-fg/10">
-              {coverFor(FEATURED_INDEX, songs[FEATURED_INDEX])}
-            </div>
-            <div className="relative min-w-0 flex-1">
-              <p className="text-sm sm:text-[15px] font-medium text-fg leading-snug">
-                Feeling sad? Listen to this — you won&apos;t forget it 💙
-              </p>
-              <p className="mt-1 text-xs sm:text-sm text-muted truncate">
-                {songs[FEATURED_INDEX].title}
-                <span className="text-spot-border"> · </span>
-                {songs[FEATURED_INDEX].artist}
-              </p>
-            </div>
-            <span className="relative flex-shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-green text-control-fg flex items-center justify-center shadow-[0_0_16px_rgba(57,255,136,0.4)]">
-              <PlayIcon className="w-4 h-4 sm:w-5 sm:h-5 ml-0.5" />
-            </span>
-          </button>
-        )}
-
         {recent.length > 0 && (
           <div className="mb-8">
-            <p className="section-kicker mb-1">
+            <p className="section-kicker mb-2">
               Listening history
             </p>
             <h2 className="section-title text-2xl sm:text-3xl mb-4">Recently Played</h2>
@@ -1702,7 +1708,7 @@ export default function App() {
                     key={index}
                     type="button"
                     onClick={(e) => playSong(index, e.currentTarget)}
-                    className={`song-card flex-shrink-0 w-[136px] sm:w-40 text-left p-2.5 cursor-pointer ${
+                    className={`song-card flex-shrink-0 w-32 sm:w-40 text-left p-2 cursor-pointer ${
                       isActive
                         ? "song-card-playing"
                         : "bg-spot-raised hover:bg-spot-hover"
@@ -1710,7 +1716,7 @@ export default function App() {
                     aria-label={`${isActive && isPlaying ? "Pause" : "Play"} ${song.title} by ${song.artist}`}
                     aria-current={isActive ? "true" : undefined}
                   >
-                    <div className="relative aspect-square rounded-[0.85rem] overflow-hidden mb-2 bg-spot-hover">
+                    <div className="relative aspect-square rounded-[8px] overflow-hidden mb-2 bg-spot-hover">
                       {coverFor(index, song)}
                       {isActive && isPlaying && !buffering && (
                         <div className="absolute bottom-1.5 left-1.5">
@@ -1718,8 +1724,8 @@ export default function App() {
                         </div>
                       )}
                     </div>
-                    <p className={`font-bold text-sm truncate ${isActive ? "text-green" : "text-fg"}`}>{song.title}</p>
-                    <p className="text-xs text-muted truncate mt-0.5">{song.artist}</p>
+                    <p className={`song-card-title font-bold text-sm ${isActive ? "text-green" : "text-fg"}`}>{song.title}</p>
+                    <p className="song-card-artist text-xs text-muted mt-0.5">{song.artist}</p>
                   </button>
                 );
               })}
@@ -1729,7 +1735,7 @@ export default function App() {
 
         {recommendations && (
           <div className="mb-8">
-            <p className="section-kicker mb-1">For you</p>
+            <p className="section-kicker mb-2">For you</p>
             <h2 className="section-title text-2xl sm:text-3xl mb-4">
               Because you listened to{" "}
               <span className="text-green">{songs[recommendations.seedIndex].title}</span>
@@ -1743,7 +1749,7 @@ export default function App() {
                     key={index}
                     type="button"
                     onClick={(e) => playSong(index, e.currentTarget)}
-                    className={`song-card flex-shrink-0 w-[136px] sm:w-40 text-left p-2.5 cursor-pointer ${
+                    className={`song-card flex-shrink-0 w-32 sm:w-40 text-left p-2 cursor-pointer ${
                       isActive
                         ? "song-card-playing"
                         : "bg-spot-raised hover:bg-spot-hover"
@@ -1751,7 +1757,7 @@ export default function App() {
                     aria-label={`${isActive && isPlaying ? "Pause" : "Play"} ${song.title} by ${song.artist}`}
                     aria-current={isActive ? "true" : undefined}
                   >
-                    <div className="relative aspect-square rounded-[0.85rem] overflow-hidden mb-2 bg-spot-hover">
+                    <div className="relative aspect-square rounded-[8px] overflow-hidden mb-2 bg-spot-hover">
                       {coverFor(index, song)}
                       {isActive && isPlaying && !buffering && (
                         <div className="absolute bottom-1.5 left-1.5">
@@ -1759,8 +1765,8 @@ export default function App() {
                         </div>
                       )}
                     </div>
-                    <p className={`font-bold text-sm truncate ${isActive ? "text-green" : "text-fg"}`}>{song.title}</p>
-                    <p className="text-xs text-muted truncate mt-0.5">{song.artist}</p>
+                    <p className={`song-card-title font-bold text-sm ${isActive ? "text-green" : "text-fg"}`}>{song.title}</p>
+                    <p className="song-card-artist text-xs text-muted mt-0.5">{song.artist}</p>
                     <span className={`mood-pill mood-${song.mood.toLowerCase()} mt-1.5`}>
                       {song.mood}
                     </span>
@@ -1771,23 +1777,23 @@ export default function App() {
           </div>
         )}
 
-        <p className="section-kicker mb-1">
+        <p className="section-kicker mb-2">
           Playlist
         </p>
-        <div className="flex items-end justify-between gap-3 mb-3">
-          <h2 className="section-title text-2xl sm:text-3xl">Made for You</h2>
-          <span className="text-sm text-muted whitespace-nowrap pb-0.5">
+        <div className="flex items-end justify-between gap-4 mb-4">
+          <h2 className="section-title text-2xl sm:text-3xl leading-tight">Made for You</h2>
+          <span className="text-sm text-muted whitespace-nowrap pb-1">
             {filteredSongs.length} {filteredSongs.length === 1 ? "song" : "songs"}
           </span>
         </div>
 
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide mb-5 pb-0.5">
+        <div className="flex gap-2 overflow-x-auto scrollbar-hide mb-4">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               type="button"
               onClick={() => setCategory(cat)}
-              className={`flex-shrink-0 rounded-xl px-3.5 py-1.5 text-xs font-semibold tracking-wide cursor-pointer transition-colors ${
+              className={`flex-shrink-0 inline-flex items-center justify-center rounded-full min-h-11 px-4 text-xs font-semibold tracking-wide cursor-pointer ${
                 category === cat
                   ? "bg-green text-control-fg"
                   : "bg-spot-hover text-muted hover:text-green"
@@ -1806,7 +1812,7 @@ export default function App() {
           </div>
         ) : filteredSongs.length === 0 ? (
           <EmptySongs
-            icon={<SearchIcon className="w-6 h-6" />}
+            icon={<SearchIcon className="w-5 h-5" />}
             title={query.trim() ? `No songs matching “${query.trim()}”` : `No ${category.toLowerCase()} songs`}
             hint={
               query.trim()
@@ -1822,7 +1828,7 @@ export default function App() {
             }}
           />
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 py-1">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 lg:gap-8 py-1">
             {filteredSongs.map(({ song, index }, i) => {
               const isActive = index === currentIndex;
               const inQueue = queuedCount.get(index) ?? 0;
@@ -1841,7 +1847,7 @@ export default function App() {
                       playSong(index, e.currentTarget);
                     }
                   }}
-                  className={`song-card group relative text-left p-3 sm:p-4 cursor-pointer min-w-0 scroll-mt-36 ${
+                  className={`song-card group relative text-left p-4 cursor-pointer min-w-0 scroll-mt-36 ${
                     isActive ? "song-card-playing" : "bg-spot-raised hover:bg-spot-hover"
                   }`}
                   aria-label={`${isActive && isPlaying ? "Pause" : "Play"} ${song.title} by ${song.artist}`}
@@ -1851,7 +1857,7 @@ export default function App() {
                     className={cardsVisible ? "song-card-enter" : "opacity-0"}
                     style={{ animationDelay: `${Math.min(i, 14) * 50}ms` }}
                   >
-                  <div className="relative aspect-square rounded-[0.95rem] overflow-hidden mb-3 bg-spot-hover shadow-lg">
+                  <div className="relative aspect-square rounded-[8px] overflow-hidden mb-4 bg-spot-hover">
                     {coverFor(
                       index,
                       song,
@@ -1876,25 +1882,25 @@ export default function App() {
                           e.stopPropagation();
                           playSong(index, e.currentTarget.closest(".song-card") as HTMLElement | null);
                         }}
-                        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full text-control-fg flex items-center justify-center shadow-[0_8px_24px_rgba(7,11,8,0.5)] hover:scale-105 cursor-pointer"
+                        className="w-11 h-11 rounded-full text-control-fg flex items-center justify-center cursor-pointer"
                         aria-label={
                           isActive && isPlaying ? `Pause ${song.title}` : `Play ${song.title}`
                         }
                       >
                         {isActive && isPlaying ? (
-                          <PauseIcon className="w-6 h-6" />
+                          <PauseIcon className="w-5 h-5" />
                         ) : (
-                          <PlayIcon className="w-6 h-6 ml-0.5" />
+                          <PlayIcon className="w-5 h-5 ml-0.5" />
                         )}
                       </button>
                     </div>
                   </div>
-                  <div className="flex items-start gap-1 min-w-0">
-                    <div className="min-w-0 flex-1">
-                      <h3 className={`font-bold text-sm truncate ${isActive ? "text-green" : "text-fg"}`}>
+                  <div className="flex items-start gap-2 min-w-0 overflow-hidden">
+                    <div className="min-w-0 flex-1 overflow-hidden">
+                      <h3 className={`song-card-title font-bold text-sm ${isActive ? "text-green" : "text-fg"}`}>
                         {song.title}
                       </h3>
-                      <p className="text-sm text-muted truncate mt-0.5">{song.artist}</p>
+                      <p className="song-card-artist text-sm text-muted mt-0.5">{song.artist}</p>
                       <p className="text-[11px] text-muted/80 mt-0.5">
                         {plays === 1 ? "1 play" : `${plays} plays`}
                       </p>
@@ -1917,12 +1923,12 @@ export default function App() {
                         e.stopPropagation();
                         addToQueue(index);
                       }}
-                      className={`relative flex-shrink-0 p-1.5 rounded-full hover:bg-fg/10 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100 transition-opacity cursor-pointer ${
+                      className={`relative flex-shrink-0 min-w-11 min-h-11 rounded-full hover:bg-fg/10 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100 transition-opacity cursor-pointer inline-flex items-center justify-center ${
                         inQueue ? "text-green opacity-100" : "text-muted hover:text-fg"
                       }`}
                       aria-label={`Add ${song.title} to queue`}
                     >
-                      <QueueIcon className="w-4 h-4" />
+                      <QueueIcon className="w-5 h-5" />
                       {inQueue > 0 && (
                         <span className="absolute -top-0.5 -right-0.5 min-w-[14px] h-[14px] px-0.5 rounded-full bg-green text-control-fg text-[9px] font-bold leading-[14px] text-center">
                           {inQueue}
@@ -1935,10 +1941,10 @@ export default function App() {
                         e.stopPropagation();
                         void shareSong(song);
                       }}
-                      className="flex-shrink-0 p-1.5 rounded-full text-muted hover:text-fg hover:bg-fg/10 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100 transition-opacity cursor-pointer"
+                      className="flex-shrink-0 min-w-11 min-h-11 rounded-full text-muted hover:text-fg hover:bg-fg/10 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100 transition-opacity cursor-pointer inline-flex items-center justify-center"
                       aria-label={`Share ${song.title}`}
                     >
-                      <ShareIcon className="w-4 h-4" />
+                      <ShareIcon className="w-5 h-5" />
                     </button>
                   </div>
                   </div>
@@ -1949,16 +1955,16 @@ export default function App() {
         )}
       </section>
 
-      <footer className="px-4 sm:px-8 pb-10">
-        <div className="mx-auto max-w-xl rounded-[var(--radius-panel)] bg-spot-raised border border-green/30 px-6 py-8 text-center">
-          <p className="text-muted text-sm sm:text-base mb-5">
+      <footer className="px-4 sm:px-8 pb-8">
+        <div className="mx-auto max-w-xl rounded-[12px] bg-spot-raised border border-green/30 px-6 py-8 text-center">
+          <p className="text-muted text-sm sm:text-base mb-4 leading-relaxed">
             Want to suggest a song? Contact me on WhatsApp
           </p>
           <a
             href="https://wa.me/919267939780"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-2xl bg-green hover:bg-green-hover text-control-fg font-semibold text-sm px-6 py-3 transition-colors"
+            className="inline-flex items-center justify-center gap-2 rounded-[8px] min-h-11 bg-green hover:bg-green-hover text-control-fg font-semibold text-sm px-6"
             aria-label="Suggest a song on WhatsApp (opens in a new tab)"
           >
             <WhatsAppIcon className="w-5 h-5" />
@@ -1968,12 +1974,12 @@ export default function App() {
       </footer>
 
       {currentIndex >= 0 && (
-      <div className={`player-dock fixed bottom-0 left-0 right-0 z-50 flex justify-center overflow-visible px-3 pb-3 sm:px-4 sm:pb-4 ${nowPlayingOpen ? "invisible pointer-events-none" : ""}`}>
+      <div className={`player-dock fixed bottom-0 left-0 right-0 z-50 flex justify-center overflow-visible px-4 pb-4 ${nowPlayingOpen ? "invisible pointer-events-none" : ""}`}>
         <div
-          className="player-glow pointer-events-none absolute left-1/2 bottom-0 h-20 w-[min(32rem,80%)] -translate-x-1/2 rounded-full blur-3xl"
+          className="player-glow pointer-events-none absolute left-1/2 bottom-0 h-16 w-[min(32rem,80%)] -translate-x-1/2 rounded-full blur-3xl"
           style={{
             backgroundColor: glowColor,
-            opacity: theme === "light" ? 0.18 : 0.28,
+            opacity: theme === "light" ? 0.08 : 0.12,
           }}
           aria-hidden="true"
         />
@@ -1981,11 +1987,11 @@ export default function App() {
           <button
             type="button"
             onClick={() => setNowPlayingOpen(true)}
-            className="player-now flex items-center gap-3 min-w-0 text-left cursor-pointer rounded-xl"
+            className="player-now flex items-center gap-3 min-w-0 max-w-full overflow-hidden text-left cursor-pointer rounded-[12px]"
             aria-label={`Open now playing, ${nowCurrSong ? `${nowCurrSong.title} by ${nowCurrSong.artist}` : "current track"}`}
             aria-expanded={nowPlayingOpen}
           >
-            <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden flex-shrink-0 bg-spot-hover shadow-md ring-1 ring-fg/10">
+            <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-[8px] overflow-hidden flex-shrink-0 bg-spot-hover ring-1 ring-fg/10">
               {nowPrevSong && nowPrev != null && (
                 <div key={`art-out-${nowPrev}`} className="player-now-out absolute inset-0">
                   {coverFor(nowPrev, nowPrevSong)}
@@ -2002,23 +2008,23 @@ export default function App() {
                 </div>
               )}
             </div>
-            <div className="relative min-w-0 h-10 flex-1">
+            <div className="player-now-meta relative h-10">
               {nowPrevSong && nowPrev != null && (
-                <div key={`txt-out-${nowPrev}`} className="player-now-out absolute inset-0 min-w-0">
-                  <p className="text-sm font-semibold text-fg truncate leading-snug">
+                <div key={`txt-out-${nowPrev}`} className="player-now-out absolute inset-0 min-w-0 overflow-hidden">
+                  <p className="player-now-title text-sm font-semibold text-fg leading-snug">
                     {nowPrevSong.title}
                   </p>
-                  <p className="text-xs text-muted truncate leading-snug mt-0.5">
+                  <p className="player-now-artist text-xs text-muted leading-snug mt-0.5">
                     {nowPrevSong.artist}
                   </p>
                 </div>
               )}
               {nowCurrSong && (
-                <div key={`txt-in-${nowCurr}`} className="player-now-in min-w-0">
-                  <p className="text-sm font-semibold text-fg truncate leading-snug">
+                <div key={`txt-in-${nowCurr}`} className="player-now-in absolute inset-0 min-w-0 overflow-hidden">
+                  <p className="player-now-title text-sm font-semibold text-fg leading-snug">
                     {nowCurrSong.title}
                   </p>
-                  <p className="text-xs text-muted truncate leading-snug mt-0.5">
+                  <p className="player-now-artist text-xs text-muted leading-snug mt-0.5">
                     {nowCurrSong.artist}
                   </p>
                 </div>
@@ -2031,7 +2037,7 @@ export default function App() {
               <button
                 type="button"
                 onClick={toggleShuffle}
-                className={`ctrl-btn hidden sm:inline-flex cursor-pointer p-2 mr-1 rounded-full ${
+                className={`ctrl-btn hidden sm:inline-flex items-center justify-center cursor-pointer p-2 mr-2 rounded-full ${
                   shuffle ? "text-green" : "text-muted hover:text-fg"
                 }`}
                 aria-label="Shuffle"
@@ -2045,12 +2051,12 @@ export default function App() {
                 className="ctrl-btn text-muted hover:text-fg cursor-pointer p-2 rounded-full"
                 aria-label="Previous"
               >
-                <PrevIcon className="w-6 h-6" />
+                <PrevIcon className="w-5 h-5" />
               </button>
               <button
                 type="button"
                 onClick={togglePlayPause}
-                className="ctrl-btn-play mx-1.5 w-11 h-11 rounded-full text-control-fg flex items-center justify-center hover:scale-105 cursor-pointer flex-shrink-0"
+                className="ctrl-btn-play mx-2 w-11 h-11 text-control-fg flex items-center justify-center cursor-pointer flex-shrink-0"
                 aria-label={isPlaying ? "Pause" : "Play"}
               >
                 {isPlaying ? <PauseIcon className="w-5 h-5" /> : <PlayIcon className="w-5 h-5 ml-0.5" />}
@@ -2061,12 +2067,12 @@ export default function App() {
                 className="ctrl-btn text-muted hover:text-fg cursor-pointer p-2 rounded-full"
                 aria-label="Next"
               >
-                <NextIcon className="w-6 h-6" />
+                <NextIcon className="w-5 h-5" />
               </button>
               <button
                 type="button"
                 onClick={cycleRepeat}
-                className={`ctrl-btn relative hidden sm:inline-flex cursor-pointer p-2 ml-1 rounded-full ${
+                className={`ctrl-btn relative hidden sm:inline-flex items-center justify-center cursor-pointer p-2 ml-2 rounded-full ${
                   repeat !== "off" ? "text-green" : "text-muted hover:text-fg"
                 }`}
                 aria-label={repeat === "one" ? "Repeat one" : repeat === "all" ? "Repeat all" : "Repeat off"}
@@ -2132,23 +2138,23 @@ export default function App() {
             className="pointer-events-none absolute inset-0"
             style={{
               background: `radial-gradient(ellipse at 50% 28%, ${glowColor} 0%, transparent 58%)`,
-              opacity: theme === "light" ? 0.2 : 0.38,
+              opacity: theme === "light" ? 0.12 : 0.22,
             }}
             aria-hidden="true"
           />
-          <div className="relative z-10 flex items-center justify-between px-4 sm:px-8 pt-5 pb-2">
+          <div className="relative z-10 flex items-center justify-between px-4 sm:px-8 pt-4 pb-2">
             <p className="section-kicker">Now playing</p>
             <button
               type="button"
               onClick={() => setNowPlayingOpen(false)}
-              className="p-2 rounded-full text-fg hover:bg-fg/10 cursor-pointer"
+              className="ctrl-btn rounded-full text-fg hover:bg-fg/10 cursor-pointer"
               aria-label="Close now playing"
             >
-              <CloseIcon className="w-6 h-6" />
+              <CloseIcon className="w-5 h-5" />
             </button>
           </div>
           <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pb-10 min-h-0">
-            <div className="relative w-full max-w-sm sm:max-w-md aspect-square rounded-[1.75rem] overflow-hidden shadow-2xl bg-spot-hover mb-8">
+            <div className="now-playing-art relative w-full max-w-sm sm:max-w-md aspect-square overflow-hidden bg-spot-hover mb-8">
               {coverFor(currentIndex, currentSong, buffering ? "opacity-70" : "")}
               {buffering && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/35">
@@ -2170,7 +2176,7 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => setMuted((m) => !m)}
-                className="ctrl-btn p-1.5 rounded-full text-muted hover:text-fg cursor-pointer flex-shrink-0"
+                className="ctrl-btn rounded-full text-muted hover:text-fg cursor-pointer flex-shrink-0"
                 aria-label={muted ? "Unmute" : "Mute"}
                 aria-pressed={muted}
               >
@@ -2214,7 +2220,7 @@ export default function App() {
           >
             <div className="stats-dialog-head">
               <div>
-                <p className="section-kicker mb-1">Your listening</p>
+                <p className="section-kicker mb-2">Your listening</p>
                 <h2 id="stats-title" className="section-title text-2xl text-fg">
                   Stats
                 </h2>
@@ -2312,7 +2318,7 @@ export default function App() {
 
       {toast && (
         <div
-          className="copied-toast fixed bottom-36 left-1/2 z-[80] -translate-x-1/2 rounded-2xl bg-fg text-spot px-4 py-2 text-sm font-semibold shadow-lg"
+          className="copied-toast fixed bottom-36 left-1/2 z-[80] -translate-x-1/2 rounded-[8px] bg-fg text-spot px-4 py-2 text-sm font-semibold"
           role="status"
         >
           {toast}

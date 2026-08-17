@@ -58,16 +58,22 @@ export const songs: Song[] = [
     cover: "/covers/573646071307116229.jpg",
   },
   {
+    title: "Lag Ja Gale Ki Phir Ye Haseen Raat Ho Na Ho Video Song Lata Mangeshkar Woh Kaun Thi Songs",
+    artist: "Unknown",
+    src: "/audio/Lag Ja Gale Ki Phir Ye Haseen Raat Ho Na Ho Video Song  Lata Mangeshkar  Woh Kaun Thi Songs.mp3",
+    cover: "/covers/642114859417697153.jpg",
+  },
+  {
     title: "Night Changes",
     artist: "One Direction",
     src: "/audio/One Direction - Night Changes.mp3",
-    cover: "/covers/642114859417697153.jpg",
+    cover: "/covers/901845894194353736.jpg",
   },
   {
     title: "Rain (Long Version)",
     artist: "Unknown",
     src: "/audio/Rain (Long Version).mp3",
-    cover: "/covers/901845894194353736.jpg",
+    cover: "/covers/924012048598122312.jpg",
   },
   {
     title: "Line Without a Hook",
